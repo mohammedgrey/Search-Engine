@@ -1,6 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "server/lib/*/.jar",
-        "F:/Uni/APT/project/Search-Engine/server/lib/jsoup-1.13.1.jar"
-    ]
-}
