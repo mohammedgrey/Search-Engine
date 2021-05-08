@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -27,7 +28,8 @@ public class PeopleController {
     }
 
     @PostMapping("/people/add")
-    public void addPeople(){
-        peopleRepository.save(new People("Mohammed","Saad"));
+    public void addPeople(@RequestBody People person){
+        peopleRepository.save(person);
+        // peopleRepository.save(new People("Mohammed","Saad"));
     }
 }
