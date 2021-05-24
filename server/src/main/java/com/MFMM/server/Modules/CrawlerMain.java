@@ -9,30 +9,50 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public class CrawlerMain {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
+        int NUM_OF_ROBOTS = 4;
+        Thread[] robots = new Thread[NUM_OF_ROBOTS];
         Crawler crawler = new Crawler();
-        crawler.crawlPages();
+        for (int i = 0; i < NUM_OF_ROBOTS; i++) {
+
+            robots[i] = new Thread(crawler);
+            System.out.println("CREATED");
+            robots[i].setName(Integer.toString(i + 1));
+        }
+        for (int i = 0; i < NUM_OF_ROBOTS; i++) {
+            robots[i].start();
+            System.out.println("STARTED");
+        }
+
+        for (int i = 0; i < NUM_OF_ROBOTS; i++)
+            robots[i].join();
+
+        System.out.println("******************CRAWLING FINISHED******************");
     }
 
-    static final class Crawler {
+    static final class Crawler implements Runnable {
         // Members
         // private File[] listOfFiles;
         private List<String> crawledPages;
         private Queue<String> toCrawlPages;
         private final int CRAWLING_LIMIT = 20;
         private final String NO_ROBOTS = "NO_ROBOTS";
+        AtomicInteger workingRobots;
 
         public Crawler() throws IOException {
             List<String> initialSeed = Arrays.asList();
@@ -41,25 +61,34 @@ public class CrawlerMain {
                 this.toCrawlPages.add(singleSeed);
             this.crawledPages = new ArrayList<>(CRAWLING_LIMIT);
             loadState();
-            for (String state : this.toCrawlPages) {
-                System.out.println(state);
-            }
+            workingRobots = new AtomicInteger();
+            // for (String state : this.toCrawlPages) {
+            // System.out.println(state);
+            // }
 
         }
 
-        public String readRobotsTxt(String url) {
-            Pattern p = Pattern.compile("^(http(s?)://([^/]+))");
-            java.util.regex.Matcher m = p.matcher(url);
-            if (m.find()) {
-                System.out.println(m.group(1));
-                try (InputStream in = new URL(m.group(1) + "/robots.txt").openStream()) {
-                    return new String(in.readAllBytes());
+        private String readRobotsTxt(String url) {
+            java.util.regex.Matcher matcher = Pattern.compile("^(http(s?)://([^/]+))").matcher(url);
+            // the regex is taken from stackoverflow
+            if (matcher.find()) {
+                try (InputStream inFile = new URL(matcher.group(1) + "/robots.txt").openStream()) {
+                    return new String(inFile.readAllBytes());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             return NO_ROBOTS;
+        }
 
+        public boolean IamAllowedToCrawl(String url) {
+            // Useful article as a reference: https://moz.com/learn/seo/robotstxt
+            String robotsDotTxt = readRobotsTxt(url);
+
+            // TODO: check the robots.txt with some regex and return whether we are
+            // allowed to visit the passed in url or not
+            System.out.println(robotsDotTxt);
+            return true;
         }
 
         // TODO: for now it reads the initial seed only but later it should read the
@@ -95,8 +124,18 @@ public class CrawlerMain {
             writer.close();
         }
 
-        private boolean isHTML(String file) {
-            return file.split(".")[1].toLowerCase().equals("html");
+        public boolean isHTML(String page) {
+            try {
+                URL url = new URL(page);
+
+                URLConnection u = url.openConnection();
+                String type = u.getHeaderField("Content-Type");
+                if (type == null)
+                    return false;
+                return type.toLowerCase().contains("html");
+            } catch (IOException e) {
+                return false;
+            }
         }
 
         private boolean validURL(String url) {
@@ -110,16 +149,19 @@ public class CrawlerMain {
                 if (!validURL(hrefAttr))
                     continue;
 
-                this.toCrawlPages.add(hrefAttr);
+                synchronized (this.toCrawlPages) {
+                    this.toCrawlPages.add(hrefAttr);
+                }
                 addedPages.add(hrefAttr);
             }
             return addedPages;
-
         }
 
         private boolean isVisitedURL(String url) {
             // TODO: make this function check also for similar urls that aren't identical
-            return this.crawledPages.contains(url);
+            synchronized (this.crawledPages) {
+                return this.crawledPages.contains(url);
+            }
         }
 
         // TODO:make this function work properly
@@ -146,35 +188,66 @@ public class CrawlerMain {
         }
 
         // TODO: handle multithreading
-        public void crawlPages() throws IOException {
+        @Override
+        public void run() {
             // keep crawling as long as we didn't reach the limit and there are more pages
             // to crawl
-            while (this.crawledPages.size() != CRAWLING_LIMIT && this.toCrawlPages.size() != 0) {
-                String currentURL = toCrawlPages.remove();
-
-                List<String> addedURLS = new ArrayList<>();
-                // TODO: check for Robot.txt to see if I am allowed to visit this URL
-                if (!isVisitedURL(currentURL)) {
-
-                    // download the page and add the links inside it to the "to crawl" queue
-                    System.out.println("CURRENT URL" + currentURL);
-                    Document doc = downloadPage(currentURL);
-                    if (doc != null) {
-                        this.crawledPages.add(currentURL);
-                        addedURLS = AddMoreURLSToCrawl(doc);
+            workingRobots.incrementAndGet();
+            mainLoop: while (true) {
+                boolean nothingToCrawl;
+                synchronized (this.toCrawlPages) {
+                    nothingToCrawl = this.toCrawlPages.size() == 0;
+                }
+                if (nothingToCrawl) // nothing to crawl
+                {
+                    workingRobots.decrementAndGet();
+                    while (true) {
+                        if (workingRobots.intValue() == 0)
+                            break mainLoop;
+                        else if (this.toCrawlPages.size() > 0) {
+                            workingRobots.incrementAndGet();
+                            break;
+                        }
                     }
                 }
+
+                String currentURL;
+                synchronized (this.toCrawlPages) {
+                    currentURL = toCrawlPages.remove();
+                }
+                List<String> addedURLS = new ArrayList<>();
+                // TODO: check for Robot.txt to see if I am allowed to visit this URL
+                if (!isVisitedURL(currentURL))
+                    if (isHTML(currentURL)) {
+                        // download the page and add the links inside it to the "to crawl" queue
+                        System.out.println("CURRENT URL: " + currentURL);
+                        System.out.println("Being DOWNLOADED BY ROBOT: " + Thread.currentThread().getName());
+                        try {
+                            Document doc = downloadPage(currentURL);
+                            if (doc != null) {
+                                synchronized (this.crawledPages) {
+                                    this.crawledPages.add(currentURL);
+                                }
+                                addedURLS = AddMoreURLSToCrawl(doc);
+                            }
+                        } catch (IOException e) {
+                            System.out.println("DONLOADING INTERRUPTED");
+                        }
+
+                    }
                 // updateSate(currentURL, addedURLS);
+
+                // Stopping Criteria
+                synchronized (this.crawledPages) {
+                    if (this.crawledPages.size() >= CRAWLING_LIMIT) {
+                        workingRobots.decrementAndGet();
+                        break;
+                    }
+
+                }
+
             }
         }
-
-        // public void downloadPage() throws Exception {
-        // final Response response = Jsoup.connect("http://www.example.net").execute();
-        // final Document doc = response.parse();
-
-        // final File f = new File("filename.html");
-        // FileUtils.writeStringToFile(f, doc.outerHtml(), StandardCharsets.UTF_8);
-        // }
 
     }
 
