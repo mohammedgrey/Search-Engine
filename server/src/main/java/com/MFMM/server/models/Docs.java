@@ -10,15 +10,15 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Docs {
 
     @Id
-    private String _id; // url
+    public String _id; // url
     @Field
-    private List<String> words;
+    public List<String> words;
     @Field
-    private String title;
+    public String title;
     @Field
-    private String text;
+    public String text;
     @Field
-    private String website;
+    public String website;
 
     public Docs() {
     }

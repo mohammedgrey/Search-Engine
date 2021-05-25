@@ -28,6 +28,9 @@ public class Doc {
     @Field
     public double TF;
 
+    public Doc() {
+    }
+
     public Doc(String url, String word) {
         this.url = url;
         this.word = word;

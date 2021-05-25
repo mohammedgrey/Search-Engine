@@ -5,11 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.MFMM.server.database.Database;
 import com.MFMM.server.models.Doc;
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 
 import org.jsoup.*;
 import org.jsoup.nodes.*;
@@ -33,11 +30,7 @@ public class IndexerMain {
         public Indexer(String pathToResources) {
             File resourceFolder = new File(pathToResources);
             listOfFiles = resourceFolder.listFiles();
-            ConnectionString connString = new ConnectionString(System.getenv("searchEngineDbURI"));
-            MongoClientSettings settings = MongoClientSettings.builder().applyConnectionString(connString)
-                    .retryWrites(true).build();
-            MongoClient mongoClient = MongoClients.create(settings);
-            mongoTemplate = new MongoTemplate(mongoClient, "searchEngine");
+            mongoTemplate = Database.template();
         }
 
         public String getWebsiteName(Document doc) {
