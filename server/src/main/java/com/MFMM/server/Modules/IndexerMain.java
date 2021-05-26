@@ -2,11 +2,13 @@ package com.MFMM.server.Modules;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Hashtable;
 
 import com.MFMM.server.database.Database;
+import com.MFMM.server.helpers.URIHandler;
 import com.MFMM.server.models.Doc;
 import com.MFMM.server.models.Word;
 
@@ -53,7 +55,12 @@ public class IndexerMain {
 
                 // System.out.println("DOC:" + htmlFile.getName());
                 Document doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
-                String documentURL = doc.baseUri(); // TODO: replace this with the hashURL function
+                // String encodedURL = htmlFile.getName();
+                // System.out.println(encodedURL);
+                // String decodedURL = (new URIHandler()).decode(encodedURL);
+                // System.out.println(decodedURL);
+                String documentURL = (doc.baseUri()); // TODO:replace this with the hashURL
+
                 List<String> documentWords = new ArrayList<>();
                 String[] words = (doc.wholeText()).split("\\s+");
                 // TODO: Add preprocessing to "words" here

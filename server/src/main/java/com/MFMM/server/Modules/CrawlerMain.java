@@ -118,7 +118,7 @@ public class CrawlerMain {
             Document doc;
             try {
                 doc = Jsoup.connect(url).get();
-                saveHTMLFile(doc.html(), (new URIHandler()).encode(url) + ".html");
+                saveHTMLFile(doc.html(), (new URIHandler()).encode(url));
                 return doc;
             } catch (MalformedURLException e) {
                 return null;
