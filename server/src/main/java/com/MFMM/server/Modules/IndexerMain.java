@@ -19,8 +19,11 @@ import org.springframework.data.mongodb.core.query.Update;
 
 public class IndexerMain {
 
-    public static void main(String[] args) throws IOException {
-        Indexer vocab = new Indexer("src/main/java/com/MFMM/server/documents");
+	public static void main(String[] args) throws IOException {
+        String pathToDocuments = System.getProperty("user.dir").endsWith("Search-Engine")
+                ? "server/src/main/java/com/MFMM/server/documents"
+                : "src/main/java/com/MFMM/server/documents";
+        Indexer vocab = new Indexer(pathToDocuments);
         vocab.indexDocuments();
     }
 
@@ -74,7 +77,7 @@ public class IndexerMain {
             	}
             	mongoTemplate.upsert(
             			new Query(Criteria.where("_id").is(word)),
-            			new Update().set("df", df + prev.df).set("idf", Math.log( Math.exp(prev.idf) * prev.df + listOfFiles.length) / (df + prev.df)),
+            			new Update().set("df", df + prev.df).set("idf", Math.log( Math.exp(prev.idf) * prev.df + listOfFiles.length) / Double.valueOf(df + prev.df)),
             			"word"); 
             });
             
@@ -109,7 +112,7 @@ public class IndexerMain {
                 findWordsForType(doc, url, type, vocab);
             for (Doc insertme : vocab)
             {
-            	insertme.TF = insertme.getTotal() / docSize;
+            	insertme.TF = insertme.getTotal() / Double.valueOf(docSize);
             	dfTable.put(insertme.word,dfTable.getOrDefault(insertme.word, 0) + 1);
                 mongoTemplate.upsert(new Query(Criteria.where("url").is(url).and("word").is(insertme.word)),
                         new Update().set("p", insertme.p).set("h1", insertme.h1).set("h2", insertme.h2)
