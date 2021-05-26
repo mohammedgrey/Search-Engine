@@ -83,6 +83,12 @@ public class Doc {
         }
 
     }
+    
+    public Integer getTotal()
+    {
+    	return this.h1 + this.h2 + this.h3 + this.h4 + this.h5 + this.h6 + this.p + this.title;
+    }
+    
 
     // example={
     // word:"death",
