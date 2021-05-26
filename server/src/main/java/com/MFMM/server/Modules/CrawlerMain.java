@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 import com.MFMM.server.helpers.FileHandler;
+import com.MFMM.server.helpers.URIHandler;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -117,7 +118,7 @@ public class CrawlerMain {
             Document doc;
             try {
                 doc = Jsoup.connect(url).get();
-                saveHTMLFile(doc.html(), doc.title() + ".html");
+                saveHTMLFile(doc.html(), (new URIHandler()).encode(url) + ".html");
                 return doc;
             } catch (MalformedURLException e) {
                 return null;
