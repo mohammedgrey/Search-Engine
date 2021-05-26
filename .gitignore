@@ -12,6 +12,8 @@
 /server/.settings
 /server/.springBeans
 /server/.sts4-cache
+/server/bin
+server/src/main/java/com/MFMM/server/documents
 
 ### IntelliJ IDEA ###
 /server/.idea
@@ -28,6 +30,7 @@
 /server/build/
 /server/!**/src/main/**/build/
 /server/!**/src/test/**/build/
-
+.project
+.classpath
 ### VS Code ###
 .vscode/
