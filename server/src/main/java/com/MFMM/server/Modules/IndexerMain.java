@@ -20,7 +20,10 @@ import org.springframework.data.mongodb.core.query.Update;
 public class IndexerMain {
 
     public static void main(String[] args) throws IOException {
-        Indexer vocab = new Indexer("src/main/java/com/MFMM/server/documents");
+        String pathToDocuments = System.getProperty("user.dir").endsWith("Search-Engine")
+                ? "server/src/main/java/com/MFMM/server/documents"
+                : "src/main/java/com/MFMM/server/documents";
+        Indexer vocab = new Indexer(pathToDocuments);
         vocab.indexDocuments();
     }
 
@@ -47,6 +50,7 @@ public class IndexerMain {
         public void indexDocuments() throws IOException {
             Hashtable<String, Integer> dfTable = new Hashtable<String, Integer>();
             for (File htmlFile : listOfFiles) {
+
                 // System.out.println("DOC:" + htmlFile.getName());
                 Document doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
                 String documentURL = doc.baseUri(); // TODO: replace this with the hashURL function
@@ -61,7 +65,7 @@ public class IndexerMain {
                         new Query(Criteria.where("_id").is(documentURL)), new Update().set("words", documentWords)
                                 .set("title", doc.title()).set("text", doc.text()).set("website", getWebsiteName(doc)),
                         "docs");
-
+                break;
             }
 
             dfTable.forEach((word, df) -> {
@@ -77,7 +81,6 @@ public class IndexerMain {
                                         Math.log(Math.exp(prev.idf) * prev.df + listOfFiles.length) / (df + prev.df)),
                                 "word");
             });
-
         }
 
         private void indexWord(String word, String url, String type, List<Doc> vocab) {
@@ -108,7 +111,7 @@ public class IndexerMain {
             for (String type : types)
                 findWordsForType(doc, url, type, vocab);
             for (Doc insertme : vocab) {
-                insertme.TF = insertme.getTotal() / docSize;
+                insertme.TF = insertme.getTotal() / ((double) docSize);
                 dfTable.put(insertme.word, dfTable.getOrDefault(insertme.word, 0) + 1);
                 mongoTemplate.upsert(new Query(Criteria.where("url").is(url).and("word").is(insertme.word)),
                         new Update().set("p", insertme.p).set("h1", insertme.h1).set("h2", insertme.h2)
