@@ -43,6 +43,7 @@ public class IndexerMain {
         }
 
         public void indexDocuments() throws IOException {
+            int counter = 0;
             for (File htmlFile : listOfFiles) {
                 // System.out.println("DOC:" + htmlFile.getName());
                 Document doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
@@ -58,7 +59,9 @@ public class IndexerMain {
                         new Query(Criteria.where("_id").is(documentURL)), new Update().set("words", documentWords)
                                 .set("title", doc.title()).set("text", doc.text()).set("website", getWebsiteName(doc)),
                         "docs");
-                break;
+                counter++;
+                if (counter == 5)
+                    break;
             }
         }
 

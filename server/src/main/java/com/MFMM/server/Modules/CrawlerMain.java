@@ -1,22 +1,20 @@
 package com.MFMM.server.Modules;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
+
+import com.MFMM.server.helpers.FileHandler;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,6 +26,19 @@ public class CrawlerMain {
         int NUM_OF_ROBOTS = 4;
         Thread[] robots = new Thread[NUM_OF_ROBOTS];
         Crawler crawler = new Crawler();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(200);
+                    System.out.println("I got interrupted or finished. Saving state before exist...");
+                    crawler.saveState();
+
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    e.printStackTrace();
+                }
+            }
+        });
         for (int i = 0; i < NUM_OF_ROBOTS; i++) {
 
             robots[i] = new Thread(crawler);
@@ -55,17 +66,8 @@ public class CrawlerMain {
         AtomicInteger workingRobots;
 
         public Crawler() throws IOException {
-            List<String> initialSeed = Arrays.asList();
-            this.toCrawlPages = new LinkedList<>();
-            for (String singleSeed : initialSeed)
-                this.toCrawlPages.add(singleSeed);
-            this.crawledPages = new ArrayList<>(CRAWLING_LIMIT);
             loadState();
             workingRobots = new AtomicInteger();
-            // for (String state : this.toCrawlPages) {
-            // System.out.println(state);
-            // }
-
         }
 
         private String readRobotsTxt(String url) {
@@ -91,18 +93,24 @@ public class CrawlerMain {
             return true;
         }
 
-        // TODO: for now it reads the initial seed only but later it should read the
-        // crawled pages and "to crawl" pages as well and start from them if they are
-        // not empty
         private void loadState() throws IOException {
-            String initialSeedPath = "server/src/main/java/com/MFMM/server/crawlerState/initialSeed.txt";
-            BufferedReader buffReader = new BufferedReader(new InputStreamReader(new FileInputStream(initialSeedPath)));
-            String line = buffReader.readLine();
-            while (line != null) {
-                toCrawlPages.add(line);
-                line = buffReader.readLine();
+            List<String> crawledPagesRead = (List<String>) FileHandler
+                    .readFromFile("server/src/main/java/com/MFMM/server/crawlerState/crawled.txt", 0);
+            if (crawledPagesRead.size() == 0) {
+                // First time crawling ever
+                List<String> initialSeed = (List<String>) FileHandler
+                        .readFromFile("server/src/main/java/com/MFMM/server/crawlerState/initialSeed.txt", 0);
+                this.toCrawlPages = new LinkedList<>();
+                for (String singleSeed : initialSeed)
+                    this.toCrawlPages.add(singleSeed);
+                this.crawledPages = new ArrayList<>(CRAWLING_LIMIT);
+                return;
             }
-            buffReader.close();
+            // "Crawled before" load the state from the file
+            Queue<String> toCrawlPagesRead = (Queue<String>) FileHandler
+                    .readFromFile("server/src/main/java/com/MFMM/server/crawlerState/toCrawl.txt", 1);
+            this.toCrawlPages = toCrawlPagesRead;
+            this.crawledPages = crawledPagesRead;
         }
 
         private Document downloadPage(String url) throws IOException {
@@ -142,8 +150,7 @@ public class CrawlerMain {
             return url.startsWith("https://") || url.startsWith("http://");
         }
 
-        private List<String> AddMoreURLSToCrawl(Document doc) {
-            List<String> addedPages = new ArrayList<>();
+        private void AddMoreURLSToCrawl(Document doc) {
             for (Element linkTag : doc.getElementsByTag("a")) {
                 String hrefAttr = linkTag.attr("href");
                 if (!validURL(hrefAttr))
@@ -152,9 +159,8 @@ public class CrawlerMain {
                 synchronized (this.toCrawlPages) {
                     this.toCrawlPages.add(hrefAttr);
                 }
-                addedPages.add(hrefAttr);
             }
-            return addedPages;
+
         }
 
         private boolean isVisitedURL(String url) {
@@ -164,36 +170,30 @@ public class CrawlerMain {
             }
         }
 
-        // TODO:make this function work properly
-        // Should implement one of the two cases:
-        // 1) update the state after each page removed
-        // 2) update the state only if the program terminates unexpectedly
-        public void updateSate(String removedPage, List<String> addedPages) {
-            // try {
-            // FileWriter crawledWriter = new FileWriter(
-            // "server/src/main/java/com/MFMM/server/crawlerState/crawled.txt");
-            // FileWriter toCrawlWriter = new FileWriter(
-            // "server/src/main/java/com/MFMM/server/crawlerState/toCrawl.txt");
-            // BufferedWriter bwr1 = new BufferedWriter(crawledWriter);
-            // BufferedWriter bwr2 = new BufferedWriter(toCrawlWriter);
-            // PrintWriter pwr1 = new PrintWriter(bwr1);
-            // PrintWriter pwr2 = new PrintWriter(bwr2);
-            // for (String page : this.crawledPages) {
-            // pwr1.println(page);
-            // }
-
-            // } catch (IOException ioe) {
-            // ioe.printStackTrace();
-            // }
+        public void saveState() {
+            try {
+                FileHandler.writeToFile(crawledPages, "server/src/main/java/com/MFMM/server/crawlerState/crawled.txt");
+                FileHandler.writeToFile(toCrawlPages, "server/src/main/java/com/MFMM/server/crawlerState/toCrawl.txt");
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
         }
 
-        // TODO: handle multithreading
         @Override
         public void run() {
             // keep crawling as long as we didn't reach the limit and there are more pages
             // to crawl
+
             workingRobots.incrementAndGet();
             mainLoop: while (true) {
+                // Stopping Criteria
+                synchronized (this.crawledPages) {
+                    if (this.crawledPages.size() >= CRAWLING_LIMIT) {
+                        workingRobots.decrementAndGet();
+                        break;
+                    }
+
+                }
                 boolean nothingToCrawl;
                 synchronized (this.toCrawlPages) {
                     nothingToCrawl = this.toCrawlPages.size() == 0;
@@ -202,9 +202,9 @@ public class CrawlerMain {
                 {
                     workingRobots.decrementAndGet();
                     while (true) {
-                        if (workingRobots.intValue() == 0)
+                        if (workingRobots.intValue() == 0) {
                             break mainLoop;
-                        else if (this.toCrawlPages.size() > 0) {
+                        } else if (this.toCrawlPages.size() > 0) {
                             workingRobots.incrementAndGet();
                             break;
                         }
@@ -228,23 +228,13 @@ public class CrawlerMain {
                                 synchronized (this.crawledPages) {
                                     this.crawledPages.add(currentURL);
                                 }
-                                addedURLS = AddMoreURLSToCrawl(doc);
+                                AddMoreURLSToCrawl(doc);
                             }
                         } catch (IOException e) {
                             System.out.println("DONLOADING INTERRUPTED");
                         }
 
                     }
-                // updateSate(currentURL, addedURLS);
-
-                // Stopping Criteria
-                synchronized (this.crawledPages) {
-                    if (this.crawledPages.size() >= CRAWLING_LIMIT) {
-                        workingRobots.decrementAndGet();
-                        break;
-                    }
-
-                }
 
             }
         }
