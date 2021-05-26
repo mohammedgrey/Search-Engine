@@ -75,11 +75,11 @@ public class IndexerMain {
                 } catch (Exception e) {
                     prev = new Word(word, 0, 0);
                 }
-                mongoTemplate
-                        .upsert(new Query(Criteria.where("_id").is(word)),
-                                new Update().set("df", df + prev.df).set("idf",
-                                        Math.log(Math.exp(prev.idf) * prev.df + listOfFiles.length) / (df + prev.df)),
-                                "word");
+                mongoTemplate.upsert(new Query(Criteria.where("_id").is(word)),
+                        new Update().set("df", df + prev.df).set("idf",
+                                Math.log(Math.exp(prev.idf) * prev.df + listOfFiles.length)
+                                        / Double.valueOf(df + prev.df)),
+                        "word");
             });
         }
 
@@ -111,7 +111,7 @@ public class IndexerMain {
             for (String type : types)
                 findWordsForType(doc, url, type, vocab);
             for (Doc insertme : vocab) {
-                insertme.TF = insertme.getTotal() / ((double) docSize);
+                insertme.TF = insertme.getTotal() / Double.valueOf(docSize);
                 dfTable.put(insertme.word, dfTable.getOrDefault(insertme.word, 0) + 1);
                 mongoTemplate.upsert(new Query(Criteria.where("url").is(url).and("word").is(insertme.word)),
                         new Update().set("p", insertme.p).set("h1", insertme.h1).set("h2", insertme.h2)
