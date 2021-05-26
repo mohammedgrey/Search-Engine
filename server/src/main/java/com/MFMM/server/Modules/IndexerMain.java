@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Hashtable;
 
 import com.MFMM.server.database.Database;
 import com.MFMM.server.models.Doc;
+import com.MFMM.server.models.Word;
 
 import org.jsoup.*;
 import org.jsoup.nodes.*;
@@ -18,7 +20,7 @@ import org.springframework.data.mongodb.core.query.Update;
 public class IndexerMain {
 
     public static void main(String[] args) throws IOException {
-        Indexer vocab = new Indexer("server/src/main/java/com/MFMM/server/documents");
+        Indexer vocab = new Indexer("src/main/java/com/MFMM/server/documents");
         vocab.indexDocuments();
     }
 
@@ -43,6 +45,7 @@ public class IndexerMain {
         }
 
         public void indexDocuments() throws IOException {
+        	Hashtable<String,Integer> dfTable = new Hashtable<String,Integer>();
             for (File htmlFile : listOfFiles) {
                 // System.out.println("DOC:" + htmlFile.getName());
                 Document doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
@@ -50,9 +53,9 @@ public class IndexerMain {
                 List<String> documentWords = new ArrayList<>();
                 String[] words = (doc.wholeText()).split("\\s+");
                 // TODO: Add preprocessing to "words" here
-                indexWords(doc, documentURL);
                 for (String word : words)
                     documentWords.add(word);
+                indexWords(doc, documentURL,dfTable,documentWords.size());
                 // Save persistently to the database
                 mongoTemplate.upsert(
                         new Query(Criteria.where("_id").is(documentURL)), new Update().set("words", documentWords)
@@ -60,6 +63,21 @@ public class IndexerMain {
                         "docs");
                 break;
             }
+            
+            
+            dfTable.forEach((word, df) -> {
+            	Word prev ;
+            	try {
+            		prev = mongoTemplate.findById(new Query(Criteria.where("_id").is(word)), Word.class);
+            	} catch (Exception e) {
+            		prev = new Word(word,0,0);
+            	}
+            	mongoTemplate.upsert(
+            			new Query(Criteria.where("_id").is(word)),
+            			new Update().set("df", df + prev.df).set("idf", Math.log( Math.exp(prev.idf) * prev.df + listOfFiles.length) / (df + prev.df)),
+            			"word"); 
+            });
+            
         }
 
         private void indexWord(String word, String url, String type, List<Doc> vocab) {
@@ -84,17 +102,21 @@ public class IndexerMain {
                         indexWord(word, url, type, vocab);
         }
 
-        private void indexWords(Document doc, String url) {
+        private void indexWords(Document doc, String url,Hashtable<String,Integer> dfTable,Integer docSize) {
             String[] types = { "p", "h1", "h2", "h3", "h4", "h5", "h6", "title" };
             List<Doc> vocab = new ArrayList<Doc>();
             for (String type : types)
                 findWordsForType(doc, url, type, vocab);
-            for (Doc insertme : vocab) // TODO .set("TF", withTheRightNumber)
+            for (Doc insertme : vocab)
+            {
+            	insertme.TF = insertme.getTotal() / docSize;
+            	dfTable.put(insertme.word,dfTable.getOrDefault(insertme.word, 0) + 1);
                 mongoTemplate.upsert(new Query(Criteria.where("url").is(url).and("word").is(insertme.word)),
                         new Update().set("p", insertme.p).set("h1", insertme.h1).set("h2", insertme.h2)
                                 .set("h3", insertme.h3).set("h4", insertme.h4).set("h5", insertme.h5)
                                 .set("h6", insertme.h6).set("title", insertme.title).set("TF", insertme.TF),
                         "doc");
+            }
         }
     }
 
