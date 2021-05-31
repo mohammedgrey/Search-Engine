@@ -43,16 +43,17 @@ $header: #141b2db9;
 
 #input {
   margin-right: -50px;
-  display: block;
+  display: inline-block;
   background-color: #1f2940 !important;
   width: 25%;
   height: 50px;
   border-radius: 25px;
   padding-left: 20px;
+  padding-right: 60px;
   border: none;
   overflow: hidden;
   color: rgb(187, 195, 201) !important;
-  transition: all 0.2s linear;
+  transition: all 0.5s linear;
   min-width: 250px;
   border: 2px solid white;
   box-shadow: 0 0 2px #fff;
@@ -60,6 +61,7 @@ $header: #141b2db9;
 #input:hover{
   box-shadow: none;
   width: 50%;
+  transition: all 0.5s linear;
   /*border-color: aliceblue !important;*/
   /*color: #03082c !important;*/
 }
@@ -99,13 +101,7 @@ $header: #141b2db9;
 }
 
 .search-button-2:hover {
-  /*
-  background: darken($button,1.5%);
-  box-shadow: 1px 1px 2px rgba(#fff, .2);
-  color: lighten($button, 18%); 
-  text-shadow: -1px -1px 0 darken($button, 9.5%);
-  transition: all 250ms linear;
-  */
+
   box-shadow:
   0 0 2px #fff,
   0 0 5px #fff,
@@ -131,8 +127,6 @@ $header: #141b2db9;
     -webkit-box-orient: vertical;
   }
 }
-
-
 
 #previous:hover, #next:hover, #first:hover, #last:hover {
   color:white;

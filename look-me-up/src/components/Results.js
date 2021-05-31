@@ -43,7 +43,7 @@ export class Results extends Component {
       ],
       searchInput: "palestine",
       currentPage: 1,
-      resultsPerPage: 10,
+      resultsPerPage: 8,
     
     };
   }
