@@ -54,25 +54,27 @@ public class IndexerMain {
             for (File htmlFile : listOfFiles) {
 
                 // System.out.println("DOC:" + htmlFile.getName());
-                Document doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
-                // String encodedURL = htmlFile.getName();
-                // System.out.println(encodedURL);
-                // String decodedURL = (new URIHandler()).decode(encodedURL);
-                // System.out.println(decodedURL);
-                String documentURL = (doc.baseUri()); // TODO:replace this with the hashURL
+                // Document doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
+                String encodedURL = htmlFile.getName();
+                System.out.println(encodedURL);
+                String decodedURL = (new URIHandler()).decode(encodedURL);
+                System.out.println(decodedURL);
+                // String documentURL = (doc.baseUri()); // TODO:replace this with the hashURL
 
-                List<String> documentWords = new ArrayList<>();
-                String[] words = (doc.wholeText()).split("\\s+");
-                // TODO: Add preprocessing to "words" here
-                for (String word : words)
-                    documentWords.add(word);
-                indexWords(doc, documentURL, dfTable, documentWords.size());
-                // Save persistently to the database
-                mongoTemplate.upsert(
-                        new Query(Criteria.where("_id").is(documentURL)), new Update().set("words", documentWords)
-                                .set("title", doc.title()).set("text", doc.text()).set("website", getWebsiteName(doc)),
-                        "docs");
-                break;
+                // List<String> documentWords = new ArrayList<>();
+                // String[] words = (doc.wholeText()).split("\\s+");
+                // // TODO: Add preprocessing to "words" here
+                // for (String word : words)
+                // documentWords.add(word);
+                // indexWords(doc, documentURL, dfTable, documentWords.size());
+                // // Save persistently to the database
+                // mongoTemplate.upsert(
+                // new Query(Criteria.where("_id").is(documentURL)), new Update().set("words",
+                // documentWords)
+                // .set("title", doc.title()).set("text", doc.text()).set("website",
+                // getWebsiteName(doc)),
+                // "docs");
+                // break;
             }
 
             dfTable.forEach((word, df) -> {

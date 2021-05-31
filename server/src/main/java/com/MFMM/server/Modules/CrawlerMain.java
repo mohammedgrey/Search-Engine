@@ -43,12 +43,12 @@ public class CrawlerMain {
         for (int i = 0; i < NUM_OF_ROBOTS; i++) {
 
             robots[i] = new Thread(crawler);
-            System.out.println("CREATED");
+            // System.out.println("CREATED");
             robots[i].setName(Integer.toString(i + 1));
         }
         for (int i = 0; i < NUM_OF_ROBOTS; i++) {
             robots[i].start();
-            System.out.println("STARTED");
+            // System.out.println("STARTED");
         }
 
         for (int i = 0; i < NUM_OF_ROBOTS; i++)
@@ -90,7 +90,7 @@ public class CrawlerMain {
 
             // TODO: check the robots.txt with some regex and return whether we are
             // allowed to visit the passed in url or not
-            System.out.println(robotsDotTxt);
+            // System.out.println(robotsDotTxt);
             return true;
         }
 
@@ -118,7 +118,11 @@ public class CrawlerMain {
             Document doc;
             try {
                 doc = Jsoup.connect(url).get();
-                saveHTMLFile(doc.html(), (new URIHandler()).encode(url));
+                System.out.println("original url: " + url);
+                String encodedURL = (new URIHandler()).encode(url);
+                System.out.println("url after encoding: " + encodedURL);
+                System.out.println("url after decoding back: " + (new URIHandler()).decode(encodedURL));
+                saveHTMLFile(doc.html(), encodedURL);
                 return doc;
             } catch (MalformedURLException e) {
                 return null;
@@ -221,8 +225,9 @@ public class CrawlerMain {
                 if (!isVisitedURL(currentURL))
                     if (isHTML(currentURL)) {
                         // download the page and add the links inside it to the "to crawl" queue
-                        System.out.println("CURRENT URL: " + currentURL);
-                        System.out.println("Being DOWNLOADED BY ROBOT: " + Thread.currentThread().getName());
+                        // System.out.println("CURRENT URL: " + currentURL);
+                        // System.out.println("Being DOWNLOADED BY ROBOT: " +
+                        // Thread.currentThread().getName());
                         try {
                             Document doc = downloadPage(currentURL);
                             if (doc != null) {
