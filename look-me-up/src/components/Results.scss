@@ -40,12 +40,6 @@ $header: #141b2db9;
   padding-top: 4px;
 }
 
-.result-footer {
-  padding: 20px;
-  margin-top: 10px;
-  background-color: $header;
-}
-
 #input {
   margin-right: -50px;
   display: block;
@@ -117,4 +111,50 @@ $header: #141b2db9;
   0 0 12px #fff,
   0 0 30px $button,
   0 0 50px $button;
+}
+
+.result-footer {
+  padding: 20px;
+  margin-top: 10px;
+  background-color: $header;
+}
+
+#pages {
+  display: flex;
+  justify-content: center;
+}
+
+#previous:hover, #next:hover, #first:hover, #last:hover {
+  color:white;
+  border-top: 2px white solid !important;
+  text-shadow: 0 0 2px #fff,
+  0 0 5px #fff,
+  0 0 12px #fff,
+  0 0 30px $button,
+  0 0 50px $button;
+}
+.page {
+  border-top: 2px white solid !important;
+  padding-right: 3px;
+  padding-left: 3px;
+  width:50px;
+  height:40px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  background-color: transparent;
+  border: none;
+
+}
+
+.page:hover {
+  //box-shadow: 0 0 20px white  !important;
+  color: #9295f3;
+  border-top: 2px #9295f3 solid !important;
+}
+
+.page-color {
+  color: #9295f3;
+  font-weight: 700;
+  border-top: 2px #9295f3 solid !important;
 }
