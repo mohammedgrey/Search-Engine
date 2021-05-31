@@ -1,5 +1,5 @@
 //colors
-$button: #686efa;
+$button: #9295f3;
 $back: #141b2d;
 $header: #141b2db9;
 /*$header: rgba(29,33,66, 0.9);  #141b2d rgba(63, 75, 94, 0.795)*/
@@ -55,7 +55,8 @@ $header: #141b2db9;
   color: rgb(187, 195, 201) !important;
   transition: background-color 0.5s;
   min-width: 250px;
-  
+  border: 2px solid white;
+  box-shadow: 0 0 2px #fff;
 }
 #input:focus{
   box-shadow: none;
