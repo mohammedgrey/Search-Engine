@@ -6,31 +6,37 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document
+@Document("docs")
 public class Docs {
 
     @Id
-    private String id;
-
+    public String _id; // url
     @Field
-    private String URL;
+    public List<String> words;
     @Field
-    private List<String> words;
+    public String title;
+    @Field
+    public String text;
+    @Field
+    public String website;
 
     public Docs() {
     }
 
-    public Docs(String URL, List<String> words) {
-        this.URL = URL;
+    public Docs(String url, List<String> words, String title, String text, String website) {
+        this._id = url;
         this.words = words;
+        this.title = title;
+        this.text = text;
+        this.website = website;
     }
 
     public String getURL() {
-        return this.URL;
+        return this._id;
     }
 
     public void setURL(String URL) {
-        this.URL = URL;
+        this._id = URL;
     }
 
 }
