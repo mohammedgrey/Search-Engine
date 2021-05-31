@@ -5,6 +5,7 @@ $header: #141b2db9;
 /*$header: rgba(29,33,66, 0.9);  #141b2d rgba(63, 75, 94, 0.795)*/
 
 .results-body {
+  background-image: url("./../galaxy1.jpg");
   background-color: $back !important;
   /*background: rgba(255, 255, 255, 0.1) !important;*/
   /*background-color: #03082c !important; /*header*/
@@ -38,6 +39,7 @@ $header: #141b2db9;
 .result-footer {
   padding: 20px;
   margin-top: 10px;
+  background-color: $header;
 }
 
 #input {
@@ -53,9 +55,11 @@ $header: #141b2db9;
   color: rgb(187, 195, 201) !important;
   transition: background-color 0.5s;
   min-width: 250px;
+  
 }
 #input:focus{
   box-shadow: none;
+  color: aliceblue !important;
   /*border-color: aliceblue !important;*/
   /*color: #03082c !important;*/
 }
@@ -83,13 +87,26 @@ $header: #141b2db9;
   line-height: 1.2;
   outline: none;
   border-color:$button;
-  transition: all 150ms linear;
+  transition: all 0.3s linear;
+  box-shadow:
+  0 0 2px #fff,
+  0 0 5px #fff,
+  0 0 10px #fff;
+ 
 }
 
 .search-button-2:hover {
+  /*
   background: darken($button,1.5%);
   box-shadow: 1px 1px 2px rgba(#fff, .2);
   color: lighten($button, 18%); 
   text-shadow: -1px -1px 0 darken($button, 9.5%);
   transition: all 250ms linear;
+  */
+  box-shadow:
+  0 0 2px #fff,
+  0 0 5px #fff,
+  0 0 12px #fff,
+  0 0 30px $button,
+  0 0 50px $button;
 }

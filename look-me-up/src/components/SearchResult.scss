@@ -11,9 +11,9 @@ $highlighted: #686efa;
 }
 
 .Title {
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 600;
-  color: white;
+  color: $highlighted;
   text-decoration: none;
   transition: color 0.3s;
 }

@@ -32,6 +32,12 @@ code {
 ::-webkit-scrollbar-thumb {
   background-color: #686efa; 
   border-radius: 10px;
+  box-shadow:
+  0 0 5px #fff,
+  0 0 10px #fff,
+  0 0 17px #fff,
+  0 0 20px #686efa,
+  0 0 50px #686efa;
 }
 
 /*
