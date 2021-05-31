@@ -10,7 +10,8 @@ $hover: #686efa;
   margin-left: 13%;
   margin-right: 13%;
   max-width: 100vw !important;
-  transition: all 0.3s linear;
+  height:120px;
+  transition: all 0.15s linear;
 }
 
 .info:hover{
@@ -18,25 +19,35 @@ $hover: #686efa;
   0 0 2px #fff,
   0 0 5px #fff,
   0 0 10px #fff;
-  transition: all 0.3s linear;
+  transition: all 0.15s linear;
 }
 .Title {
   font-size: 20px;
   font-weight: 600;
   color: $highlighted;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.15s;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis !important;
+  overflow: hidden;
 }
 
 .Title:hover {
   color:$hover;
   /*text-decoration: underline;*/
-  transition: color 0.3s;
+  transition: color 0.15s;
 }
 .url {
   font-size: 15px;
   color:rgb(187, 195, 201);
   text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis !important;
+  overflow: hidden;
 }
 .url:hover {
   color:rgb(187, 195, 201);
@@ -44,5 +55,10 @@ $hover: #686efa;
 
 .preview {
   font-size: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis !important;
+  overflow: hidden;
 }
 

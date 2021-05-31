@@ -19,7 +19,7 @@ $header: #141b2db9;
   padding-top: 20px;
   padding-bottom: 20px;
   background-color: $header !important;
-  display: block !important;
+  display: inline-block !important;
 }
 
 .logo {
@@ -27,10 +27,14 @@ $header: #141b2db9;
   font-weight: 700;
   float: left;
   /*margin-right: 30px;*/
-  line-height: 1.8;
+  //line-height: 1.4;
+  padding-top:10px;
   width: 12%;
 }
 
+.menu-icon {
+  float: right;
+}
 .result-block {
   /*background: rgba(255, 255, 255, 0.1) !important;*/
   padding-top: 4px;
@@ -46,23 +50,26 @@ $header: #141b2db9;
   margin-right: -50px;
   display: block;
   background-color: #1f2940 !important;
-  width: 50%;
+  width: 25%;
   height: 50px;
   border-radius: 25px;
   padding-left: 20px;
   border: none;
   overflow: hidden;
   color: rgb(187, 195, 201) !important;
-  transition: background-color 0.5s;
+  transition: all 0.2s linear;
   min-width: 250px;
   border: 2px solid white;
   box-shadow: 0 0 2px #fff;
 }
-#input:focus{
+#input:hover{
   box-shadow: none;
-  color: aliceblue !important;
+  width: 50%;
   /*border-color: aliceblue !important;*/
   /*color: #03082c !important;*/
+}
+#input:focus{
+  color: aliceblue !important;
 }
 
 .search-bar {
