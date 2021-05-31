@@ -10,8 +10,7 @@ $header: #141b2db9;
   /*background: rgba(255, 255, 255, 0.1) !important;*/
   /*background-color: #03082c !important; /*header*/
   color: aliceblue;
-  padding-top: 63px;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .result-header {
@@ -38,7 +37,8 @@ $header: #141b2db9;
 }
 .result-block {
   /*background: rgba(255, 255, 255, 0.1) !important;*/
-  padding-top: 4px;
+  padding-top: 66px;
+  padding-bottom: 85px;
 }
 
 #input {
@@ -116,14 +116,23 @@ $header: #141b2db9;
 
 .result-footer {
   padding: 20px;
-  margin-top: 10px;
   background-color: $header;
 }
 
 #pages {
   display: flex;
   justify-content: center;
+  .overflow-pages {
+    width: 50px;
+    overflow:hidden;
+    text-overflow: ellipsis !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
 }
+
+
 
 #previous:hover, #next:hover, #first:hover, #last:hover {
   color:white;

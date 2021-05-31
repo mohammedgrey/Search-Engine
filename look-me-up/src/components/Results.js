@@ -43,7 +43,7 @@ export class Results extends Component {
       ],
       searchInput: "palestine",
       currentPage: 1,
-      resultsPerPage: 3,
+      resultsPerPage: 10,
     
     };
   }
@@ -140,21 +140,21 @@ export class Results extends Component {
           </div>
           {/*<span className="fas fa-bars menu-icon"></span>*/}
         </div>
-
-        {dispResults.map((result,index)=>(   
-                <div className="result-block"> 
-                  <SearchResult className="search-result" siteName={ result.siteName} pageTitle={result.pageTitle}
-                  URL={result.URL} preview={result.preview} key={index}></SearchResult>
-                </div>  
-            ))}
-
+        <div className="result-block">
+          {dispResults.map((result,index)=>(   
+                  
+                    <SearchResult className="search-result" siteName={ result.siteName} pageTitle={result.pageTitle}
+                    URL={result.URL} preview={result.preview} key={index}></SearchResult>
+                  
+              ))}
+        </div>  
         <div className="result-footer justify-content-center fixed-bottom"> 
         
           <div id="pages">
             <button id="first" className="page fas fa-angle-double-left" onClick={this.getFirst}></button>
             <button id="previous" className="page fas fas fa-angle-left" onClick={this.getPrevious}></button>
             {pages.map((n) => (
-              <button key={n} id={n} onClick={this.goToPage} className="page"> {n} </button>
+              <button key={n} id={n} onClick={this.goToPage} className="page overflow-pages"> {n} </button>
             ))}
             <button id="next" className="page fas fa-angle-right" onClick={this.getNext}></button>
             <button id="last" className="page fas fa-angle-double-right" onClick={this.getLast}></button>
