@@ -154,6 +154,7 @@ $header: #141b2db9;
   font-weight: 600;
   background-color: transparent;
   border: none;
+  transition: all 0.2s linear;
 
 }
 
@@ -161,6 +162,7 @@ $header: #141b2db9;
   //box-shadow: 0 0 20px white  !important;
   color: #9295f3;
   border-top: 2px #9295f3 solid !important;
+  transition: all 0.2s linear;
 }
 
 .page-color {
