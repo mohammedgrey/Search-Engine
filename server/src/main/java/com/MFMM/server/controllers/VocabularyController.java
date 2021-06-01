@@ -9,9 +9,11 @@ import java.util.List;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.MFMM.server.models.QueryResult;
+import com.MFMM.server.Modules.Preprocessor;
 import com.MFMM.server.database.Database;
 import com.MFMM.server.models.Doc;
 import com.MFMM.server.models.Docs;
+import com.MFMM.server.models.History;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,8 @@ public class VocabularyController {
             qString = URLDecoder.decode(q, "UTF-8");
         } catch (UnsupportedEncodingException e) {
         }
-        String[] toSearchWords = qString.split("\\s+");
-        // TODO: preprocessing on toSearchWords here
+        this.mongoTemplate.save(new History(qString), "history");
+        String[] toSearchWords = Preprocessor.preprocessing(qString);
         List<Criteria> orList = new ArrayList<Criteria>();
         for (String word : toSearchWords)
             orList.add((new Criteria()).and("word").is(word));

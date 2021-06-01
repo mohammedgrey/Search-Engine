@@ -41,15 +41,11 @@ public class CrawlerMain {
             }
         });
         for (int i = 0; i < NUM_OF_ROBOTS; i++) {
-
             robots[i] = new Thread(crawler);
-            // System.out.println("CREATED");
             robots[i].setName(Integer.toString(i + 1));
         }
-        for (int i = 0; i < NUM_OF_ROBOTS; i++) {
+        for (int i = 0; i < NUM_OF_ROBOTS; i++)
             robots[i].start();
-            // System.out.println("STARTED");
-        }
 
         for (int i = 0; i < NUM_OF_ROBOTS; i++)
             robots[i].join();
@@ -118,11 +114,12 @@ public class CrawlerMain {
             Document doc;
             try {
                 doc = Jsoup.connect(url).get();
-                System.out.println("original url: " + url);
-                String encodedURL = (new URIHandler()).encode(url);
-                System.out.println("url after encoding: " + encodedURL);
-                System.out.println("url after decoding back: " + (new URIHandler()).decode(encodedURL));
-                saveHTMLFile(doc.html(), encodedURL);
+                URIHandler urlHandler = new URIHandler();
+                String encodedUrl = urlHandler.encode(url);
+                // System.out.println("Original url: " + url);
+                // System.out.println("Encoded url: " + encodedUrl);
+                // System.out.println("Decoded back url: " + urlHandler.decode(encodedUrl));
+                saveHTMLFile(doc.html(), encodedUrl);
                 return doc;
             } catch (MalformedURLException e) {
                 return null;
@@ -162,14 +159,12 @@ public class CrawlerMain {
                     continue;
 
                 synchronized (this.toCrawlPages) {
-                    this.toCrawlPages.add(hrefAttr);
+                    this.toCrawlPages.add(URIHandler.normalizeURI(hrefAttr));
                 }
             }
-
         }
 
         private boolean isVisitedURL(String url) {
-            // TODO: make this function check also for similar urls that aren't identical
             synchronized (this.crawledPages) {
                 return this.crawledPages.contains(url);
             }
@@ -225,9 +220,8 @@ public class CrawlerMain {
                 if (!isVisitedURL(currentURL))
                     if (isHTML(currentURL)) {
                         // download the page and add the links inside it to the "to crawl" queue
-                        // System.out.println("CURRENT URL: " + currentURL);
-                        // System.out.println("Being DOWNLOADED BY ROBOT: " +
-                        // Thread.currentThread().getName());
+                        System.out.println("CURRENT URL: " + currentURL);
+                        System.out.println("Being DOWNLOADED BY ROBOT: " + Thread.currentThread().getName());
                         try {
                             Document doc = downloadPage(currentURL);
                             if (doc != null) {

@@ -54,27 +54,19 @@ public class IndexerMain {
             for (File htmlFile : listOfFiles) {
 
                 // System.out.println("DOC:" + htmlFile.getName());
-                // Document doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
-                String encodedURL = htmlFile.getName();
-                System.out.println(encodedURL);
-                String decodedURL = (new URIHandler()).decode(encodedURL);
-                System.out.println(decodedURL);
-                // String documentURL = (doc.baseUri()); // TODO:replace this with the hashURL
-
-                // List<String> documentWords = new ArrayList<>();
-                // String[] words = (doc.wholeText()).split("\\s+");
-                // // TODO: Add preprocessing to "words" here
-                // for (String word : words)
-                // documentWords.add(word);
-                // indexWords(doc, documentURL, dfTable, documentWords.size());
-                // // Save persistently to the database
-                // mongoTemplate.upsert(
-                // new Query(Criteria.where("_id").is(documentURL)), new Update().set("words",
-                // documentWords)
-                // .set("title", doc.title()).set("text", doc.text()).set("website",
-                // getWebsiteName(doc)),
-                // "docs");
-                // break;
+                Document doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
+                String documentURL = (new URIHandler()).decode(htmlFile.getName());
+                List<String> documentWords = new ArrayList<>();
+                String[] words = Preprocessor.preprocessing(doc.wholeText());
+                for (String word : words)
+                    documentWords.add(word);
+                indexWords(doc, documentURL, dfTable, documentWords.size());
+                // Save persistently to the database
+                mongoTemplate.upsert(
+                        new Query(Criteria.where("_id").is(documentURL)), new Update().set("words", documentWords)
+                                .set("title", doc.title()).set("text", doc.text()).set("website", getWebsiteName(doc)),
+                        "docs");
+                break;
             }
 
             dfTable.forEach((word, df) -> {
@@ -106,11 +98,11 @@ public class IndexerMain {
 
         private void findWordsForType(Document doc, String url, String type, List<Doc> vocab) {
             if (type.equals("title"))
-                for (String word : doc.title().split("\\s+"))
+                for (String word : Preprocessor.preprocessing(doc.title()))
                     indexWord(word, url, type, vocab);
             else
                 for (Element element : doc.getElementsByTag(type))
-                    for (String word : element.text().split("\\s+"))
+                    for (String word : Preprocessor.preprocessing(element.text()))
                         indexWord(word, url, type, vocab);
         }
 
