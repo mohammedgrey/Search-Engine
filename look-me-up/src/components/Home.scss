@@ -1,0 +1,173 @@
+//colors
+$button: #9295f3;
+
+.home-body {
+  display: flex;
+  font-size: 52px;
+  align-items: center;
+  height:100vh;
+  width: 100%;
+  justify-content: center;
+  background-image: url("./../galaxy1.jpg");
+  /*color: transparent;*/
+}
+
+.search-section {
+
+  text-align: center;
+  background: rgba(141, 139, 219, 0.1);
+  /*background: #141b2db9;*/
+  width: 70%;
+  height:60%;
+  color: aliceblue !important;
+
+  h1 {
+    font-size: 60px;
+    margin-top: 100px;
+    margin-bottom: 10px;
+    font-weight: 900;
+    /*font-family: Sirukota;*/
+    
+  }
+
+  h6 {
+    margin-bottom: 40px;
+    color:rgb(173, 189, 202);
+  }
+
+  div {
+    #home-input {
+      margin-right: -10px;
+      display: block;
+      background-color: transparent !important;
+      width: 50%;
+      height: 50px;
+      border-top-left-radius: 25px;
+      border-bottom-left-radius: 25px;
+      padding-left: 20px;
+      border-color: aliceblue;
+      border-width: 3px;
+      overflow: hidden;
+      color: aliceblue !important;
+      transition: background-color 0.5s;
+      transition: box-shadow 0.3s;
+    }
+    #home-input:focus{
+      /*background-color: rgba(255,255,255,0.9) !important;
+      color: #03082c !important;*/
+      box-shadow:
+      0 0 1px #fff,
+      0 0 10px #fff;
+      transition: box-shadow 0.3s;
+    }
+    #home-input::placeholder {
+      color:rgb(173, 189, 202);
+    }
+
+    .search-button {
+      color:white;
+      background-color: $button;
+      height:70px;
+      width: 70px;
+      padding: 10px;
+      border-radius: 25px;
+      font-size: 40px;
+      line-height: 1.2;
+      outline: none;
+      border-color:$button;
+      transition: all 0.3s linear;
+      box-shadow:
+      0 0 2px #fff,
+      0 0 5px #fff,
+      0 0 10px #fff;
+
+    }
+
+    .search-button:hover {
+
+      /*
+      background: darken($button,1.5%);
+      box-shadow: 1px 1px 2px rgba(#fff, .2);
+      color: lighten($button, 18%); 
+      text-shadow: -1px -1px 0 darken($button, 9.5%);
+      */
+      transition: all 250ms linear;
+      box-shadow:
+      0 0 2px #fff,
+      0 0 5px #fff,
+      0 0 12px #fff,
+      0 0 30px $button,
+      0 0 50px $button,
+    }
+  }
+
+}
+
+/*
+@keyframes star {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
+
+#star {
+  width:50px;
+  height:50px;
+  color: white !important;
+  font-size: 50px;
+  opacity: 1;
+  position: relative;
+  animation-name: star;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+
+@mixin dots($count) {
+  $text-shadow: ();
+  @for $i from 0 through $count {
+    $text-shadow: $text-shadow,
+                 (-.5+(random()) * 3) + em
+                 (-.5+(random()) * 3) + em
+                 7px
+                 hsla(random() * 360, 100%, 50%,.9);
+  }
+  text-shadow: $text-shadow;
+}
+
+.home-body::before, .home-body::after {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 3em;
+  height: 2em;
+  content: '.';
+  mix-blend-mode: screen;
+  animation: 44s -27s move infinite ease-in-out alternate;
+}
+
+
+.home-body::before {
+  @include dots(40);
+  animation-duration: 44s;
+  animation-delay: -27s;
+}
+
+.home-body::after {
+  @include dots(40);
+  animation-duration: 43s;
+  animation-delay: -32s;
+}
+
+@keyframes move {
+  from {
+    transform: rotate(0deg) scale(12) translateX(-20px);
+  }
+  to {
+    transform: rotate(360deg) scale(18) translateX(20px);
+  }
+}
+
+*/
+
+/*------------------------------------*/
