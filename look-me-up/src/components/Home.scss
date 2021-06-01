@@ -1,10 +1,6 @@
 //colors
 $button: #9295f3;
 
-#txt {
-  color: red;
-  background-color: white !important;
-}
 .home-body {
   display: flex;
   font-size: 52px;
@@ -41,6 +37,7 @@ $button: #9295f3;
 
   div {
     #home-input {
+      margin-left: -45px;
       margin-right: -10px;
       display: block;
       background-color: transparent !important;
@@ -48,7 +45,7 @@ $button: #9295f3;
       height: 50px;
       border-top-left-radius: 25px;
       border-bottom-left-radius: 25px;
-      padding-left: 20px;
+      padding-left: 50px;
       border-color: aliceblue;
       border-width: 3px;
       overflow: hidden;
@@ -88,13 +85,6 @@ $button: #9295f3;
     }
 
     .search-button:hover {
-
-      /*
-      background: darken($button,1.5%);
-      box-shadow: 1px 1px 2px rgba(#fff, .2);
-      color: lighten($button, 18%); 
-      text-shadow: -1px -1px 0 darken($button, 9.5%);
-      */
       transition: all 250ms linear;
       box-shadow:
       0 0 2px #fff,
@@ -103,9 +93,27 @@ $button: #9295f3;
       0 0 30px $button,
       0 0 50px $button,
     }
+
+    #voice {
+      z-index: 1;
+      background-color: transparent;
+      border: none;
+      color: aliceblue;
+      font-size: 30px;
+      transition: all 0.3s linear;
+    }
+
+    #voice:hover {
+      text-shadow: 
+        0 0 5px #fff,
+        0 0 30px $button,
+        0 0 40px $button;
+        transition: all 0.3s linear;
+    }
   }
 
 }
+
 
 /*
 @keyframes star {

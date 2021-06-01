@@ -36,6 +36,7 @@ const Home = () => {
   
     //start voice recognition
     const voiceRecord= (e) => {
+      e.preventDefault();
         if(recording==false) {
           recording=true;
           SpeechRecognition.startListening();
@@ -55,11 +56,11 @@ const Home = () => {
           <h6> I got everything you need </h6>
           
           <div className="d-flex align-items-center justify-content-center">
-            <input id="home-input" type="text" className="form-control" placeholder="Watcha lookin' for?" onKeyDown={searchEnter} value={transcript}></input>
+          <button id="voice" className="fas fa-microphone-alt" onClick={voiceRecord}></button>
+            <input id="home-input" type="text" className="form-control" placeholder="Watcha lookin' for?" 
+            onKeyDown={searchEnter} value={transcript} ></input>
             <button className="fas fa-search search-button" onClick={search} ></button>
           </div>
-          
-          <button onClick={voiceRecord}>Start</button>
 
         </div>
 
