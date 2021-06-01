@@ -42,13 +42,14 @@ $header: #141b2db9;
 }
 
 #input {
+  margin-left: -45px;
   margin-right: -50px;
   display: inline-block;
   background-color: #1f2940 !important;
   width: 25%;
   height: 50px;
   border-radius: 25px;
-  padding-left: 20px;
+  padding-left: 50px;
   padding-right: 60px;
   border: none;
   overflow: hidden;
@@ -163,4 +164,21 @@ $header: #141b2db9;
   color: #9295f3;
   font-weight: 700;
   border-top: 2px #9295f3 solid !important;
+}
+
+#voice2 {
+  z-index: 1;
+  background-color: transparent;
+  border: none;
+  color: aliceblue;
+  font-size: 25px;
+  transition: all 0.3s linear;
+}
+
+#voice2:hover, .glow {
+  text-shadow: 
+    0 0 5px #fff,
+    0 0 30px $button,
+    0 0 40px $button;
+    transition: all 0.3s linear;
 }
