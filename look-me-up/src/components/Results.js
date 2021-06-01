@@ -52,6 +52,11 @@ export class Results extends Component {
     document.getElementById("input").value = this.state.searchInput;
     document.getElementById(this.state.currentPage).classList.add("page-color");
     }
+  
+  //go to home page on logo click
+  goToHome = (e) => {
+    this.props.history.push('/');
+  }
 
   //when clicking on the search button
   search = (e) => {
@@ -62,6 +67,16 @@ export class Results extends Component {
     }
     
   };
+
+  //when pressing enter
+  searchEnter = (e) => {
+    if(e.keyCode == 13) {
+      var searchInput = document.getElementById("input").value;
+      if (searchInput !=="") {
+        this.props.history.push('/Home/Results/');
+      }
+    }
+  }
 
   //Change current page and adjust button color
   goToPage = (e) => {
@@ -131,10 +146,10 @@ export class Results extends Component {
       <div className="results-body">
         
         <div className="result-header navbar fixed-top">  
-          <span className="logo"> LOOK ME UP </span>
+          <span className="logo" onClick={this.goToHome}> LOOK ME UP </span>
           <div className="search-section search-bar">
             <div className="d-flex align-items-center justify-content-left">
-                <input id="input" type="text" className="form-control" placeholder="Watcha lookin' for?"></input>
+                <input id="input" type="text" className="form-control" placeholder="Watcha lookin' for?" onKeyDown={this.searchEnter}></input>
                 <button className="fas fa-search search-button-2" onClick={this.search}></button>
             </div>
           </div>
