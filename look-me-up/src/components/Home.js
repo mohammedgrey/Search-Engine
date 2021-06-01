@@ -64,7 +64,7 @@ const Home = () => {
           <div className="d-flex align-items-center justify-content-center">
           <button id="voice" className="fas fa-microphone-alt" onClick={voiceRecord}></button>
             <input id="home-input" type="text" className="form-control" placeholder="Watcha lookin' for?" 
-            onKeyDown={searchEnter} ></input>
+            onKeyDown={searchEnter} autoComplete="off"></input>
             <button className="fas fa-search search-button" onClick={search} ></button>
           </div>
 
