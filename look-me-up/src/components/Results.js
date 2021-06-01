@@ -149,6 +149,7 @@ export class Results extends Component {
           <span className="logo" onClick={this.goToHome}> LOOK ME UP </span>
           <div className="search-section search-bar">
             <div className="d-flex align-items-center justify-content-left">
+                <button id="voice2" className="fas fa-microphone-alt"></button>
                 <input id="input" type="text" className="form-control" placeholder="Watcha lookin' for?" onKeyDown={this.searchEnter}></input>
                 <button className="fas fa-search search-button-2" onClick={this.search}></button>
             </div>

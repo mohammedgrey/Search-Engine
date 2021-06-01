@@ -41,15 +41,13 @@ const Home = () => {
           recording=true;
           resetTranscript();
           SpeechRecognition.startListening({ continuous: true });
-          document.getElementById("home-input").value="";
           document.getElementById("home-input").value=transcript;
           //document.getElementById("voice").classList.add("glow");
         }
         else {
           recording=false;
           SpeechRecognition.stopListening();
-          //document.getElementById("voice").classList.toggle("glow");
-          
+          //document.getElementById("voice").classList.remove("glow");  
         }
     }
 
