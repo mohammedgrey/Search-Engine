@@ -39,13 +39,21 @@ const Home = () => {
       e.preventDefault();
         if(recording==false) {
           recording=true;
-          SpeechRecognition.startListening();
+          resetTranscript();
+          SpeechRecognition.startListening({ continuous: true });
+          document.getElementById("home-input").value="";
+          document.getElementById("home-input").value=transcript;
+          //document.getElementById("voice").classList.add("glow");
         }
         else {
           recording=false;
           SpeechRecognition.stopListening();
+          //document.getElementById("voice").classList.toggle("glow");
+          
         }
     }
+
+    
 
     return (
       <div className="home-body">
@@ -58,7 +66,7 @@ const Home = () => {
           <div className="d-flex align-items-center justify-content-center">
           <button id="voice" className="fas fa-microphone-alt" onClick={voiceRecord}></button>
             <input id="home-input" type="text" className="form-control" placeholder="Watcha lookin' for?" 
-            onKeyDown={searchEnter} value={transcript} ></input>
+            onKeyDown={searchEnter} ></input>
             <button className="fas fa-search search-button" onClick={search} ></button>
           </div>
 

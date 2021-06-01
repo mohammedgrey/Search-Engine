@@ -103,7 +103,7 @@ $button: #9295f3;
       transition: all 0.3s linear;
     }
 
-    #voice:hover {
+    #voice:hover, .glow {
       text-shadow: 
         0 0 5px #fff,
         0 0 30px $button,
