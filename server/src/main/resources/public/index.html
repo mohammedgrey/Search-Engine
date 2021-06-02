@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1>Welcome to the "look me up" search Engine API</h1>
+    <h3>Base Url: <a href="https://lookme-up.herokuapp.com"><strong>https://lookme-up.herokuapp.com</strong></a></h3>
+    <h3>Endpoints</h3>
+    <ul>
+       
+        <li><h4 style="color: #101322;">
+            <strong>/search</strong>
+        </h4></li>
+        <p>To search for a specific sentence </p>
+        <p><strong>GET</strong></p>
+        <p><strong>Query Parameters:</strong></p>
+        <ul>
+            <li>q: the search query string (must be encoded while sending the request)</li>
+            <li>page: page number (for pagination.) The default is 1</li>
+            <li>limit: The maximum number of search results in each page(for pagination.) The default is 10</li>
+        </ul>
+        <p><strong>Full url example:</strong></p>
+        <p>https://lookme-up.herokuapp.com/search?q=anime%world&page=1&limit=10</p>
+        <p><strong>Sample response: </strong></p>
+        <p>
+        <p>[</p>
+        <p>{"url":"https://merchdope.com/best-anime/",</p>
+        <p>"title":"29 Best Anime Series of All Time - 2021 -MerchDope",</p>
+        <p>"snippet":"",</p>
+        <p>"website":"MerchDope",</p>
+        <p>"keywords":["anim"]}</p>
+        <p>]</p>
+        </p>
+        <li>
+            <h4 style="color: #101322;">
+                <strong>/history</strong>
+            </h4>
+        </li>
+        <p>To get the history of all users as suggestions as you type your search query. Returns 10 suggestions at most.
+        </p>
+        <p><strong>GET</strong></p>
+        <p><strong>Query Parameters:</strong></p>
+        <ul>
+            <li>q: the search query string (must be encoded while sending the request)</li>
+        </ul>
+        <p><strong>Full url example:</strong></p>
+        <p>https://lookme-up.herokuapp.com/history?q=how%20to</p>
+        <p><strong>Sample response: </strong></p>
+        <p>
+        <p>[</p>
+        <p>{"sentence":"How to code"},</p>
+        <p>{"sentence":"How to die"},</p>
+        <p>{"sentence":"How to disappear"},</p>
+        <p>{"sentence":"How to fly"},</p>
+        <p>{"sentence":"How to play"},</p>
+        <p>{"sentence":"How to sleep"},</p>
+        <p>{"sentence":"How to study"}</p>
+        <p>]</p>
+
+        </p>
+    </ul>
+
+</body>
+
+</html>

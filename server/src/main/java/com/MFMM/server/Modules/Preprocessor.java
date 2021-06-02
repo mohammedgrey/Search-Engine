@@ -15,6 +15,7 @@ public class Preprocessor {
   public static String stemTerm(String term) {
 
     PorterStemmer stemmer = new PorterStemmer();
+    // snowball
     return stemmer.stem(term);
   }
 
