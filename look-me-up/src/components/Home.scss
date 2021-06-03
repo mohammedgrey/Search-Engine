@@ -5,7 +5,7 @@ $button: #9295f3;
   display: flex;
   font-size: 52px;
   align-items: center;
-  height:100vh;
+  height: 100vh;
   width: 100%;
   justify-content: center;
   background-image: url("./../galaxy1.jpg");
@@ -13,12 +13,11 @@ $button: #9295f3;
 }
 
 .search-section {
-
   text-align: center;
   /*background: rgba(141, 139, 219, 0.1);*/
   /*background: #141b2db9;*/
   width: 70%;
-  height:60%;
+  height: 60%;
   color: aliceblue !important;
 
   h1 {
@@ -27,12 +26,11 @@ $button: #9295f3;
     margin-bottom: 10px;
     font-weight: 900;
     /*font-family: Sirukota;*/
-    
   }
 
   h6 {
     margin-bottom: 40px;
-    color:rgb(173, 189, 202);
+    color: rgb(173, 189, 202);
   }
 
   div {
@@ -53,45 +51,34 @@ $button: #9295f3;
       transition: background-color 0.5s;
       transition: box-shadow 0.3s;
     }
-    #home-input:focus{
+    #home-input:focus {
       /*background-color: rgba(255,255,255,0.9) !important;
       color: #03082c !important;*/
-      box-shadow:
-      0 0 1px #fff,
-      0 0 10px #fff;
+      box-shadow: 0 0 1px #fff, 0 0 10px #fff;
       transition: box-shadow 0.3s;
     }
     #home-input::placeholder {
-      color:rgb(173, 189, 202);
+      color: rgb(173, 189, 202);
     }
 
     .search-button {
-      color:white;
+      color: white;
       background-color: $button;
-      height:70px;
+      height: 70px;
       width: 70px;
       padding: 10px;
       border-radius: 25px;
       font-size: 40px;
       line-height: 1.2;
       outline: none;
-      border-color:$button;
+      border-color: $button;
       transition: all 0.3s linear;
-      box-shadow:
-      0 0 2px #fff,
-      0 0 5px #fff,
-      0 0 10px #fff;
-
+      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #fff;
     }
 
     .search-button:hover {
       transition: all 250ms linear;
-      box-shadow:
-      0 0 2px #fff,
-      0 0 5px #fff,
-      0 0 12px #fff,
-      0 0 30px $button,
-      0 0 50px $button,
+      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
     }
 
     #voice {
@@ -103,17 +90,13 @@ $button: #9295f3;
       transition: all 0.3s linear;
     }
 
-    #voice:hover, .glow {
-      text-shadow: 
-        0 0 5px #fff,
-        0 0 30px $button,
-        0 0 40px $button;
-        transition: all 0.3s linear;
+    #voice:hover,
+    .glow {
+      text-shadow: 0 0 5px #fff, 0 0 30px $button, 0 0 40px $button;
+      transition: all 0.3s linear;
     }
   }
-
 }
-
 
 /*
 @keyframes star {

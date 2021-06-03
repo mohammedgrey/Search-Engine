@@ -28,7 +28,7 @@ $header: #141b2db9;
   float: left;
   /*margin-right: 30px;*/
   //line-height: 1.4;
-  padding-top:10px;
+  padding-top: 10px;
   width: 12%;
 }
 
@@ -59,14 +59,14 @@ $header: #141b2db9;
   border: 2px solid white;
   box-shadow: 0 0 2px #fff;
 }
-#input:hover{
+#input:hover {
   box-shadow: none;
   width: 50%;
   transition: all 0.5s linear;
   /*border-color: aliceblue !important;*/
   /*color: #03082c !important;*/
 }
-#input:focus{
+#input:focus {
   color: aliceblue !important;
 }
 
@@ -74,7 +74,7 @@ $header: #141b2db9;
   text-align: center;
   background: transparent !important;
   width: 70%;
-  height:60%;
+  height: 60%;
   color: aliceblue !important;
   width: 100% !important;
   padding-left: 100px;
@@ -83,32 +83,22 @@ $header: #141b2db9;
 }
 
 .search-button-2 {
-  color:white;
-  background-color:$button;
-  height:50px;
+  color: white;
+  background-color: $button;
+  height: 50px;
   width: 50px;
   padding: 10px;
   border-radius: 25px;
   font-size: 20px;
   line-height: 1.2;
   outline: none;
-  border-color:$button;
+  border-color: $button;
   transition: all 0.3s linear;
-  box-shadow:
-  0 0 2px #fff,
-  0 0 5px #fff,
-  0 0 10px #fff;
- 
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #fff;
 }
 
 .search-button-2:hover {
-
-  box-shadow:
-  0 0 2px #fff,
-  0 0 5px #fff,
-  0 0 12px #fff,
-  0 0 30px $button,
-  0 0 50px $button;
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
 }
 
 .result-footer {
@@ -121,7 +111,7 @@ $header: #141b2db9;
   justify-content: center;
   .overflow-pages {
     width: 50px;
-    overflow:hidden;
+    overflow: hidden;
     text-overflow: ellipsis !important;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -129,28 +119,26 @@ $header: #141b2db9;
   }
 }
 
-#previous:hover, #next:hover, #first:hover, #last:hover {
-  color:white;
+#previous:hover,
+#next:hover,
+#first:hover,
+#last:hover {
+  color: white;
   border-top: 2px white solid !important;
-  text-shadow: 0 0 2px #fff,
-  0 0 5px #fff,
-  0 0 12px #fff,
-  0 0 30px $button,
-  0 0 50px $button;
+  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
 }
 .page {
   border-top: 2px white solid !important;
   padding-right: 3px;
   padding-left: 3px;
-  width:50px;
-  height:40px;
+  width: 50px;
+  height: 40px;
   color: white;
   font-size: 15px;
   font-weight: 600;
   background-color: transparent;
   border: none;
   transition: all 0.2s linear;
-
 }
 
 .page:hover {
@@ -175,10 +163,8 @@ $header: #141b2db9;
   transition: all 0.3s linear;
 }
 
-#voice2:hover, .glow {
-  text-shadow: 
-    0 0 5px #fff,
-    0 0 30px $button,
-    0 0 40px $button;
-    transition: all 0.3s linear;
+#voice2:hover,
+.glow {
+  text-shadow: 0 0 5px #fff, 0 0 30px $button, 0 0 40px $button;
+  transition: all 0.3s linear;
 }

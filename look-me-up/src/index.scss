@@ -1,22 +1,18 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  
 }
 
 @font-face {
-  font-family: 'Sirukota';
-  src: local('Sirukota'), url(./fonts/Sirukota.ttf) format('truetype');
+  font-family: "Sirukota";
+  src: local("Sirukota"), url(./fonts/Sirukota.ttf) format("truetype");
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 ::-webkit-scrollbar {
@@ -30,14 +26,9 @@ code {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #9295f3; 
+  background-color: #9295f3;
   border-radius: 10px;
-  box-shadow:
-  0 0 5px #fff,
-  0 0 10px #fff,
-  0 0 20px #fff,
-  0 0 30px #686efa,
-  0 0 70px #686efa;
+  box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #686efa, 0 0 70px #686efa;
 }
 
 /*
