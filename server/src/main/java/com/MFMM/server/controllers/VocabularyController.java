@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,6 +37,7 @@ public class VocabularyController {
     }
 
     @GetMapping("/search")
+    @CrossOrigin
     public List<QueryResult> search(@RequestParam(defaultValue = "") String q,
             @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int limit) {
         List<QueryResult> results = new ArrayList<>();
