@@ -7,7 +7,7 @@ import com.MFMM.server.helpers.PorterStemmer;
 public class Preprocessor {
 
   public static void main(String[] args) {
-    String[] words = Preprocessor.preprocessing("I love grey.");
+    String[] words = Preprocessor.preprocessing("grey");
     for (String word : words)
       System.out.println(word);
   }

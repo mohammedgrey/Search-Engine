@@ -119,7 +119,7 @@ public class CrawlerMain {
                 // System.out.println("Original url: " + url);
                 // System.out.println("Encoded url: " + encodedUrl);
                 // System.out.println("Decoded back url: " + urlHandler.decode(encodedUrl));
-                saveHTMLFile(doc.html(), encodedUrl);
+                saveHTMLFile(doc.html(), encodedUrl + ".html");
                 return doc;
             } catch (MalformedURLException e) {
                 return null;
@@ -128,7 +128,9 @@ public class CrawlerMain {
         }
 
         private void saveHTMLFile(String str, String fileName) throws IOException {
-            String directory = "server/src/main/java/com/MFMM/server/documents/";
+            String directory = System.getProperty("user.dir").endsWith("Search-Engine")
+                    ? "server/src/main/java/com/MFMM/server/documents/"
+                    : "src/main/java/com/MFMM/server/documents/";
             BufferedWriter writer = new BufferedWriter(new FileWriter(directory + fileName));
             writer.write(str);
             writer.close();

@@ -60,6 +60,8 @@ public class VocabularyController {
         List<Doc> docs = this.mongoTemplate
                 .find(new Query((new Criteria()).orOperator(orList.toArray(new Criteria[orList.size()])))
                         .skip((page - 1) * limit).limit(limit), Doc.class);
+
+        // get each url with the corresponding list of words found in it
         Hashtable<String, List<String>> UrlkeyWords = new Hashtable<String, List<String>>();
         for (int i = 0; i < docs.size(); i++) {
             Doc result = docs.get(i);
@@ -71,12 +73,26 @@ public class VocabularyController {
             } else
                 listKeywords.add(result.word);
         }
+
         for (String url : UrlkeyWords.keySet()) {
             Docs Documentpage = mongoTemplate.findById(url, Docs.class);
             List<String> keywords = UrlkeyWords.get(url);
+            // get the original and missing keywords from the stemmed ones
+            List<String> originalKeyWords = new ArrayList<>();
+            List<String> missingKeyWords = new ArrayList<>();
+
+            for (String wordSearched : qString.split("\\s+")) {
+                String[] potentialWords = Preprocessor.preprocessing(wordSearched);
+                if (potentialWords.length != 0)
+                    if (keywords.contains(potentialWords[0]))
+                        originalKeyWords.add(wordSearched);
+                    else
+                        missingKeyWords.add(wordSearched);
+            }
+
             results.add(new QueryResult(Documentpage._id, Documentpage.title,
                     new Snippet().getSnippet(Documentpage.text.split("\\s+"), keywords), Documentpage.website,
-                    keywords));
+                    originalKeyWords, missingKeyWords));
         }
         return results;
     }

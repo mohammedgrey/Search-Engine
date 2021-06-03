@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Hashtable;
 
 import com.MFMM.server.database.Database;
+import com.MFMM.server.helpers.FileHandler;
 import com.MFMM.server.helpers.URIHandler;
 import com.MFMM.server.models.Doc;
 import com.MFMM.server.models.Word;
@@ -55,7 +56,10 @@ public class IndexerMain {
 
                 // System.out.println("DOC:" + htmlFile.getName());
                 Document doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
-                String documentURL = (new URIHandler()).decode(htmlFile.getName());
+                String fileName = htmlFile.getName();
+                if (fileName.indexOf(".") > 0)
+                    fileName = fileName.substring(0, fileName.lastIndexOf("."));
+                String documentURL = (new URIHandler()).decode(fileName);
                 List<String> documentWords = new ArrayList<>();
                 String[] words = Preprocessor.preprocessing(doc.wholeText());
                 for (String word : words)
@@ -66,6 +70,8 @@ public class IndexerMain {
                         new Query(Criteria.where("_id").is(documentURL)), new Update().set("words", documentWords)
                                 .set("title", doc.title()).set("text", doc.text()).set("website", getWebsiteName(doc)),
                         "docs");
+                // move the indexed file to another folder
+                FileHandler.moveFileWhenIndexed(fileName + ".html");
                 break;
             }
 
@@ -124,6 +130,3 @@ public class IndexerMain {
     }
 
 }
-// TODO implement IDF might need to add a field for it in Doc.java, but it will
-// be a repeated number for several rows I guess. Not sure where it should be
-// put in the code.
