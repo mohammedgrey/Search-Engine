@@ -24,7 +24,7 @@ import org.jsoup.nodes.Element;
 public class CrawlerMain {
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        int NUM_OF_ROBOTS = 4;
+        int NUM_OF_ROBOTS = 8;
         Thread[] robots = new Thread[NUM_OF_ROBOTS];
         Crawler crawler = new Crawler();
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -58,9 +58,13 @@ public class CrawlerMain {
         // private File[] listOfFiles;
         private List<String> crawledPages;
         private Queue<String> toCrawlPages;
-        private final int CRAWLING_LIMIT = 20;
+        private final int CRAWLING_LIMIT = 5000;
         private final String NO_ROBOTS = "NO_ROBOTS";
         AtomicInteger workingRobots;
+        
+        String baseDirectory = System.getProperty("user.dir").endsWith("Search-Engine")
+                ? "server/src/"
+                : "src/";
 
         public Crawler() throws IOException {
             loadState();
@@ -92,11 +96,11 @@ public class CrawlerMain {
 
         private void loadState() throws IOException {
             List<String> crawledPagesRead = (List<String>) FileHandler
-                    .readFromFile("server/src/main/java/com/MFMM/server/crawlerState/crawled.txt", 0);
+                    .readFromFile(baseDirectory+"main/java/com/MFMM/server/crawlerState/crawled.txt", 0);
             if (crawledPagesRead.size() == 0) {
                 // First time crawling ever
                 List<String> initialSeed = (List<String>) FileHandler
-                        .readFromFile("server/src/main/java/com/MFMM/server/crawlerState/initialSeed.txt", 0);
+                        .readFromFile(baseDirectory+"main/java/com/MFMM/server/crawlerState/initialSeed.txt", 0);
                 this.toCrawlPages = new LinkedList<>();
                 for (String singleSeed : initialSeed)
                     this.toCrawlPages.add(singleSeed);
@@ -105,7 +109,7 @@ public class CrawlerMain {
             }
             // "Crawled before" load the state from the file
             Queue<String> toCrawlPagesRead = (Queue<String>) FileHandler
-                    .readFromFile("server/src/main/java/com/MFMM/server/crawlerState/toCrawl.txt", 1);
+                    .readFromFile(baseDirectory+"main/java/com/MFMM/server/crawlerState/toCrawl.txt", 1);
             this.toCrawlPages = toCrawlPagesRead;
             this.crawledPages = crawledPagesRead;
         }
@@ -128,10 +132,7 @@ public class CrawlerMain {
         }
 
         private void saveHTMLFile(String str, String fileName) throws IOException {
-            String directory = System.getProperty("user.dir").endsWith("Search-Engine")
-                    ? "server/src/main/java/com/MFMM/server/documents/"
-                    : "src/main/java/com/MFMM/server/documents/";
-            BufferedWriter writer = new BufferedWriter(new FileWriter(directory + fileName));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(baseDirectory + "main/java/com/MFMM/server/documents/" + fileName));
             writer.write(str);
             writer.close();
         }
@@ -174,8 +175,8 @@ public class CrawlerMain {
 
         public void saveState() {
             try {
-                FileHandler.writeToFile(crawledPages, "server/src/main/java/com/MFMM/server/crawlerState/crawled.txt");
-                FileHandler.writeToFile(toCrawlPages, "server/src/main/java/com/MFMM/server/crawlerState/toCrawl.txt");
+                FileHandler.writeToFile(crawledPages, baseDirectory+"main/java/com/MFMM/server/crawlerState/crawled.txt");
+                FileHandler.writeToFile(toCrawlPages, baseDirectory+"main/java/com/MFMM/server/crawlerState/toCrawl.txt");
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
@@ -234,6 +235,7 @@ public class CrawlerMain {
                             }
                         } catch (IOException e) {
                             System.out.println("DONLOADING INTERRUPTED");
+                            //e.printStackTrace();
                         }
 
                     }
