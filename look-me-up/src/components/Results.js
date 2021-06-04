@@ -231,8 +231,33 @@ const Results = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [resultsPerPage, setResultsPerPage] = useState(8);
 
+  //calculate the total number of pages
+  const totalPagesNum = Math.ceil(results.length / resultsPerPage);
+  const pages = [];
+  for (var i = 1; i <= totalPagesNum; i++) pages.push(i);
+
+  //Choose the portion of results to display
+  const lastResult = currentPage * resultsPerPage;
+  const firstResult = lastResult - resultsPerPage;
+  const dispResults = results.slice(firstResult, lastResult);
+
+  //speech recognition
+  const {
+    error,
+    isRecording,
+    startSpeechToText,
+    stopSpeechToText,
+    interimResult,
+  } = useSpeechToText({
+    continuous: false,
+    crossBrowser: true,
+    timeout: 10000,
+    speechRecognitionProperties: { interimResults: true },
+  });
+
+  //on mounting
   useEffect(() => {
-    document.getElementById("input").value = searchInput;
+    //document.getElementById("input").value = searchInput;
     document.getElementById(currentPage).classList.add("page-color");
     //get the search query to send a request
     const qs = getParameterByName("q");
@@ -308,16 +333,6 @@ const Results = () => {
     }
   };
 
-  //calculate the total number of pages
-  const totalPagesNum = Math.ceil(results.length / resultsPerPage);
-  const pages = [];
-  for (var i = 1; i <= totalPagesNum; i++) pages.push(i);
-
-  //Choose the portion of results to display
-  const lastResult = currentPage * resultsPerPage;
-  const firstResult = lastResult - resultsPerPage;
-  const dispResults = results.slice(firstResult, lastResult);
-
   return (
     <div className="results-body">
       <div className="result-header navbar fixed-top">
@@ -327,7 +342,11 @@ const Results = () => {
         </span>
         <div className="search-section search-bar">
           <div className="d-flex align-items-center justify-content-left">
-            <button id="voice2" className="fas fa-microphone-alt"></button>
+            <button
+              id="voice2"
+              className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")}
+              onClick={isRecording ? stopSpeechToText : startSpeechToText}
+            ></button>
             <input
               id="input"
               type="text"
@@ -335,6 +354,7 @@ const Results = () => {
               placeholder="Watcha lookin' for?"
               onKeyDown={searchEnter}
               autoComplete="off"
+              value={interimResult}
             ></input>
             <button
               className="fas fa-search search-button-2"

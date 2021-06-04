@@ -58,7 +58,9 @@ $header: #141b2db9;
   min-width: 250px;
   border: 2px solid white;
   box-shadow: 0 0 2px #fff;
+  text-overflow: clip;
 }
+
 #input:hover {
   box-shadow: none;
   width: 50%;
@@ -163,6 +165,14 @@ $header: #141b2db9;
   color: aliceblue;
   font-size: 25px;
   transition: all 0.3s linear;
+}
+#voice2:hover {
+  text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+    0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+}
+.glow {
+  transition: all 0.3s linear !important;
+  animation: pulsate 1.2s infinite alternate;
 }
 
 // #voice2:hover,
