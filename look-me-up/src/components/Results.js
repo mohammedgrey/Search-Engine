@@ -162,7 +162,7 @@ const Results = () => {
       </div>
       <div className="result-block">
         {dispResults.map((result, index) => (
-          <SearchResult className="search-result" siteName={result.siteName} pageTitle={result.pageTitle} URL={result.URL} preview={result.preview} key={index}></SearchResult>
+          <SearchResult className="search-result" siteName={result.website} pageTitle={result.title} URL={result.url} preview={result.snippet} key={index}></SearchResult>
         ))}
       </div>
       <div className="result-footer justify-content-center fixed-bottom">
