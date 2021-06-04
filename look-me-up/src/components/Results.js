@@ -394,7 +394,7 @@ const Results = () => {
               onKeyDown={searchEnter}
               onChange={handleInputChange}
               autoComplete="off"
-              value={interimResult}
+              defaultValue={queryString || interimResult}
             ></input>
             <button
               className="fas fa-search search-button-2"
