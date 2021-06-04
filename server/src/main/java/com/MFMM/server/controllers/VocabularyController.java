@@ -39,8 +39,7 @@ public class VocabularyController {
 
     @GetMapping("/search")
     @CrossOrigin
-    public List<QueryResult> search(@RequestParam(defaultValue = "") String q,
-            @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int limit) {
+    public List<QueryResult> search(@RequestParam(defaultValue = "") String q) {
         List<QueryResult> results = new ArrayList<>();
         String qString = "";
         try {
@@ -60,7 +59,6 @@ public class VocabularyController {
 
         List<Doc> docs = this.mongoTemplate
                 .find(new Query((new Criteria()).orOperator(orList.toArray(new Criteria[orList.size()]))), Doc.class);
-        // .skip((page - 1) * limit).limit(limit)
 
         // get each url with the corresponding list of words found in it
         Hashtable<String, List<String>> UrlkeyWords = new Hashtable<String, List<String>>();

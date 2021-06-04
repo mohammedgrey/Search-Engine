@@ -1,261 +1,50 @@
-import React, { Component, useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import getParameterByName from "../helpers/getParameterByName";
 import "./Results.scss";
 import SearchResult from "./SearchResult";
 import useSpeechToText from "react-hook-speech-to-text";
 import { useHistory } from "react-router-dom";
 import { getSuggestions } from "../API/suggestions";
-import {
-  addToSearchHistory,
-  getSearchHistory,
-} from "../helpers/userSearchHistory";
+import { addToSearchHistory, getSearchHistory } from "../helpers/userSearchHistory";
+import tempInitialStateResults from "../helpers/tempInitialStateResults";
+import { retrieveLastSearchedQuery, retrieveSearchResults, saveSearchState } from "../helpers/resultsStateManagement";
+import { getSearchResults } from "../API/search";
 
 const Results = () => {
   let history = useHistory();
-  const [results, setResults] = useState([
-    {
-      siteName: "Wikipedia",
-      pageTitle: "State of Palestine",
-      URL: "https://en.wikipedia.org",
-      preview:
-        "The entirety of territory claimed by the State of Palestine has been occupied since 1948, first by Egypt and Jordan and then by Israel after the Six-Day War in 1967. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Today's latest from Al Jazeera",
-      pageTitle: "Palestine",
-      URL: "https://www.aljazeera.com",
-      preview:
-        "Root causes of Israel-Palestine conflict must be addressed: UNRWA. Philippe Lazzarini said situation in Gaza getting worse because the very basis of the conflict. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Britannica",
-      pageTitle: "Palestine | History, People, & Religion",
-      URL: "https://www.britannica.com",
-      preview:
-        "Palestine, area of the eastern Mediterranean, comprising parts of modern Israel along with the West Bank and the Gaza Strip. The strategic. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "HISTORY",
-      pageTitle: "Palestine - History, Religion & Conflicts",
-      URL: "https://www.history.com",
-      preview:
-        " Palestine is a small region of land in the eastern Mediterranean region that includes parts of modern Israel and the Palestinian territories of the. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Amnesty",
-      pageTitle:
-        "Everything you need to know about human rights in Israel and ...",
-      URL: "https://www.amnesty.org",
-      preview:
-        "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Wikipedia",
-      pageTitle: "State of Palestine",
-      URL: "https://en.wikipedia.org",
-      preview:
-        "The entirety of territory claimed by the State of Palestine has been occupied since 1948, first by Egypt and Jordan and then by Israel after the Six-Day War in 1967. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Today's latest from Al Jazeera",
-      pageTitle: "Palestine",
-      URL: "https://www.aljazeera.com",
-      preview:
-        "Root causes of Israel-Palestine conflict must be addressed: UNRWA. Philippe Lazzarini said situation in Gaza getting worse because the very basis of the conflict. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Britannica",
-      pageTitle: "Palestine | History, People, & Religion",
-      URL: "https://www.britannica.com",
-      preview:
-        "Palestine, area of the eastern Mediterranean, comprising parts of modern Israel along with the West Bank and the Gaza Strip. The strategic. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "HISTORY",
-      pageTitle: "Palestine - History, Religion & Conflicts",
-      URL: "https://www.history.com",
-      preview:
-        " Palestine is a small region of land in the eastern Mediterranean region that includes parts of modern Israel and the Palestinian territories of the. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Amnesty",
-      pageTitle:
-        "Everything you need to know about human rights in Israel and ...",
-      URL: "https://www.amnesty.org",
-      preview:
-        "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Wikipedia",
-      pageTitle: "State of Palestine",
-      URL: "https://en.wikipedia.org",
-      preview:
-        "The entirety of territory claimed by the State of Palestine has been occupied since 1948, first by Egypt and Jordan and then by Israel after the Six-Day War in 1967. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Today's latest from Al Jazeera",
-      pageTitle: "Palestine",
-      URL: "https://www.aljazeera.com",
-      preview:
-        "Root causes of Israel-Palestine conflict must be addressed: UNRWA. Philippe Lazzarini said situation in Gaza getting worse because the very basis of the conflict. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Britannica",
-      pageTitle: "Palestine | History, People, & Religion",
-      URL: "https://www.britannica.com",
-      preview:
-        "Palestine, area of the eastern Mediterranean, comprising parts of modern Israel along with the West Bank and the Gaza Strip. The strategic. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "HISTORY",
-      pageTitle: "Palestine - History, Religion & Conflicts",
-      URL: "https://www.history.com",
-      preview:
-        " Palestine is a small region of land in the eastern Mediterranean region that includes parts of modern Israel and the Palestinian territories of the. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Amnesty",
-      pageTitle:
-        "Everything you need to know about human rights in Israel and ...",
-      URL: "https://www.amnesty.org",
-      preview:
-        "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Wikipedia",
-      pageTitle: "State of Palestine",
-      URL: "https://en.wikipedia.org",
-      preview:
-        "The entirety of territory claimed by the State of Palestine has been occupied since 1948, first by Egypt and Jordan and then by Israel after the Six-Day War in 1967. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Today's latest from Al Jazeera",
-      pageTitle: "Palestine",
-      URL: "https://www.aljazeera.com",
-      preview:
-        "Root causes of Israel-Palestine conflict must be addressed: UNRWA. Philippe Lazzarini said situation in Gaza getting worse because the very basis of the conflict. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Britannica",
-      pageTitle: "Palestine | History, People, & Religion",
-      URL: "https://www.britannica.com",
-      preview:
-        "Palestine, area of the eastern Mediterranean, comprising parts of modern Israel along with the West Bank and the Gaza Strip. The strategic. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "HISTORY",
-      pageTitle: "Palestine - History, Religion & Conflicts",
-      URL: "https://www.history.com",
-      preview:
-        " Palestine is a small region of land in the eastern Mediterranean region that includes parts of modern Israel and the Palestinian territories of the. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Amnesty",
-      pageTitle:
-        "Everything you need to know about human rights in Israel and ...",
-      URL: "https://www.amnesty.org",
-      preview:
-        "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Wikipedia",
-      pageTitle: "State of Palestine",
-      URL: "https://en.wikipedia.org",
-      preview:
-        "The entirety of territory claimed by the State of Palestine has been occupied since 1948, first by Egypt and Jordan and then by Israel after the Six-Day War in 1967. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Today's latest from Al Jazeera",
-      pageTitle: "Palestine",
-      URL: "https://www.aljazeera.com",
-      preview:
-        "Root causes of Israel-Palestine conflict must be addressed: UNRWA. Philippe Lazzarini said situation in Gaza getting worse because the very basis of the conflict. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Britannica",
-      pageTitle: "Palestine | History, People, & Religion",
-      URL: "https://www.britannica.com",
-      preview:
-        "Palestine, area of the eastern Mediterranean, comprising parts of modern Israel along with the West Bank and the Gaza Strip. The strategic. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "HISTORY",
-      pageTitle: "Palestine - History, Religion & Conflicts",
-      URL: "https://www.history.com",
-      preview:
-        " Palestine is a small region of land in the eastern Mediterranean region that includes parts of modern Israel and the Palestinian territories of the. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Amnesty",
-      pageTitle:
-        "Everything you need to know about human rights in Israel and ...",
-      URL: "https://www.amnesty.org",
-      preview:
-        "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Wikipedia",
-      pageTitle: "State of Palestine",
-      URL: "https://en.wikipedia.org",
-      preview:
-        "The entirety of territory claimed by the State of Palestine has been occupied since 1948, first by Egypt and Jordan and then by Israel after the Six-Day War in 1967. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Today's latest from Al Jazeera",
-      pageTitle: "Palestine",
-      URL: "https://www.aljazeera.com",
-      preview:
-        "Root causes of Israel-Palestine conflict must be addressed: UNRWA. Philippe Lazzarini said situation in Gaza getting worse because the very basis of the conflict. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Britannica",
-      pageTitle: "Palestine | History, People, & Religion",
-      URL: "https://www.britannica.com",
-      preview:
-        "Palestine, area of the eastern Mediterranean, comprising parts of modern Israel along with the West Bank and the Gaza Strip. The strategic. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "HISTORY",
-      pageTitle: "Palestine - History, Religion & Conflicts",
-      URL: "https://www.history.com",
-      preview:
-        " Palestine is a small region of land in the eastern Mediterranean region that includes parts of modern Israel and the Palestinian territories of the. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-    {
-      siteName: "Amnesty",
-      pageTitle:
-        "Everything you need to know about human rights in Israel and ...",
-      URL: "https://www.amnesty.org",
-      preview:
-        "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
-    },
-  ]);
-
+  const [results, setResults] = useState([]);
+  const [loadingResults, setLoadingResults] = useState(false);
   const [queryString, setQueryString] = useState("");
   const [searchInput, setSearchInput] = useState("palestine");
   const [suggestions, setSuggestions] = useState(getSearchHistory());
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [resultsPerPage, setResultsPerPage] = useState(10);
+  const [pages, setPages] = useState([]);
+  const [dispResults, setDispResults] = useState([]);
 
-  //calculate the total number of pages
-  const totalPagesNum = Math.ceil(results.length / resultsPerPage);
-  const pages = [];
-  for (var i = 1; i <= totalPagesNum; i++) pages.push(i);
+  const getTheRightPagesToShow = () => {
+    const totalPagesNum = Math.ceil(results.length / +process.env.REACT_APP_RESULTS_PER_PAGE);
+    const myset = [];
 
-  //Choose the portion of results to display
-  const lastResult = currentPage * resultsPerPage;
-  const firstResult = lastResult - resultsPerPage;
-  const dispResults = results.slice(firstResult, lastResult);
+    let i = currentPage - 1;
+    let j = currentPage + 1;
+
+    const boundaryLeft = currentPage - 3 - (currentPage + 3 > totalPagesNum && 3 - (totalPagesNum - currentPage));
+    const boundaryRight = currentPage + 3 - (currentPage - 3 <= 0 && currentPage - 3 - 1);
+
+    while (i > 0 && i >= boundaryLeft) myset.push(i--);
+    myset.push(currentPage);
+    while (j <= totalPagesNum && j <= boundaryRight) myset.push(j++);
+
+    setPages(
+      [...myset].sort(function (a, b) {
+        return a - b;
+      })
+    );
+  };
 
   //speech recognition
-  const {
-    error,
-    isRecording,
-    startSpeechToText,
-    stopSpeechToText,
-    interimResult,
-  } = useSpeechToText({
+  const { error, isRecording, startSpeechToText, stopSpeechToText, interimResult } = useSpeechToText({
     continuous: false,
     crossBrowser: true,
     timeout: 10000,
@@ -263,32 +52,41 @@ const Results = () => {
   });
 
   //update the query string from the URL every time the page loads
-  useLayoutEffect(() => {
-    console.log("[] query:" + queryString);
-    // const page = getParameterByName("page");
-    // setCurrentPage(page);
-    // document.getElementById(currentPage).classList.add("page-color");
-    //get the search query to send a request
-    const qs = getParameterByName("q");
-    setQueryString(qs);
-  }, []);
+  useEffect(() => {
+    // console.log("[] query:" + queryString);
+    const theCurrentQueryString = getParameterByName("q");
+    const theCurrentPageNumber = +getParameterByName("page");
+    setQueryString(theCurrentQueryString);
+    setCurrentPage(theCurrentPageNumber);
+    if (retrieveLastSearchedQuery() !== theCurrentQueryString) {
+      //case 1) Make a new request as the input changed
+      console.log("Make a new request");
+      setLoadingResults(true);
+      getSearchResults(theCurrentQueryString)
+        .then((resultsFromSearch) => {
+          console.log(resultsFromSearch);
+          saveSearchState(theCurrentQueryString, resultsFromSearch);
+          setResults(resultsFromSearch);
+        })
+        .catch(console.log)
+        .finally(() => {
+          setLoadingResults(false);
+        });
+    } else {
+      //case 2) The results are already stored, just cash them
+      console.log("Cash already saved results");
+      setResults(retrieveSearchResults());
+    }
 
-  //Update URL if current page or query string changes
-  useLayoutEffect(() => {
-    console.log("currentpage=" + currentPage);
-    console.log("query:" + queryString);
-    document.getElementById(currentPage).classList.add("page-color");
-    history.push(
-      `/Home/Results?q=${encodeURIComponent(
-        queryString
-      )}&page=${currentPage}&limit=10`
-    );
-  }, [currentPage, queryString]);
+    console.log(+getParameterByName("page"));
+  }, [history.location]);
 
-  //go to home page on logo click
-  const goToHome = (e) => {
-    history.push("/");
-  };
+  useEffect(() => {
+    getTheRightPagesToShow();
+    const lastResult = currentPage * +process.env.REACT_APP_RESULTS_PER_PAGE;
+    const firstResult = lastResult - +process.env.REACT_APP_RESULTS_PER_PAGE;
+    setDispResults(results.slice(firstResult, lastResult));
+  }, [currentPage]);
 
   //To get the history of all users as suggestions
   const handleInputChange = async (e) => {
@@ -307,92 +105,46 @@ const Results = () => {
   //when clicking on the search button
   const search = (e) => {
     e.preventDefault();
-    // var searchInput = document.getElementById("input").value;
     if (searchInput !== "") {
-      document.getElementById(currentPage).classList.remove("page-color");
-      document.getElementById("1").classList.add("page-color");
-      setCurrentPage(1);
-      setQueryString(searchInput);
+      history.push(`/Home/Results?q=${encodeURIComponent(searchInput)}&page=1`);
     }
   };
 
   //when pressing enter
   const searchEnter = (e) => {
     if (e.keyCode === 13) {
-      // var searchInput = document.getElementById("input").value;
-      if (searchInput !== "") {
-        document.getElementById(currentPage).classList.remove("page-color");
-        document.getElementById("1").classList.add("page-color");
-        setCurrentPage(1);
-        setQueryString(searchInput);
-      }
+      if (searchInput !== "") history.push(`/Home/Results?q=${encodeURIComponent(searchInput)}&page=${1}`);
     }
   };
 
-  //Change current page and adjust button color
+  //Manage Page Changes
   const goToPage = (e) => {
-    console.log(currentPage);
-    document.getElementById(currentPage).classList.remove("page-color");
-    setCurrentPage(Number(e.target.id));
-    document.getElementById(Number(e.target.id)).classList.add("page-color");
+    history.push(`/Home/Results?q=${encodeURIComponent(queryString)}&page=${+e.target.id}`);
+  };
+  const goToThisPage = (pageNumber) => {
+    history.push(`/Home/Results?q=${encodeURIComponent(queryString)}&page=${pageNumber}`);
   };
 
-  //go to first page
-  const getFirst = (e) => {
-    if (currentPage > 1) {
-      document.getElementById(currentPage).classList.remove("page-color");
-      setCurrentPage(1);
-      document.getElementById(1).classList.add("page-color");
-    }
-  };
+  //Disable prev and next if on the first or last page
+  const showGoToFirstAndPrev = currentPage !== 1;
+  const showGotToLastAndNext = currentPage < results.length / +process.env.REACT_APP_RESULTS_PER_PAGE;
 
-  //go to previous page
-  const getPrevious = (e) => {
-    if (currentPage > 1) {
-      document.getElementById(currentPage - 1).classList.add("page-color");
-      document.getElementById(currentPage).classList.remove("page-color");
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  //go to next page
-  const getNext = (e) => {
-    var pageCount = results.length / resultsPerPage;
-    if (currentPage < pageCount) {
-      document.getElementById(currentPage + 1).classList.add("page-color");
-      document.getElementById(currentPage).classList.remove("page-color");
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  //go to last page
-  const getLast = (e) => {
-    var pageCount = Math.ceil(results.length / resultsPerPage);
-    if (currentPage < pageCount) {
-      document.getElementById(currentPage).classList.remove("page-color");
-      setCurrentPage(pageCount);
-      document.getElementById(pageCount).classList.add("page-color");
-    }
-  };
+  //compute the last page
+  const lastPageNumber = Math.ceil(results.length / +process.env.REACT_APP_RESULTS_PER_PAGE);
 
   return (
     <div className="results-body">
       <div className="result-header navbar fixed-top">
-        <span className="logo" onClick={goToHome}>
-          <img
-            src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png"
-            width="150px"
-            height="35px"
-          ></img>
+        <span
+          className="logo"
+          // onClick={goToHome}
+        >
+          <img src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png" width="150px" height="35px"></img>
           {/* LOOK ME UP */}
         </span>
         <div className="search-section-res search-bar">
           <div className="d-flex align-items-center justify-content-left">
-            <button
-              id="voice2"
-              className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")}
-              onClick={isRecording ? stopSpeechToText : startSpeechToText}
-            ></button>
+            <button id="voice2" className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")} onClick={isRecording ? stopSpeechToText : startSpeechToText}></button>
             <input
               id="input"
               type="text"
@@ -403,58 +155,34 @@ const Results = () => {
               autoComplete="off"
               defaultValue={queryString || interimResult}
             ></input>
-            <button
-              className="fas fa-search search-button-2"
-              onClick={search}
-            ></button>
+            <button className="fas fa-search search-button-2" onClick={search}></button>
           </div>
         </div>
         {/*<span className="fas fa-bars menu-icon"></span>*/}
       </div>
       <div className="result-block">
         {dispResults.map((result, index) => (
-          <SearchResult
-            className="search-result"
-            siteName={result.siteName}
-            pageTitle={result.pageTitle}
-            URL={result.URL}
-            preview={result.preview}
-            key={index}
-          ></SearchResult>
+          <SearchResult className="search-result" siteName={result.siteName} pageTitle={result.pageTitle} URL={result.URL} preview={result.preview} key={index}></SearchResult>
         ))}
       </div>
       <div className="result-footer justify-content-center fixed-bottom">
         <div id="pages">
+          <button disabled={!showGoToFirstAndPrev} className={`first page fas fa-angle-double-left ${!showGoToFirstAndPrev ? "disabled-button" : ""}`} onClick={() => goToThisPage(1)}></button>
           <button
-            id="first"
-            className="page fas fa-angle-double-left"
-            onClick={getFirst}
-          ></button>
-          <button
-            id="previous"
-            className="page fas fas fa-angle-left"
-            onClick={getPrevious}
+            disabled={!showGoToFirstAndPrev}
+            className={`previous page fas fas fa-angle-left ${!showGoToFirstAndPrev ? "disabled-button" : ""}`}
+            onClick={() => goToThisPage(currentPage - 1)}
           ></button>
           {pages.map((n) => (
-            <button
-              key={n}
-              id={n}
-              onClick={goToPage}
-              className="page overflow-pages"
-            >
-              {" "}
-              {n}{" "}
+            <button key={n} id={n} onClick={goToPage} className={`page overflow-pages ${n === currentPage ? "page-color" : ""}`}>
+              {n}
             </button>
           ))}
+          <button disabled={!showGotToLastAndNext} className={`next page fas fa-angle-right ${!showGotToLastAndNext ? "disabled-button" : ""}`} onClick={() => goToThisPage(currentPage + 1)}></button>
           <button
-            id="next"
-            className="page fas fa-angle-right"
-            onClick={getNext}
-          ></button>
-          <button
-            id="last"
-            className="page fas fa-angle-double-right"
-            onClick={getLast}
+            disabled={!showGotToLastAndNext}
+            className={`last page fas fa-angle-double-right ${!showGotToLastAndNext ? "disabled-button" : ""}`}
+            onClick={() => goToThisPage(lastPageNumber)}
           ></button>
         </div>
       </div>
