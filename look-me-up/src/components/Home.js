@@ -1,21 +1,35 @@
+//Speech recognition code from https://github.com/Riley-Brown/react-speech-to-text
 import React, { useState } from "react";
-import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import useSpeechToText from "react-hook-speech-to-text";
 import { useHistory } from "react-router-dom";
 import "./Home.scss";
 import { getSuggestions } from "../API/suggestions";
-import { addToSearchHistory, getSearchHistory } from "../helpers/userSearchHistory";
+import {
+  addToSearchHistory,
+  getSearchHistory,
+} from "../helpers/userSearchHistory";
 
 const Home = () => {
-  var recording = false;
+  const [recording, setRecording] = useState(false);
+  //var recording = false;
   let history = useHistory();
   const [suggestions, setSuggestions] = useState(getSearchHistory());
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [queryString, setQueryString] = useState("");
-  const { transcript, resetTranscript } = useSpeechRecognition();
 
-  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-    return null;
-  }
+  const {
+    error,
+    isRecording,
+    results,
+    startSpeechToText,
+    stopSpeechToText,
+    interimResult,
+  } = useSpeechToText({
+    continuous: false,
+    crossBrowser: true,
+    timeout: 10000,
+    speechRecognitionProperties: { interimResults: true },
+  });
 
   //when clicking on the search button
   const search = (e) => {
@@ -27,7 +41,7 @@ const Home = () => {
     }
   };
 
-  //when pressing enter
+  //when pressing enter in the search field
   const searchEnter = (e) => {
     if (e.keyCode === 13) {
       var searchInput = document.getElementById("home-input").value;
@@ -35,22 +49,6 @@ const Home = () => {
         addToSearchHistory(queryString);
         history.push(`/Home/Results?q=${encodeURIComponent(queryString)}`);
       }
-    }
-  };
-
-  //start voice recognition
-  const voiceRecord = (e) => {
-    e.preventDefault();
-    if (recording === false) {
-      recording = true;
-      resetTranscript();
-      SpeechRecognition.startListening({ continuous: true });
-      document.getElementById("home-input").value = transcript;
-      //document.getElementById("voice").classList.add("glow");
-    } else {
-      recording = false;
-      SpeechRecognition.stopListening();
-      //document.getElementById("voice").classList.remove("glow");
     }
   };
 
@@ -75,7 +73,11 @@ const Home = () => {
         <h6> I got everything you need </h6>
 
         <div className="d-flex align-items-center justify-content-center">
-          <button id="voice" className="fas fa-microphone-alt" onClick={voiceRecord}></button>
+          <button
+            id="voice"
+            className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")}
+            onClick={isRecording ? stopSpeechToText : startSpeechToText}
+          ></button>
           <input
             id="home-input"
             type="text"
@@ -83,10 +85,13 @@ const Home = () => {
             placeholder="Watcha lookin' for?"
             onKeyDown={searchEnter}
             onChange={handleQueryChange}
-            value={queryString}
+            value={interimResult}
             autoComplete="off"
           ></input>
-          <button className="fas fa-search search-button" onClick={search}></button>
+          <button
+            className="fas fa-search search-button"
+            onClick={search}
+          ></button>
         </div>
       </div>
     </div>

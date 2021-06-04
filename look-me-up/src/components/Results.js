@@ -38,7 +38,8 @@ export class Results extends Component {
         },
         {
           siteName: "Amnesty",
-          pageTitle: "Everything you need to know about human rights in Israel and ...",
+          pageTitle:
+            "Everything you need to know about human rights in Israel and ...",
           URL: "https://www.amnesty.org",
           preview:
             "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
@@ -73,7 +74,8 @@ export class Results extends Component {
         },
         {
           siteName: "Amnesty",
-          pageTitle: "Everything you need to know about human rights in Israel and ...",
+          pageTitle:
+            "Everything you need to know about human rights in Israel and ...",
           URL: "https://www.amnesty.org",
           preview:
             "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
@@ -108,7 +110,8 @@ export class Results extends Component {
         },
         {
           siteName: "Amnesty",
-          pageTitle: "Everything you need to know about human rights in Israel and ...",
+          pageTitle:
+            "Everything you need to know about human rights in Israel and ...",
           URL: "https://www.amnesty.org",
           preview:
             "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
@@ -143,7 +146,8 @@ export class Results extends Component {
         },
         {
           siteName: "Amnesty",
-          pageTitle: "Everything you need to know about human rights in Israel and ...",
+          pageTitle:
+            "Everything you need to know about human rights in Israel and ...",
           URL: "https://www.amnesty.org",
           preview:
             "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
@@ -178,7 +182,8 @@ export class Results extends Component {
         },
         {
           siteName: "Amnesty",
-          pageTitle: "Everything you need to know about human rights in Israel and ...",
+          pageTitle:
+            "Everything you need to know about human rights in Israel and ...",
           URL: "https://www.amnesty.org",
           preview:
             "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
@@ -213,7 +218,8 @@ export class Results extends Component {
         },
         {
           siteName: "Amnesty",
-          pageTitle: "Everything you need to know about human rights in Israel and ...",
+          pageTitle:
+            "Everything you need to know about human rights in Israel and ...",
           URL: "https://www.amnesty.org",
           preview:
             "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
@@ -262,7 +268,9 @@ export class Results extends Component {
 
   //Change current page and adjust button color
   goToPage = (e) => {
-    document.getElementById(this.state.currentPage).classList.remove("page-color");
+    document
+      .getElementById(this.state.currentPage)
+      .classList.remove("page-color");
     this.setState({ currentPage: Number(e.target.id) }, function () {
       document.getElementById(Number(e.target.id)).classList.add("page-color");
     });
@@ -271,9 +279,13 @@ export class Results extends Component {
   //go to first page
   getFirst = (e) => {
     if (this.state.currentPage > 1) {
-      document.getElementById(this.state.currentPage).classList.remove("page-color");
+      document
+        .getElementById(this.state.currentPage)
+        .classList.remove("page-color");
       this.setState({ currentPage: 1 }, function () {
-        document.getElementById(this.state.currentPage).classList.add("page-color");
+        document
+          .getElementById(this.state.currentPage)
+          .classList.add("page-color");
       });
     }
   };
@@ -281,9 +293,13 @@ export class Results extends Component {
   //go to previous page
   getPrevious = (e) => {
     if (this.state.currentPage > 1) {
-      document.getElementById(this.state.currentPage).classList.remove("page-color");
+      document
+        .getElementById(this.state.currentPage)
+        .classList.remove("page-color");
       this.setState({ currentPage: this.state.currentPage - 1 }, function () {
-        document.getElementById(this.state.currentPage).classList.add("page-color");
+        document
+          .getElementById(this.state.currentPage)
+          .classList.add("page-color");
       });
     }
   };
@@ -292,20 +308,30 @@ export class Results extends Component {
   getNext = (e) => {
     var pageCount = this.state.results.length / this.state.resultsPerPage;
     if (this.state.currentPage < pageCount) {
-      document.getElementById(this.state.currentPage).classList.remove("page-color");
+      document
+        .getElementById(this.state.currentPage)
+        .classList.remove("page-color");
       this.setState({ currentPage: this.state.currentPage + 1 }, function () {
-        document.getElementById(this.state.currentPage).classList.add("page-color");
+        document
+          .getElementById(this.state.currentPage)
+          .classList.add("page-color");
       });
     }
   };
 
   //go to last page
   getLast = (e) => {
-    var pageCount = Math.ceil(this.state.results.length / this.state.resultsPerPage);
+    var pageCount = Math.ceil(
+      this.state.results.length / this.state.resultsPerPage
+    );
     if (this.state.currentPage < pageCount) {
-      document.getElementById(this.state.currentPage).classList.remove("page-color");
+      document
+        .getElementById(this.state.currentPage)
+        .classList.remove("page-color");
       this.setState({ currentPage: pageCount }, function () {
-        document.getElementById(this.state.currentPage).classList.add("page-color");
+        document
+          .getElementById(this.state.currentPage)
+          .classList.add("page-color");
       });
     }
   };
@@ -332,29 +358,67 @@ export class Results extends Component {
           <div className="search-section search-bar">
             <div className="d-flex align-items-center justify-content-left">
               <button id="voice2" className="fas fa-microphone-alt"></button>
-              <input id="input" type="text" className="form-control" placeholder="Watcha lookin' for?" onKeyDown={this.searchEnter} autoComplete="off"></input>
-              <button className="fas fa-search search-button-2" onClick={this.search}></button>
+              <input
+                id="input"
+                type="text"
+                className="form-control"
+                placeholder="Watcha lookin' for?"
+                onKeyDown={this.searchEnter}
+                autoComplete="off"
+              ></input>
+              <button
+                className="fas fa-search search-button-2"
+                onClick={this.search}
+              ></button>
             </div>
           </div>
           {/*<span className="fas fa-bars menu-icon"></span>*/}
         </div>
         <div className="result-block">
           {dispResults.map((result, index) => (
-            <SearchResult className="search-result" siteName={result.siteName} pageTitle={result.pageTitle} URL={result.URL} preview={result.preview} key={index}></SearchResult>
+            <SearchResult
+              className="search-result"
+              siteName={result.siteName}
+              pageTitle={result.pageTitle}
+              URL={result.URL}
+              preview={result.preview}
+              key={index}
+            ></SearchResult>
           ))}
         </div>
         <div className="result-footer justify-content-center fixed-bottom">
           <div id="pages">
-            <button id="first" className="page fas fa-angle-double-left" onClick={this.getFirst}></button>
-            <button id="previous" className="page fas fas fa-angle-left" onClick={this.getPrevious}></button>
+            <button
+              id="first"
+              className="page fas fa-angle-double-left"
+              onClick={this.getFirst}
+            ></button>
+            <button
+              id="previous"
+              className="page fas fas fa-angle-left"
+              onClick={this.getPrevious}
+            ></button>
             {pages.map((n) => (
-              <button key={n} id={n} onClick={this.goToPage} className="page overflow-pages">
+              <button
+                key={n}
+                id={n}
+                onClick={this.goToPage}
+                className="page overflow-pages"
+              >
                 {" "}
                 {n}{" "}
               </button>
             ))}
-            <button id="next" className="page fas fa-angle-right" onClick={this.getNext}></button>
-            <button id="last" className="page fas fa-angle-double-right" onClick={this.getLast}></button>
+            <button
+              id="next"
+              className="page fas fa-angle-right"
+              onClick={this.getNext}
+            ></button>
+            <button
+              id="last"
+              className="page fas fa-angle-double-right"
+              onClick={this.getLast}
+            ></button>
           </div>
         </div>
       </div>
