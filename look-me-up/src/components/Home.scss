@@ -84,18 +84,33 @@ $button: #9295f3;
 
     #voice {
       z-index: 1;
-      background-color: transparent;
+      background-color: transparent !important;
       border: none;
       color: aliceblue;
       font-size: 30px;
       transition: all 0.3s linear;
     }
 
-    #voice:hover,
-    .glow {
-      text-shadow: 0 0 5px #fff, 0 0 40px white, 0 0 20px white,
-        0 0 30px $button;
-      transition: all 0.3s linear;
+    #voice:hover {
+      text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+        0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
     }
+
+    .glow {
+      transition: all 0.3s linear !important;
+      animation: pulsate 1.2s infinite alternate;
+    }
+  }
+}
+
+//idea from https://css-tricks.com/how-to-create-neon-text-with-css/
+@keyframes pulsate {
+  0% {
+    text-shadow: 0 0 4px black, 0 0 11px #fff, 0 0 40px magenta,
+      0 0 50px $button, 0 0 60px $button, 0 0 70px cyan;
+  }
+  100% {
+    text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+      0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
   }
 }

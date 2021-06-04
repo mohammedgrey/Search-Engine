@@ -10,13 +10,12 @@ import {
 } from "../helpers/userSearchHistory";
 
 const Home = () => {
-  const [recording, setRecording] = useState(false);
-  //var recording = false;
   let history = useHistory();
   const [suggestions, setSuggestions] = useState(getSearchHistory());
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [queryString, setQueryString] = useState("");
 
+  //speech recognition
   const {
     error,
     isRecording,

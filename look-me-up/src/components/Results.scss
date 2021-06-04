@@ -98,7 +98,8 @@ $header: #141b2db9;
 }
 
 .search-button-2:hover {
-  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
+    0 0 50px $button;
 }
 
 .result-footer {
@@ -125,7 +126,8 @@ $header: #141b2db9;
 #last:hover {
   color: white;
   border-top: 2px white solid !important;
-  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
+    0 0 50px $button;
 }
 .page {
   border-top: 2px white solid !important;
@@ -163,8 +165,8 @@ $header: #141b2db9;
   transition: all 0.3s linear;
 }
 
-#voice2:hover,
-.glow {
-  text-shadow: 0 0 5px #fff, 0 0 30px $button, 0 0 40px $button;
-  transition: all 0.3s linear;
-}
+// #voice2:hover,
+// .glow {
+//   text-shadow: 0 0 5px #fff, 0 0 30px $button, 0 0 40px $button;
+//   transition: all 0.3s linear;
+// }
