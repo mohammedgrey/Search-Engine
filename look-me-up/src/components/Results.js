@@ -4,6 +4,11 @@ import "./Results.scss";
 import SearchResult from "./SearchResult";
 import useSpeechToText from "react-hook-speech-to-text";
 import { useHistory } from "react-router-dom";
+import { getSuggestions } from "../API/suggestions";
+import {
+  addToSearchHistory,
+  getSearchHistory,
+} from "../helpers/userSearchHistory";
 
 const Results = () => {
   let history = useHistory();
@@ -228,6 +233,8 @@ const Results = () => {
 
   const [queryString, setQueryString] = useState("");
   const [searchInput, setSearchInput] = useState("palestine");
+  const [suggestions, setSuggestions] = useState(getSearchHistory());
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [resultsPerPage, setResultsPerPage] = useState(8);
 
@@ -262,11 +269,27 @@ const Results = () => {
     //get the search query to send a request
     const qs = getParameterByName("q");
     setQueryString(qs);
-  });
+  }, []);
 
   //go to home page on logo click
   const goToHome = (e) => {
     history.push("/");
+  };
+
+  //To get the history of all users as suggestions
+  const handleQueryChange = async (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+    setQueryString(e.target.value);
+    setLoadingSuggestions(true);
+    try {
+      setSuggestions(await getSuggestions(e.target.value));
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoadingSuggestions(false);
+    }
+    console.log(queryString);
   };
 
   //when clicking on the search button
@@ -274,7 +297,8 @@ const Results = () => {
     e.preventDefault();
     var searchInput = document.getElementById("input").value;
     if (searchInput !== "") {
-      history.push("/Home/Results/");
+      addToSearchHistory(queryString);
+      history.push(`/Home/Results?q=${encodeURIComponent(queryString)}`);
     }
   };
 
@@ -283,7 +307,9 @@ const Results = () => {
     if (e.keyCode === 13) {
       var searchInput = document.getElementById("input").value;
       if (searchInput !== "") {
-        history.push("/Home/Results/");
+        console.log(queryString);
+        addToSearchHistory(queryString);
+        history.push(`/Home/Results?q=${encodeURIComponent(queryString)}`);
       }
     }
   };
@@ -353,6 +379,7 @@ const Results = () => {
               className="form-control"
               placeholder="Watcha lookin' for?"
               onKeyDown={searchEnter}
+              onChange={handleQueryChange}
               autoComplete="off"
               value={interimResult}
             ></input>
