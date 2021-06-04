@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
-
+import java.util.HashSet;
 import com.MFMM.server.helpers.FileHandler;
 import com.MFMM.server.helpers.URIHandler;
 
@@ -24,7 +24,7 @@ import org.jsoup.nodes.Element;
 public class CrawlerMain {
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        int NUM_OF_ROBOTS = 8;
+        int NUM_OF_ROBOTS = 100;
         Thread[] robots = new Thread[NUM_OF_ROBOTS];
         Crawler crawler = new Crawler();
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -56,7 +56,7 @@ public class CrawlerMain {
     static final class Crawler implements Runnable {
         // Members
         // private File[] listOfFiles;
-        private List<String> crawledPages;
+        private HashSet<String> crawledPages;
         private Queue<String> toCrawlPages;
         private final int CRAWLING_LIMIT = 5000;
         private final String NO_ROBOTS = "NO_ROBOTS";
@@ -104,14 +104,14 @@ public class CrawlerMain {
                 this.toCrawlPages = new LinkedList<>();
                 for (String singleSeed : initialSeed)
                     this.toCrawlPages.add(singleSeed);
-                this.crawledPages = new ArrayList<>(CRAWLING_LIMIT);
+                this.crawledPages = new HashSet<String>(CRAWLING_LIMIT);
                 return;
             }
             // "Crawled before" load the state from the file
             Queue<String> toCrawlPagesRead = (Queue<String>) FileHandler
                     .readFromFile(baseDirectory+"main/java/com/MFMM/server/crawlerState/toCrawl.txt", 1);
             this.toCrawlPages = toCrawlPagesRead;
-            this.crawledPages = crawledPagesRead;
+            this.crawledPages = new HashSet<String>(crawledPagesRead);
         }
 
         private Document downloadPage(String url) throws IOException {
