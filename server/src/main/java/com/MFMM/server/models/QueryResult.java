@@ -8,13 +8,16 @@ public class QueryResult {
     public String snippet;
     public String website;
     public List<String> keywords;
+    public List<String> missing;
 
-    public QueryResult(String url, String title, String snippet, String website, List<String> keywords) {
+    public QueryResult(String url, String title, String snippet, String website, List<String> keywords,
+            List<String> missing) {
         this.url = url;
         this.title = title;
         this.snippet = snippet;
         this.website = website;
         this.keywords = keywords;
+        this.missing = missing;
     }
 }
 
