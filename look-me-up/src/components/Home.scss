@@ -6,6 +6,7 @@ $button: #9295f3;
   font-size: 52px;
   align-items: center;
   height: 100vh;
+  min-height: 100vh;
   width: 100%;
   justify-content: center;
   background-image: url("./../galaxy1.jpg");
@@ -50,6 +51,7 @@ $button: #9295f3;
       color: aliceblue !important;
       transition: background-color 0.5s;
       transition: box-shadow 0.3s;
+      text-overflow: clip;
     }
     #home-input:focus {
       /*background-color: rgba(255,255,255,0.9) !important;
@@ -78,91 +80,39 @@ $button: #9295f3;
 
     .search-button:hover {
       transition: all 250ms linear;
-      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
+        0 0 50px $button;
     }
 
     #voice {
       z-index: 1;
-      background-color: transparent;
+      background-color: transparent !important;
       border: none;
       color: aliceblue;
       font-size: 30px;
       transition: all 0.3s linear;
     }
 
-    #voice:hover,
+    #voice:hover {
+      text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+        0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+    }
+
     .glow {
-      text-shadow: 0 0 5px #fff, 0 0 30px $button, 0 0 40px $button;
-      transition: all 0.3s linear;
+      transition: all 0.3s linear !important;
+      animation: pulsate 1.2s infinite alternate;
     }
   }
 }
 
-/*
-@keyframes star {
-  from {opacity: 1;}
-  to {opacity: 0;}
-}
-
-#star {
-  width:50px;
-  height:50px;
-  color: white !important;
-  font-size: 50px;
-  opacity: 1;
-  position: relative;
-  animation-name: star;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-
-@mixin dots($count) {
-  $text-shadow: ();
-  @for $i from 0 through $count {
-    $text-shadow: $text-shadow,
-                 (-.5+(random()) * 3) + em
-                 (-.5+(random()) * 3) + em
-                 7px
-                 hsla(random() * 360, 100%, 50%,.9);
+//idea from https://css-tricks.com/how-to-create-neon-text-with-css/
+@keyframes pulsate {
+  0% {
+    text-shadow: 0 0 4px black, 0 0 11px #fff, 0 0 40px magenta,
+      0 0 50px $button, 0 0 60px $button, 0 0 70px cyan;
   }
-  text-shadow: $text-shadow;
-}
-
-.home-body::before, .home-body::after {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 3em;
-  height: 2em;
-  content: '.';
-  mix-blend-mode: screen;
-  animation: 44s -27s move infinite ease-in-out alternate;
-}
-
-
-.home-body::before {
-  @include dots(40);
-  animation-duration: 44s;
-  animation-delay: -27s;
-}
-
-.home-body::after {
-  @include dots(40);
-  animation-duration: 43s;
-  animation-delay: -32s;
-}
-
-@keyframes move {
-  from {
-    transform: rotate(0deg) scale(12) translateX(-20px);
-  }
-  to {
-    transform: rotate(360deg) scale(18) translateX(20px);
+  100% {
+    text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+      0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
   }
 }
-
-*/
-
-/*------------------------------------*/

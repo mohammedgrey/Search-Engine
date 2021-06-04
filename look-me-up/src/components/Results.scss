@@ -20,6 +20,18 @@ $header: #141b2db9;
   padding-bottom: 20px;
   background-color: $header !important;
   display: inline-block !important;
+  // flex-wrap: wrap;
+  // justify-content: center;
+  // align-items: center;
+  // flex-direction: row;
+}
+.search-section-res {
+  text-align: center;
+  /*background: rgba(141, 139, 219, 0.1);*/
+  /*background: #141b2db9;*/
+  width: 70%;
+  height: 60%;
+  color: aliceblue !important;
 }
 
 .logo {
@@ -29,7 +41,39 @@ $header: #141b2db9;
   /*margin-right: 30px;*/
   //line-height: 1.4;
   padding-top: 10px;
-  width: 12%;
+  width: 200px;
+}
+
+@media (max-width: 700px) {
+  img {
+    width: 100px;
+  }
+  .logo {
+    width: 150px;
+  }
+}
+
+@media (max-width: 520px) {
+  .search-button-2 {
+    min-width: 50px !important;
+  }
+}
+@media (max-width: 380px) {
+  img {
+    display: none;
+    width: 0;
+  }
+  .logo {
+    display: none;
+    width: 0;
+  }
+  #input {
+    max-width: 90%;
+  }
+  .search-section-res {
+    padding-left: 20% !important;
+    padding-right: 20% !important;
+  }
 }
 
 .menu-icon {
@@ -58,7 +102,9 @@ $header: #141b2db9;
   min-width: 250px;
   border: 2px solid white;
   box-shadow: 0 0 2px #fff;
+  text-overflow: clip;
 }
+
 #input:hover {
   box-shadow: none;
   width: 50%;
@@ -85,8 +131,8 @@ $header: #141b2db9;
 .search-button-2 {
   color: white;
   background-color: $button;
-  height: 50px;
-  width: 50px;
+  height: 50px !important;
+  width: 50px !important;
   padding: 10px;
   border-radius: 25px;
   font-size: 20px;
@@ -98,7 +144,8 @@ $header: #141b2db9;
 }
 
 .search-button-2:hover {
-  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
+    0 0 50px $button;
 }
 
 .result-footer {
@@ -125,7 +172,8 @@ $header: #141b2db9;
 #last:hover {
   color: white;
   border-top: 2px white solid !important;
-  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
+    0 0 50px $button;
 }
 .page {
   border-top: 2px white solid !important;
@@ -162,9 +210,17 @@ $header: #141b2db9;
   font-size: 25px;
   transition: all 0.3s linear;
 }
-
-#voice2:hover,
-.glow {
-  text-shadow: 0 0 5px #fff, 0 0 30px $button, 0 0 40px $button;
-  transition: all 0.3s linear;
+#voice2:hover {
+  text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+    0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
 }
+.glow {
+  transition: all 0.3s linear !important;
+  animation: pulsate 1.2s infinite alternate;
+}
+
+// #voice2:hover,
+// .glow {
+//   text-shadow: 0 0 5px #fff, 0 0 30px $button, 0 0 40px $button;
+//   transition: all 0.3s linear;
+// }
