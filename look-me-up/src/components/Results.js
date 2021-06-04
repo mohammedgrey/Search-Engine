@@ -304,7 +304,7 @@ const Results = () => {
   //when clicking on the search button
   const search = (e) => {
     e.preventDefault();
-    var searchInput = document.getElementById("input").value;
+    // var searchInput = document.getElementById("input").value;
     if (searchInput !== "") {
       document.getElementById(currentPage).classList.remove("page-color");
       document.getElementById("1").classList.add("page-color");
@@ -316,7 +316,7 @@ const Results = () => {
   //when pressing enter
   const searchEnter = (e) => {
     if (e.keyCode === 13) {
-      var searchInput = document.getElementById("input").value;
+      // var searchInput = document.getElementById("input").value;
       if (searchInput !== "") {
         document.getElementById(currentPage).classList.remove("page-color");
         document.getElementById("1").classList.add("page-color");
