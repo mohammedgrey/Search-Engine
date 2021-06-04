@@ -2,7 +2,6 @@ package com.MFMM.server.Modules;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Hashtable;
@@ -22,22 +21,40 @@ import org.springframework.data.mongodb.core.query.Update;
 
 public class IndexerMain {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         String pathToDocuments = System.getProperty("user.dir").endsWith("Search-Engine")
                 ? "server/src/main/java/com/MFMM/server/documents"
                 : "src/main/java/com/MFMM/server/documents";
-        Indexer vocab = new Indexer(pathToDocuments);
-        vocab.indexDocuments();
+        int NUM_OF_ROBOTS = 20;
+        Thread[] robots = new Thread[NUM_OF_ROBOTS];
+        Indexer vocab = new Indexer(pathToDocuments, NUM_OF_ROBOTS);
+
+        for (int i = 0; i < NUM_OF_ROBOTS; i++) {
+            robots[i] = new Thread(vocab);
+            robots[i].setName(Integer.toString(i));
+        }
+        for (int i = 0; i < NUM_OF_ROBOTS; i++)
+            robots[i].start();
+
+        for (int i = 0; i < NUM_OF_ROBOTS; i++)
+            robots[i].join();
+
+        // vocab.calculateDFs();
+        // vocab.indexDocuments();
     }
 
-    static final class Indexer {
+    static final class Indexer implements Runnable {
         // Members
         File[] listOfFiles;
+        Hashtable<String, Integer> dfTable;
+        int numberOfRobots;
         MongoTemplate mongoTemplate;
 
-        public Indexer(String pathToResources) {
+        public Indexer(String pathToResources, int numberOfRobots) {
             File resourceFolder = new File(pathToResources);
             listOfFiles = resourceFolder.listFiles();
+            dfTable = new Hashtable<String, Integer>();
+            this.numberOfRobots = numberOfRobots;
             mongoTemplate = Database.template();
         }
 
@@ -50,12 +67,21 @@ public class IndexerMain {
             return "";
         }
 
-        public void indexDocuments() throws IOException {
-            Hashtable<String, Integer> dfTable = new Hashtable<String, Integer>();
-            for (File htmlFile : listOfFiles) {
+        @Override
+        public void run() {
 
+            for (int i = Integer
+                    .parseInt(Thread.currentThread().getName()); i < listOfFiles.length; i += this.numberOfRobots) {
+
+                if (i >= listOfFiles.length)
+                    break;
+                File htmlFile = listOfFiles[i];
                 // System.out.println("DOC:" + htmlFile.getName());
-                Document doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
+                Document doc = null;
+                try {
+                    doc = (Document) Jsoup.parse(htmlFile, "UTF-8");
+                } catch (IOException e) {
+                }
                 String fileName = htmlFile.getName();
                 if (fileName.indexOf(".") > 0)
                     fileName = fileName.substring(0, fileName.lastIndexOf("."));
@@ -64,7 +90,7 @@ public class IndexerMain {
                 String[] words = Preprocessor.preprocessing(doc.wholeText());
                 for (String word : words)
                     documentWords.add(word);
-                indexWords(doc, documentURL, dfTable, documentWords.size());
+                indexWords(doc, documentURL, documentWords.size());
                 // Save persistently to the database
                 mongoTemplate.upsert(
                         new Query(Criteria.where("_id").is(documentURL)), new Update().set("words", documentWords)
@@ -72,10 +98,12 @@ public class IndexerMain {
                         "docs");
                 // move the indexed file to another folder
                 FileHandler.moveFileWhenIndexed(fileName + ".html");
-                break;
+                // break;
             }
+        }
 
-            dfTable.forEach((word, df) -> {
+        public void calculateDFs() {
+            this.dfTable.forEach((word, df) -> {
                 Word prev;
                 try {
                     prev = mongoTemplate.findById(new Query(Criteria.where("_id").is(word)), Word.class);
@@ -112,14 +140,16 @@ public class IndexerMain {
                         indexWord(word, url, type, vocab);
         }
 
-        private void indexWords(Document doc, String url, Hashtable<String, Integer> dfTable, Integer docSize) {
+        private void indexWords(Document doc, String url, Integer docSize) {
             String[] types = { "p", "h1", "h2", "h3", "h4", "h5", "h6", "title" };
             List<Doc> vocab = new ArrayList<Doc>();
             for (String type : types)
                 findWordsForType(doc, url, type, vocab);
             for (Doc insertme : vocab) {
                 insertme.TF = insertme.getTotal() / Double.valueOf(docSize);
-                dfTable.put(insertme.word, dfTable.getOrDefault(insertme.word, 0) + 1);
+                synchronized (this.dfTable) {
+                    this.dfTable.put(insertme.word, dfTable.getOrDefault(insertme.word, 0) + 1);
+                }
                 mongoTemplate.upsert(new Query(Criteria.where("url").is(url).and("word").is(insertme.word)),
                         new Update().set("p", insertme.p).set("h1", insertme.h1).set("h2", insertme.h2)
                                 .set("h3", insertme.h3).set("h4", insertme.h4).set("h5", insertme.h5)
