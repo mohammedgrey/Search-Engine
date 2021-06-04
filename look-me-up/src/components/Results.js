@@ -264,9 +264,10 @@ const Results = () => {
 
   //update the query string from the URL every time the page loads
   useLayoutEffect(() => {
-    const page = getParameterByName("page");
-    setCurrentPage(page);
-    document.getElementById(currentPage).classList.add("page-color");
+    console.log("[] query:" + queryString);
+    // const page = getParameterByName("page");
+    // setCurrentPage(page);
+    // document.getElementById(currentPage).classList.add("page-color");
     //get the search query to send a request
     const qs = getParameterByName("q");
     setQueryString(qs);
@@ -274,6 +275,8 @@ const Results = () => {
 
   //Update URL if current page or query string changes
   useLayoutEffect(() => {
+    console.log("currentpage=" + currentPage);
+    console.log("query:" + queryString);
     document.getElementById(currentPage).classList.add("page-color");
     history.push(
       `/Home/Results?q=${encodeURIComponent(
@@ -376,10 +379,14 @@ const Results = () => {
     <div className="results-body">
       <div className="result-header navbar fixed-top">
         <span className="logo" onClick={goToHome}>
-          {" "}
-          LOOK ME UP{" "}
+          <img
+            src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png"
+            width="150px"
+            height="35px"
+          ></img>
+          {/* LOOK ME UP */}
         </span>
-        <div className="search-section search-bar">
+        <div className="search-section-res search-bar">
           <div className="d-flex align-items-center justify-content-left">
             <button
               id="voice2"

@@ -1,5 +1,5 @@
 //Speech recognition code from https://github.com/Riley-Brown/react-speech-to-text
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import useSpeechToText from "react-hook-speech-to-text";
 import { useHistory } from "react-router-dom";
 import "./Home.scss";
@@ -13,7 +13,7 @@ const Home = () => {
   let history = useHistory();
   const [suggestions, setSuggestions] = useState(getSearchHistory());
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
-  const [queryString, setQueryString] = useState("");
+  const [searchInput, setSearchInput] = useState("");
 
   //speech recognition
   const {
@@ -35,9 +35,8 @@ const Home = () => {
     e.preventDefault();
     var searchInput = document.getElementById("home-input").value;
     if (searchInput !== "") {
-      addToSearchHistory(queryString);
       history.push(
-        `/Home/Results?q=${encodeURIComponent(queryString)}&page=1&limit=10`
+        `/Home/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=10`
       );
     }
   };
@@ -45,20 +44,18 @@ const Home = () => {
   //when pressing enter in the search field
   const searchEnter = (e) => {
     if (e.keyCode === 13) {
-      var searchInput = document.getElementById("home-input").value;
       if (searchInput !== "") {
-        addToSearchHistory(queryString);
         history.push(
-          `/Home/Results?q=${encodeURIComponent(queryString)}&page=1&limit=10`
+          `/Home/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=10`
         );
       }
     }
   };
 
   //To get the history of all users as suggestions
-  const handleQueryChange = async (e) => {
+  const handleInputChange = async (e) => {
     e.preventDefault();
-    setQueryString(e.target.value);
+    setSearchInput(e.target.value);
     setLoadingSuggestions(true);
     try {
       setSuggestions(await getSuggestions(e.target.value));
@@ -72,8 +69,13 @@ const Home = () => {
   return (
     <div className="home-body">
       <div className="search-section">
-        <h1> LOOK ME UP </h1>
-        <h6> I got everything you need </h6>
+        <img
+          src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png"
+          width="662px"
+          height="280px"
+        ></img>
+        {/* <h1> LOOK ME UP </h1> */}
+        {/* <h6> I got everything you need </h6> */}
 
         <div className="d-flex align-items-center justify-content-center">
           <button
@@ -87,7 +89,7 @@ const Home = () => {
             className="form-control"
             placeholder="Watcha lookin' for?"
             onKeyDown={searchEnter}
-            onChange={handleQueryChange}
+            onChange={handleInputChange}
             value={interimResult}
             autoComplete="off"
           ></input>
