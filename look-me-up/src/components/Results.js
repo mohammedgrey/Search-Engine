@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useLayoutEffect } from "react";
 import getParameterByName from "../helpers/getParameterByName";
 import "./Results.scss";
 import SearchResult from "./SearchResult";
@@ -236,7 +236,7 @@ const Results = () => {
   const [suggestions, setSuggestions] = useState(getSearchHistory());
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [resultsPerPage, setResultsPerPage] = useState(8);
+  const [resultsPerPage, setResultsPerPage] = useState(10);
 
   //calculate the total number of pages
   const totalPagesNum = Math.ceil(results.length / resultsPerPage);
@@ -262,14 +262,25 @@ const Results = () => {
     speechRecognitionProperties: { interimResults: true },
   });
 
-  //on mounting
-  useEffect(() => {
-    //document.getElementById("input").value = searchInput;
+  //update the query string from the URL every time the page loads
+  useLayoutEffect(() => {
+    const page = getParameterByName("page");
+    setCurrentPage(page);
     document.getElementById(currentPage).classList.add("page-color");
     //get the search query to send a request
     const qs = getParameterByName("q");
     setQueryString(qs);
   }, []);
+
+  //Update URL if current page or query string changes
+  useLayoutEffect(() => {
+    document.getElementById(currentPage).classList.add("page-color");
+    history.push(
+      `/Home/Results?q=${encodeURIComponent(
+        queryString
+      )}&page=${currentPage}&limit=10`
+    );
+  }, [currentPage, queryString]);
 
   //go to home page on logo click
   const goToHome = (e) => {
@@ -277,10 +288,9 @@ const Results = () => {
   };
 
   //To get the history of all users as suggestions
-  const handleQueryChange = async (e) => {
+  const handleInputChange = async (e) => {
     e.preventDefault();
-    console.log(e.target.value);
-    setQueryString(e.target.value);
+    setSearchInput(e.target.value);
     setLoadingSuggestions(true);
     try {
       setSuggestions(await getSuggestions(e.target.value));
@@ -289,7 +299,6 @@ const Results = () => {
     } finally {
       setLoadingSuggestions(false);
     }
-    console.log(queryString);
   };
 
   //when clicking on the search button
@@ -297,8 +306,10 @@ const Results = () => {
     e.preventDefault();
     var searchInput = document.getElementById("input").value;
     if (searchInput !== "") {
-      addToSearchHistory(queryString);
-      history.push(`/Home/Results?q=${encodeURIComponent(queryString)}`);
+      document.getElementById(currentPage).classList.remove("page-color");
+      document.getElementById("1").classList.add("page-color");
+      setCurrentPage(1);
+      setQueryString(searchInput);
     }
   };
 
@@ -307,15 +318,17 @@ const Results = () => {
     if (e.keyCode === 13) {
       var searchInput = document.getElementById("input").value;
       if (searchInput !== "") {
-        console.log(queryString);
-        addToSearchHistory(queryString);
-        history.push(`/Home/Results?q=${encodeURIComponent(queryString)}`);
+        document.getElementById(currentPage).classList.remove("page-color");
+        document.getElementById("1").classList.add("page-color");
+        setCurrentPage(1);
+        setQueryString(searchInput);
       }
     }
   };
 
   //Change current page and adjust button color
   const goToPage = (e) => {
+    console.log(currentPage);
     document.getElementById(currentPage).classList.remove("page-color");
     setCurrentPage(Number(e.target.id));
     document.getElementById(Number(e.target.id)).classList.add("page-color");
@@ -379,7 +392,7 @@ const Results = () => {
               className="form-control"
               placeholder="Watcha lookin' for?"
               onKeyDown={searchEnter}
-              onChange={handleQueryChange}
+              onChange={handleInputChange}
               autoComplete="off"
               value={interimResult}
             ></input>

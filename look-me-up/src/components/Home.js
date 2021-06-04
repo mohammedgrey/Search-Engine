@@ -36,7 +36,9 @@ const Home = () => {
     var searchInput = document.getElementById("home-input").value;
     if (searchInput !== "") {
       addToSearchHistory(queryString);
-      history.push(`/Home/Results?q=${encodeURIComponent(queryString)}`);
+      history.push(
+        `/Home/Results?q=${encodeURIComponent(queryString)}&page=1&limit=10`
+      );
     }
   };
 
@@ -46,7 +48,9 @@ const Home = () => {
       var searchInput = document.getElementById("home-input").value;
       if (searchInput !== "") {
         addToSearchHistory(queryString);
-        history.push(`/Home/Results?q=${encodeURIComponent(queryString)}`);
+        history.push(
+          `/Home/Results?q=${encodeURIComponent(queryString)}&page=1&limit=10`
+        );
       }
     }
   };
