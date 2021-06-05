@@ -7,7 +7,8 @@ import java.util.HashSet;
 import java.util.Hashtable;
 
 public class Snippet {
-    final Integer STRING_MIN_LENGTH = 100;
+    final Integer STRING_MIN_WORDS = 40;
+    final Integer STRING_MIN_LENGTH = STRING_MIN_WORDS * 5;
 
     private String getStringOfQueue(Queue<String> queue, Integer end) {
         Integer limitCounter = Integer.valueOf(0);
@@ -23,16 +24,20 @@ public class Snippet {
     }
 
     private String extendSnippet(String resultText, String[] wholeText, Integer startIndex, Integer numberOfElements) {
+        Integer counter = Integer.valueOf(0);
         if (startIndex != 0) {
             for (int i = startIndex - 1; i >= 0; i--) {
                 resultText = wholeText[i] + " " + resultText;
-                if (resultText.length() >= STRING_MIN_LENGTH)
+                counter++;
+                if (counter == STRING_MIN_WORDS)
                     return resultText;
             }
-        } else if (startIndex + numberOfElements < wholeText.length) {
+        }
+        if (startIndex + numberOfElements < wholeText.length && counter != STRING_MIN_WORDS) {
             for (int i = startIndex + numberOfElements; i < wholeText.length; i++) {
                 resultText = resultText + " " + wholeText[i];
-                if (resultText.length() >= STRING_MIN_LENGTH)
+                counter++;
+                if (counter == STRING_MIN_WORDS)
                     return resultText;
             }
         }
@@ -46,7 +51,6 @@ public class Snippet {
         Queue<String> matchQueue = new LinkedList<String>();
         Hashtable<String, Integer> processedKeyWords = new Hashtable<String, Integer>();
         HashSet<String> allKeyWords = new HashSet<String>(keywords);
-
         // Initialize result variables
         String result = new String("");
         Integer minSize = Integer.MAX_VALUE;
@@ -110,8 +114,32 @@ public class Snippet {
                 matchQueue.add(word);
         }
 
-        // Check if the string is long enough
-        if (result.length() < STRING_MIN_LENGTH)
+        // Check if the length is equal zero
+        if (result.length() == 0 && matchQueue.size() != 0) {
+            Integer counter = Integer.valueOf(0);
+            StringBuilder snippetBuilder = new StringBuilder();
+            for (String word : matchQueue) {
+                snippetBuilder.append(word + " ");
+                counter++;
+                if (counter == STRING_MIN_WORDS) {
+                    result = snippetBuilder.toString();
+                    break;
+                }
+            }
+
+            result = snippetBuilder.toString();
+        } else if (result.length() == 0 && matchQueue.size() == 0) {
+            Integer counter = Integer.valueOf(0);
+            StringBuilder snippetBuilder = new StringBuilder();
+            for (String word : wholeText) {
+                snippetBuilder.append(word + " ");
+                counter++;
+                if (counter == STRING_MIN_WORDS) {
+                    result = snippetBuilder.toString();
+                    break;
+                }
+            }
+        } else if (result.length() < STRING_MIN_LENGTH) // Check if the string is long enough
             return extendSnippet(result, wholeText, startIndex, minSize);
 
         return result;

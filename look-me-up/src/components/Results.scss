@@ -144,8 +144,7 @@ $header: #141b2db9;
 }
 
 .search-button-2:hover {
-  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
-    0 0 50px $button;
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
 }
 
 .result-footer {
@@ -166,15 +165,15 @@ $header: #141b2db9;
   }
 }
 
-#previous:hover,
-#next:hover,
-#first:hover,
-#last:hover {
+.previous:hover,
+.next:hover,
+.first:hover,
+.last:hover {
   color: white;
   border-top: 2px white solid !important;
-  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
-    0 0 50px $button;
+  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
 }
+
 .page {
   border-top: 2px white solid !important;
   padding-right: 3px;
@@ -195,6 +194,14 @@ $header: #141b2db9;
   border-top: 2px #9295f3 solid !important;
   transition: all 0.2s linear;
 }
+.disabled-button {
+  color: gray !important;
+}
+.disabled-button:hover {
+  text-shadow: none;
+  color: gray !important;
+  border-top: 2px white solid !important;
+}
 
 .page-color {
   color: #9295f3;
@@ -211,8 +218,7 @@ $header: #141b2db9;
   transition: all 0.3s linear;
 }
 #voice2:hover {
-  text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
-    0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+  text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
 }
 .glow {
   transition: all 0.3s linear !important;

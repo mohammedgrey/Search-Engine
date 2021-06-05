@@ -17,9 +17,17 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.HashSet;
 
 public class FileHandler {
     public static void writeToFile(List<String> data, String filePath) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+        for (String line : data)
+            writer.write(line + "\n");
+        writer.close();
+    }
+    
+    public static void writeToFile(HashSet<String> data, String filePath) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
         for (String line : data)
             writer.write(line + "\n");

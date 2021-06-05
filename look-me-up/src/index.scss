@@ -32,10 +32,44 @@ code {
 }
 
 .center-me {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.loading-gif {
+  width: 150px !important;
+  height: 120px !important;
+  color: #141b2d;
+}
+
+.rotateimg180 {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.rotate {
+  animation: rotation 2s;
+}
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+.linear {
+  animation-timing-function: linear !important;
+}
+.infinite {
+  animation-iteration-count: infinite !important;
+}
+.rotate-image {
+  animation: rotation 2s linear infinite !important;
 }
 
 /*

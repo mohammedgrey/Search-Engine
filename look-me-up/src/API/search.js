@@ -1,9 +1,11 @@
 import axios from "./index";
 
-export const getSearchResults = async (Queryparameters) => {
+export const getSearchResults = async (searchQuery) => {
   return (
     await axios.get(`/search`, {
-      params: Queryparameters,
+      params: {
+        q: searchQuery,
+      },
     })
   ).data;
 };
