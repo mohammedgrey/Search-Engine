@@ -10,9 +10,34 @@ $button: #9295f3;
   width: 100%;
   justify-content: center;
   background-image: url("./../galaxy1.jpg");
+  background-size: cover;
   /*color: transparent;*/
 }
 
+#home-logo {
+  min-width: 50vw;
+}
+
+@media (max-width: 40
+0px) {
+  #home-logo {
+    height: 70px;
+  }
+
+  .search-button {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 8px !important;
+  }
+
+  #home-input {
+    height: 30px !important;
+    font-size: 10px;
+  }
+  #voice {
+    font-size: 15px !important;
+  }
+}
 .search-section {
   text-align: center;
   /*background: rgba(141, 139, 219, 0.1);*/
