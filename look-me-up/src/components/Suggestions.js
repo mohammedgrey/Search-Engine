@@ -1,6 +1,6 @@
 import React from "react";
-
 import "./Suggestions.scss";
+
 const Suggestions = ({ suggestions }) => {
   return (
     <div className="suggestions-list">
