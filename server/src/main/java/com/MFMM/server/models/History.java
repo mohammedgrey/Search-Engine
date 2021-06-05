@@ -2,18 +2,18 @@ package com.MFMM.server.models;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
 
 @Document("history")
 public class History {
-    @Field
-    public String sentence;
+    @Id
+    public String _id;
 
     public History() {
     }
 
     public History(String sentence) {
-        this.sentence = sentence;
+        this._id = sentence;
     }
-
 }

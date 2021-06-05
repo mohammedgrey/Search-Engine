@@ -18,11 +18,13 @@
         <li><h4 style="color: #101322;">
             <strong>/search</strong>
         </h4></li>
-        <p>To search for a specific sentence </p>
+        <p>To search for a specific sentence. Returns the results paginated based on the given limit and page, and the number of total results found </p>
         <p><strong>GET</strong></p>
         <p><strong>Query Parameters:</strong></p>
         <ul>
             <li>q: the search query string (must be encoded while sending the request)</li>
+            <li>page: the page number (for pagination.) The default is 1</li>
+            <li>limit: the maximum number of results per page (for pagination.) The default is 10</li>
         </ul>
         <p><strong>Full url example:</strong></p>
         <p>https://lookme-up.herokuapp.com/search?q=anime%20empire%20bookshelf</p>
@@ -33,8 +35,9 @@
         <p>"title":"29 Best Anime Series of All Time - 2021 -MerchDope",</p>
         <p>"snippet":"",</p>
         <p>"website":"MerchDope",</p>
-        <p>"keywords":["anime","empire"]}</p>
-        <p>"missing":["bookshelf"]}</p>
+        <p>"totalResultsFound":300</p>
+        <!-- <p>"keywords":["anime","empire"]}</p>
+        <p>"missing":["bookshelf"]}</p> -->
         <p>]</p>
         </p>
         <li>

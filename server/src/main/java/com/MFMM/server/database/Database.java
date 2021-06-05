@@ -17,4 +17,11 @@ public class Database {
         return new MongoTemplate(mongoClient, "searchEngine");
     }
 
+    public static MongoClient getMongoClient() {
+        ConnectionString connString = new ConnectionString(System.getenv("searchEngineDbURI"));
+        MongoClientSettings settings = MongoClientSettings.builder().applyConnectionString(connString).retryWrites(true)
+                .build();
+        return MongoClients.create(settings);
+    }
+
 }

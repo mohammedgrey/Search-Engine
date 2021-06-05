@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import com.MFMM.server.models.QueryResult;
+import com.MFMM.server.models.QueryResults;
 import com.MFMM.server.Modules.Preprocessor;
 import com.MFMM.server.database.Database;
 import com.MFMM.server.helpers.ArrayStringMethods;
@@ -41,19 +42,26 @@ public class VocabularyController {
 
     @GetMapping("/search")
     @CrossOrigin
-    public List<QueryResult> search(@RequestParam(defaultValue = "") String q) {
+    public QueryResults search(@RequestParam(defaultValue = "") String q, @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit) {
         List<QueryResult> results = new ArrayList<>();
         String qString = "";
         try {
             qString = URLDecoder.decode(q, "UTF-8");
         } catch (UnsupportedEncodingException e) {
         }
-        this.mongoTemplate.save(new History(qString), "history");
+        try {
+            System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + "Saved to history maybe" + "\n\n\n\n");
+            this.mongoTemplate.insert(new History(qString), "history");
+            System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + "Saved to history akeed" + "\n\n\n\n");
+        } catch (Exception e) {
+        }
 
         String[] toSearchWords = Preprocessor.preprocessing(qString);
 
+        System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + toSearchWords.length + "\n\n\n\n");
         if (toSearchWords.length == 0)
-            return Collections.emptyList();
+            return new QueryResults(0, Collections.emptyList());
 
         List<Criteria> orList = new ArrayList<Criteria>();
         for (String word : toSearchWords)
@@ -62,13 +70,16 @@ public class VocabularyController {
         List<Doc> docs = this.mongoTemplate
                 .find(new Query((new Criteria()).orOperator(orList.toArray(new Criteria[orList.size()]))), Doc.class);
 
+        if (docs == null || docs.size() == 0)
+            return new QueryResults(0, Collections.emptyList());
         // Hashtable<String, List<String>> UrlkeyWords = new Hashtable<String,
         // List<String>>();
         // get the unique urls
         HashSet<String> URLsSet = new HashSet<String>();
         for (int i = 0; i < docs.size(); i++)
             URLsSet.add(docs.get(i).url);
-        System.out.println("Found urls number is " + URLsSet.size());
+        int totalResultsFound = URLsSet.size();
+        System.out.println("Found urls number is " + totalResultsFound);
 
         // {
         // Doc result = docs.get(i);
@@ -85,9 +96,9 @@ public class VocabularyController {
         for (String url : URLsSet)
             orURLs.add((new Criteria()).and("_id").is(url));
 
-        List<Docs> Documentpages = this.mongoTemplate.find(
-                new Query((new Criteria()).orOperator(orURLs.toArray(new Criteria[orURLs.size()]))).limit(10).skip(0),
-                Docs.class);
+        List<Docs> Documentpages = this.mongoTemplate
+                .find(new Query((new Criteria()).orOperator(orURLs.toArray(new Criteria[orURLs.size()]))).limit(limit)
+                        .skip((page - 1) * limit), Docs.class);
 
         for (Docs Documentpage : Documentpages) {
             // Docs Documentpage = null;
@@ -121,7 +132,7 @@ public class VocabularyController {
             // }
 
         }
-        return results;
+        return new QueryResults(totalResultsFound, results);
     }
 
 }
