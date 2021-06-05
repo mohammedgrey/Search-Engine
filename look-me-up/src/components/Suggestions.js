@@ -7,7 +7,7 @@ const Suggestions = ({ suggestions }) => {
       {suggestions.map((suggestion) => {
         return (
           <div className="suggestion-item">
-            <p>{suggestion.sentence}</p>
+            <p>{suggestion._id}</p>
           </div>
         );
       })}

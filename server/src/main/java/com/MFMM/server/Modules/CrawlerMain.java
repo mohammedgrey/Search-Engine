@@ -14,6 +14,7 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.HashSet;
+import java.util.regex.Matcher;
 import com.MFMM.server.helpers.FileHandler;
 import com.MFMM.server.helpers.URIHandler;
 
@@ -61,10 +62,8 @@ public class CrawlerMain {
         private final int CRAWLING_LIMIT = 5000;
         private final String NO_ROBOTS = "NO_ROBOTS";
         AtomicInteger workingRobots;
-        
-        String baseDirectory = System.getProperty("user.dir").endsWith("Search-Engine")
-                ? "server/src/"
-                : "src/";
+
+        String baseDirectory = System.getProperty("user.dir").endsWith("Search-Engine") ? "server/src/" : "src/";
 
         public Crawler() throws IOException {
             loadState();
@@ -84,23 +83,81 @@ public class CrawlerMain {
             return NO_ROBOTS;
         }
 
+        public String difference(String str1, String str2) {
+            if (str1 == null) {
+                return str2;
+            }
+            if (str2 == null) {
+                return str1;
+            }
+            int at = indexOfDifference(str1, str2);
+            if (at == -1) {
+                return null;
+            }
+            return str2.substring(at);
+        }
+
+        public int indexOfDifference(CharSequence cs1, CharSequence cs2) {
+            if (cs1 == cs2) {
+                return -1;
+            }
+            if (cs1 == null || cs2 == null) {
+                return 0;
+            }
+            int i;
+            for (i = 0; i < cs1.length() && i < cs2.length(); ++i) {
+                if (cs1.charAt(i) != cs2.charAt(i)) {
+                    break;
+                }
+            }
+            if (i < cs2.length() || i < cs1.length()) {
+                return i;
+            }
+            return -1;
+        }
+
         public boolean IamAllowedToCrawl(String url) {
             // Useful article as a reference: https://moz.com/learn/seo/robotstxt
+            Matcher matcher = Pattern.compile("^(http(s?)://([^/]+))").matcher(url);
+            String path = "";
+            if (matcher.find()) {
+                String domain = matcher.group(1);
+                path = difference(domain, url);
+                System.out.println("path:" + path);
+            }
             String robotsDotTxt = readRobotsTxt(url);
-
-            // TODO: check the robots.txt with some regex and return whether we are
-            // allowed to visit the passed in url or not
-            // System.out.println(robotsDotTxt);
+            String[] r = robotsDotTxt.split("User-Agent:\\s*|User-agent:\\s*|user-agent:\\s*|user-Agent:\\s*");
+            String[] disallowed, allowed;
+            for (int i = 0; i < r.length; i++) {
+                if (r[i].length() != 0 && r[i].charAt(0) == '*') // User agents that the search engine bot belongs to
+                {
+                    String[] splitNewLine = r[i].split("\n");
+                    for (int x = 0; x < splitNewLine.length; x++) {
+                        disallowed = splitNewLine[x].split("Disallow:\\s+");
+                        allowed = splitNewLine[x].split("Allow:\\s+");
+                        for (int j = 0; j < allowed.length; j++) {
+                            if (path.equals(allowed[j])) {
+                                return true;
+                            }
+                        }
+                        for (int j = 0; j < disallowed.length; j++) {
+                            if (disallowed[j].length() != 0 && path.indexOf(disallowed[j]) != -1) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
             return true;
         }
 
         private void loadState() throws IOException {
             List<String> crawledPagesRead = (List<String>) FileHandler
-                    .readFromFile(baseDirectory+"main/java/com/MFMM/server/crawlerState/crawled.txt", 0);
+                    .readFromFile(baseDirectory + "main/java/com/MFMM/server/crawlerState/crawled.txt", 0);
             if (crawledPagesRead.size() == 0) {
                 // First time crawling ever
                 List<String> initialSeed = (List<String>) FileHandler
-                        .readFromFile(baseDirectory+"main/java/com/MFMM/server/crawlerState/initialSeed.txt", 0);
+                        .readFromFile(baseDirectory + "main/java/com/MFMM/server/crawlerState/initialSeed.txt", 0);
                 this.toCrawlPages = new LinkedList<>();
                 for (String singleSeed : initialSeed)
                     this.toCrawlPages.add(singleSeed);
@@ -109,7 +166,7 @@ public class CrawlerMain {
             }
             // "Crawled before" load the state from the file
             Queue<String> toCrawlPagesRead = (Queue<String>) FileHandler
-                    .readFromFile(baseDirectory+"main/java/com/MFMM/server/crawlerState/toCrawl.txt", 1);
+                    .readFromFile(baseDirectory + "main/java/com/MFMM/server/crawlerState/toCrawl.txt", 1);
             this.toCrawlPages = toCrawlPagesRead;
             this.crawledPages = new HashSet<String>(crawledPagesRead);
         }
@@ -132,7 +189,8 @@ public class CrawlerMain {
         }
 
         private void saveHTMLFile(String str, String fileName) throws IOException {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(baseDirectory + "main/java/com/MFMM/server/documents/" + fileName));
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter(baseDirectory + "main/java/com/MFMM/server/documents/" + fileName));
             writer.write(str);
             writer.close();
         }
@@ -175,8 +233,10 @@ public class CrawlerMain {
 
         public void saveState() {
             try {
-                FileHandler.writeToFile(crawledPages, baseDirectory+"main/java/com/MFMM/server/crawlerState/crawled.txt");
-                FileHandler.writeToFile(toCrawlPages, baseDirectory+"main/java/com/MFMM/server/crawlerState/toCrawl.txt");
+                FileHandler.writeToFile(crawledPages,
+                        baseDirectory + "main/java/com/MFMM/server/crawlerState/crawled.txt");
+                FileHandler.writeToFile(toCrawlPages,
+                        baseDirectory + "main/java/com/MFMM/server/crawlerState/toCrawl.txt");
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
@@ -235,7 +295,7 @@ public class CrawlerMain {
                             }
                         } catch (IOException e) {
                             System.out.println("DONLOADING INTERRUPTED");
-                            //e.printStackTrace();
+                            // e.printStackTrace();
                         }
 
                     }

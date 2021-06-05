@@ -1,7 +1,5 @@
 package com.MFMM.server.models;
 
-import java.util.List;
-
 public class QueryResult {
     public String url;
     public String title;

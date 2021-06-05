@@ -34,10 +34,8 @@ public class HistoryController {
             qString = URLDecoder.decode(q, "UTF-8");
         } catch (UnsupportedEncodingException e) {
         }
-        Criteria regex = Criteria.where("sentence").regex("^" + qString, "i");
+        Criteria regex = Criteria.where("_id").regex("^" + qString, "i");
         return template.find(new Query().addCriteria(regex).limit(10), History.class);
-        // "sentence"
-        // "history"
     }
 
 }
