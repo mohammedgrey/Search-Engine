@@ -1,0 +1,20 @@
+.suggestions-list {
+  position: absolute;
+  width: inherit;
+  max-width: 80%;
+  left: 50%;
+  top: 60px;
+  transform: translateX(-50%);
+  background-color: rgb(230, 230, 230);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.suggestion-item {
+  width: 100%;
+  padding: 2px 0px;
+
+  font-size: 1rem;
+  color: #000;
+}

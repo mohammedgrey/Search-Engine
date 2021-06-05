@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import "./Home.scss";
 import { getSuggestions } from "../API/suggestions";
 import { addToSearchHistory, getSearchHistory } from "../helpers/userSearchHistory";
+import Suggestions from "./Suggestions";
 
 const Home = () => {
   let history = useHistory();
@@ -59,7 +60,7 @@ const Home = () => {
         {/* <h1> LOOK ME UP </h1> */}
         {/* <h6> I got everything you need </h6> */}
 
-        <div className="d-flex align-items-center justify-content-center">
+        <div className="d-flex align-items-center justify-content-center" style={{ position: "relative" }}>
           <button id="voice" className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")} onClick={isRecording ? stopSpeechToText : startSpeechToText}></button>
           <input
             id="home-input"
@@ -72,6 +73,7 @@ const Home = () => {
             autoComplete="off"
           ></input>
           <button className="fas fa-search search-button" onClick={search}></button>
+          {true && <Suggestions suggestions={suggestions} />}
         </div>
       </div>
     </div>
