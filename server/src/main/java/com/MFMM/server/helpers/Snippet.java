@@ -1,12 +1,11 @@
-package com.MFMM.server.helpers;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.HashSet;
 import java.util.Hashtable;
 
-public class Snippet {
+public class snippetGetter {
+
     final Integer STRING_MIN_LENGTH = 100;
 
     private String getStringOfQueue(Queue<String> queue, Integer end) {
@@ -23,16 +22,19 @@ public class Snippet {
     }
 
     private String extendSnippet(String resultText, String[] wholeText, Integer startIndex, Integer numberOfElements) {
+        Integer counter = Integer.valueOf(0);
         if (startIndex != 0) {
             for (int i = startIndex - 1; i >= 0; i--) {
                 resultText = wholeText[i] + " " + resultText;
-                if (resultText.length() >= STRING_MIN_LENGTH)
+                counter++;
+                if (counter == STRING_MIN_LENGTH)
                     return resultText;
             }
         } else if (startIndex + numberOfElements < wholeText.length) {
             for (int i = startIndex + numberOfElements; i < wholeText.length; i++) {
                 resultText = resultText + " " + wholeText[i];
-                if (resultText.length() >= STRING_MIN_LENGTH)
+                counter++;
+                if (counter == STRING_MIN_LENGTH)
                     return resultText;
             }
         }
@@ -46,7 +48,6 @@ public class Snippet {
         Queue<String> matchQueue = new LinkedList<String>();
         Hashtable<String, Integer> processedKeyWords = new Hashtable<String, Integer>();
         HashSet<String> allKeyWords = new HashSet<String>(keywords);
-
         // Initialize result variables
         String result = new String("");
         Integer minSize = Integer.MAX_VALUE;
@@ -110,6 +111,19 @@ public class Snippet {
                 matchQueue.add(word);
         }
 
+        // Check if the length is equal zero
+        if (result.length() == 0) {
+            Integer counter = Integer.valueOf(0);
+            StringBuilder snippetBuilder = new StringBuilder();
+            for (String word : matchQueue) {
+                snippetBuilder.append(word + " ");
+                counter++;
+                if (counter == STRING_MIN_LENGTH)
+                    break;
+            }
+
+            result = snippetBuilder.toString();
+        }
         // Check if the string is long enough
         if (result.length() < STRING_MIN_LENGTH)
             return extendSnippet(result, wholeText, startIndex, minSize);

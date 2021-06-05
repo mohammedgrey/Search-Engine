@@ -25,7 +25,7 @@ public class IndexerMain {
         String pathToDocuments = System.getProperty("user.dir").endsWith("Search-Engine")
                 ? "server/src/main/java/com/MFMM/server/documents"
                 : "src/main/java/com/MFMM/server/documents";
-        int NUM_OF_ROBOTS = 20;
+        int NUM_OF_ROBOTS = 150;
         Thread[] robots = new Thread[NUM_OF_ROBOTS];
         Indexer vocab = new Indexer(pathToDocuments, NUM_OF_ROBOTS);
 
