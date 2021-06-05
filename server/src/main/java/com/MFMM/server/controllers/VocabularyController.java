@@ -68,6 +68,7 @@ public class VocabularyController {
         HashSet<String> URLsSet = new HashSet<String>();
         for (int i = 0; i < docs.size(); i++)
             URLsSet.add(docs.get(i).url);
+        System.out.println("Found urls number is " + URLsSet.size());
 
         // {
         // Doc result = docs.get(i);
@@ -80,36 +81,44 @@ public class VocabularyController {
         // listKeywords.add(result.word);
         // }
 
-        for (String url : URLsSet) {
-            Docs Documentpage = null;
-            try {
-                Documentpage = mongoTemplate.findById(url, Docs.class);
-            } catch (Exception e) {
-            }
-            if (Documentpage != null) {
-                // List<String> keywords = UrlkeyWords.get(url);
+        List<Criteria> orURLs = new ArrayList<Criteria>();
+        for (String url : URLsSet)
+            orURLs.add((new Criteria()).and("_id").is(url));
 
-                // get the original and missing keywords from the stemmed ones
-                // List<String> originalKeyWords = new ArrayList<>();
-                // List<String> missingKeyWords = new ArrayList<>();
+        List<Docs> Documentpages = this.mongoTemplate.find(
+                new Query((new Criteria()).orOperator(orURLs.toArray(new Criteria[orURLs.size()]))).limit(10).skip(0),
+                Docs.class);
 
-                // for (String wordSearched : qString.split("\\s+")) {
-                // String[] potentialWords = Preprocessor.preprocessing(wordSearched);
-                // if (potentialWords.length != 0)
-                // if (keywords.contains(potentialWords[0]))
-                // originalKeyWords.add(wordSearched);
-                // else
-                // missingKeyWords.add(wordSearched);
-                // }
+        for (Docs Documentpage : Documentpages) {
+            // Docs Documentpage = null;
+            // try {
+            // Documentpage = mongoTemplate.findById(url, Docs.class);
+            // } catch (Exception e) {
+            // }
+            // if (Documentpage != null) {
+            // List<String> keywords = UrlkeyWords.get(url);
 
-                results.add(new QueryResult(Documentpage._id, Documentpage.title,
-                        new Snippet().getSnippet(
-                                ArrayStringMethods.concatArrays(Documentpage.title.split("\\s+"),
-                                        Documentpage.text.split("\\s+")),
-                                Arrays.asList(ArrayStringMethods.concatArrays(toSearchWords, qString.split("\\s+")))),
-                        Documentpage.website));
+            // get the original and missing keywords from the stemmed ones
+            // List<String> originalKeyWords = new ArrayList<>();
+            // List<String> missingKeyWords = new ArrayList<>();
 
-            }
+            // for (String wordSearched : qString.split("\\s+")) {
+            // String[] potentialWords = Preprocessor.preprocessing(wordSearched);
+            // if (potentialWords.length != 0)
+            // if (keywords.contains(potentialWords[0]))
+            // originalKeyWords.add(wordSearched);
+            // else
+            // missingKeyWords.add(wordSearched);
+            // }
+
+            results.add(new QueryResult(Documentpage._id, Documentpage.title,
+                    new Snippet().getSnippet(
+                            ArrayStringMethods.concatArrays(Documentpage.title.split("\\s+"),
+                                    Documentpage.text.split("\\s+")),
+                            Arrays.asList(ArrayStringMethods.concatArrays(toSearchWords, qString.split("\\s+")))),
+                    Documentpage.website));
+
+            // }
 
         }
         return results;
