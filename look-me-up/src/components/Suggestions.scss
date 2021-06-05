@@ -5,20 +5,35 @@
   left: 50%;
   top: 60px;
   transform: translateX(-50%);
-  background-color: transparent;
+  background-color: #9295f323;
   color: aliceblue;
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  border: 2px solid aliceblue;
+  border-top: none !important;
+  border: 3px solid aliceblue;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .suggestion-item {
   width: 100%;
   height: 40px;
+  margin-top: -1px;
   padding: 2px 0px;
   font-size: 1rem;
-  border-top: 1px solid aliceblue;
+  border-top: 1px solid #9295f3a4;
   background-color: transparent !important;
   text-align: center !important;
+  z-index: 100;
+}
+
+.suggestion-item:hover {
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 15px #fff;
+  transition: all 0.15s linear;
+}
+
+#suggestion-p {
+  //text-align: center;
+  line-height: 30px;
 }

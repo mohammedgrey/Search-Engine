@@ -34,7 +34,6 @@ const Home = () => {
   //when clicking on the search button
   const search = (e) => {
     e.preventDefault();
-    var searchInput = document.getElementById("home-input").value;
     if (searchInput !== "") {
       history.push(`/Results?q=${encodeURIComponent(searchInput)}&page=1`);
     }
