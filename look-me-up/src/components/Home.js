@@ -34,7 +34,6 @@ const Home = () => {
   //when clicking on the search button
   const search = (e) => {
     e.preventDefault();
-    var searchInput = document.getElementById("home-input").value;
     if (searchInput !== "") {
       history.push(`/Results?q=${encodeURIComponent(searchInput)}&page=1`);
     }
@@ -63,6 +62,7 @@ const Home = () => {
     }
   };
 
+  var inputNotEmpty = searchInput !== "";
   return (
     <div className="home-body">
       <div className="search-section">
@@ -97,7 +97,7 @@ const Home = () => {
             className="fas fa-search search-button"
             onClick={search}
           ></button>
-          {true && <Suggestions suggestions={suggestions} />}
+          {inputNotEmpty && <Suggestions suggestions={suggestions} />}
         </div>
       </div>
     </div>
