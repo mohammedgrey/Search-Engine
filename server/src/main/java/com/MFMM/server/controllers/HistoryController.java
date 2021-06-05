@@ -35,7 +35,9 @@ public class HistoryController {
         } catch (UnsupportedEncodingException e) {
         }
         Criteria regex = Criteria.where("sentence").regex("^" + qString, "i");
-        return template.findDistinct(new Query().addCriteria(regex).limit(10), "sentence", "history", History.class);
+        return template.find(new Query().addCriteria(regex).limit(10), History.class);
+        // "sentence"
+        // "history"
     }
 
 }
