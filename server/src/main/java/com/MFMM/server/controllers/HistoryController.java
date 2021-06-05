@@ -36,6 +36,7 @@ public class HistoryController {
         }
         Criteria regex = Criteria.where("_id").regex("^" + qString, "i");
         return template.find(new Query().addCriteria(regex).limit(10), History.class);
+
     }
 
 }

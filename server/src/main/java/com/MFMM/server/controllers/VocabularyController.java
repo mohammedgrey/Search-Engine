@@ -10,7 +10,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 
 import com.MFMM.server.models.QueryResult;
 import com.MFMM.server.models.QueryResults;
@@ -52,7 +51,7 @@ public class VocabularyController {
         }
         try {
             System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + "Saved to history maybe" + "\n\n\n\n");
-            this.mongoTemplate.insert(new History(qString), "history");
+            this.mongoTemplate.insert(new History("" + qString.trim()), "history");
             System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + "Saved to history akeed" + "\n\n\n\n");
         } catch (Exception e) {
         }
@@ -122,11 +121,10 @@ public class VocabularyController {
             // missingKeyWords.add(wordSearched);
             // }
 
-            results.add(new QueryResult(Documentpage._id, Documentpage.title,
-                    new Snippet().getSnippet(
-                            ArrayStringMethods.concatArrays(Documentpage.title.split("\\s+"),
-                                    Documentpage.text.split("\\s+")),
-                            Arrays.asList(ArrayStringMethods.concatArrays(toSearchWords, qString.split("\\s+")))),
+            results.add(new QueryResult(Documentpage._id, Documentpage.title, new Snippet().getSnippet(
+                    ArrayStringMethods.concatArrays(Documentpage.title.replaceAll("\\<.*?\\>", "").split("\\s+"),
+                            Documentpage.text.replaceAll("\\<.*?\\>", "").split("\\s+")),
+                    Arrays.asList(ArrayStringMethods.concatArrays(toSearchWords, qString.split("\\s+")))),
                     Documentpage.website));
 
             // }

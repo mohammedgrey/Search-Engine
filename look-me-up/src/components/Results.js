@@ -123,23 +123,25 @@ const Results = () => {
   const search = (e) => {
     e.preventDefault();
     if (queryString !== "") {
-      history.push(`/Results?q=${encodeURIComponent(queryString)}&page=1`);
+      addToSearchHistory(queryString);
+      history.push(`/Results?q=${encodeURIComponent(queryString)}&page=1&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
     }
   };
 
   //when pressing enter
   const searchEnter = (e) => {
     if (e.keyCode === 13) {
-      if (queryString !== "") history.push(`/Results?q=${encodeURIComponent(queryString)}&page=${1}`);
+      addToSearchHistory(queryString);
+      if (queryString !== "") history.push(`/Results?q=${encodeURIComponent(queryString)}&page=${1}&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
     }
   };
 
   //Manage Page Changes
   const goToPage = (e) => {
-    history.push(`/Results?q=${encodeURIComponent(queryString)}&page=${+e.target.id}`);
+    history.push(`/Results?q=${encodeURIComponent(queryString)}&page=${+e.target.id}&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
   };
   const goToThisPage = (pageNumber) => {
-    history.push(`/Results?q=${encodeURIComponent(queryString)}&page=${pageNumber}`);
+    history.push(`/Results?q=${encodeURIComponent(queryString)}&page=${pageNumber}&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
   };
 
   //Disable prev and next if on the first or last page

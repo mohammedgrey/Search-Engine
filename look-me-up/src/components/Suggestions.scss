@@ -26,11 +26,13 @@
   background-color: transparent !important;
   text-align: center !important;
   z-index: 100;
+  cursor: pointer;
 }
 
 .suggestion-item:hover {
   box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 15px #fff;
   transition: all 0.15s linear;
+  cursor: pointer !important;
 }
 
 #suggestion-p {
