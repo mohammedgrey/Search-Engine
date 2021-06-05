@@ -12,7 +12,7 @@ function App() {
         <ScrollToTop>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/Home/Results/" component={Results} />
+            <Route exact path="/Results/" component={Results} />
           </Switch>
         </ScrollToTop>
       </Router>

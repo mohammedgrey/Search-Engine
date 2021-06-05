@@ -9,8 +9,8 @@ $button: #9295f3;
   min-height: 100vh;
   width: 100%;
   justify-content: center;
-  background-image: url("./../galaxy1.jpg");
-  background-size: cover;
+  // background-image: url("./../galaxy1.jpg");
+  // background-size: cover;
   /*color: transparent;*/
 }
 
@@ -105,7 +105,8 @@ $button: #9295f3;
 
     .search-button:hover {
       transition: all 250ms linear;
-      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
+        0 0 50px $button;
     }
 
     #voice {
@@ -118,7 +119,8 @@ $button: #9295f3;
     }
 
     #voice:hover {
-      text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+      text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+        0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
     }
 
     .glow {
@@ -131,9 +133,11 @@ $button: #9295f3;
 //idea from https://css-tricks.com/how-to-create-neon-text-with-css/
 @keyframes pulsate {
   0% {
-    text-shadow: 0 0 4px black, 0 0 11px #fff, 0 0 40px magenta, 0 0 50px $button, 0 0 60px $button, 0 0 70px cyan;
+    text-shadow: 0 0 4px black, 0 0 11px #fff, 0 0 40px magenta,
+      0 0 50px $button, 0 0 60px $button, 0 0 70px cyan;
   }
   100% {
-    text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+    text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+      0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
   }
 }
