@@ -10,6 +10,8 @@ import tempInitialStateResults from "../helpers/tempInitialStateResults";
 import { retrieveLastSearchedQuery, retrieveSearchResults, saveSearchState } from "../helpers/resultsStateManagement";
 import { getSearchResults } from "../API/search";
 import LoadingGIF from "./LoadingGIF";
+import Suggestions from "./Suggestions";
+import useOuterClick from "../helpers/useOuterClick";
 
 const Results = () => {
   let history = useHistory();
@@ -22,6 +24,7 @@ const Results = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pages, setPages] = useState([]);
   const [totalResultsFound, setTotalResultsFound] = useState(0);
+  const [searchFocused, setSearchFocused] = useState(false);
 
   const getTheRightPagesToShow = () => {
     const totalPagesNum = Math.ceil(totalResultsFound / +process.env.REACT_APP_RESULTS_PER_PAGE);
@@ -54,36 +57,11 @@ const Results = () => {
 
   //update the query string from the URL every time the page loads
   useEffect(() => {
-    // // console.log("[] query:" + queryString);
-    // const theCurrentQueryString = getParameterByName("q");
-    // const theCurrentPageNumber = +getParameterByName("page");
-    // setQueryString(theCurrentQueryString);
-    // setCurrentPage(theCurrentPageNumber);
-    // if (retrieveLastSearchedQuery() !== theCurrentQueryString) {
-    //   //case 1) Make a new request as the input changed
-    //   console.log("Make a new request");
-    //   setLoadingResults(true);
-    //   getSearchResults(theCurrentQueryString)
-    //     .then((resultsFromSearch) => {
-    //       console.log(resultsFromSearch);
-    //       saveSearchState(theCurrentQueryString, resultsFromSearch);
-    //       setResults(resultsFromSearch);
-    //     })
-    //     .catch(console.log)
-    //     .finally(() => {
-    //       setLoadingResults(false);
-    //     });
-    // } else {
-    //   //case 2) The results are already stored, just cash them
-    //   console.log("Cash already saved results");
-    //   setResults(retrieveSearchResults());
-    // }
-    // console.log(+getParameterByName("page"));
     const theCurrentQueryString = getParameterByName("q");
     const theCurrentPageNumber = +getParameterByName("page");
     setQueryString(theCurrentQueryString);
     setCurrentPage(theCurrentPageNumber);
-
+    setSearchFocused(false);
     setLoadingResults(true);
     getSearchResults({ q: theCurrentQueryString, page: theCurrentPageNumber, limit: +process.env.REACT_APP_RESULTS_PER_PAGE })
       .then((resultsFromSearch) => {
@@ -109,15 +87,25 @@ const Results = () => {
     e.preventDefault();
     // setSearchInput(e.target.value);
     setQueryString(e.target.value);
-    setLoadingSuggestions(true);
-    try {
-      setSuggestions(await getSuggestions(e.target.value));
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setLoadingSuggestions(false);
-    }
   };
+
+  useEffect(async () => {
+    if (queryString.trim() !== "") {
+      setLoadingSuggestions(true);
+      try {
+        setSuggestions(await getSuggestions(queryString));
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setLoadingSuggestions(false);
+      }
+    } else {
+      setSuggestions(getSearchHistory());
+    }
+  }, [queryString]);
+  const insideSuggestions = useOuterClick((ev) => {
+    setSearchFocused(false);
+  });
 
   //when clicking on the search button
   const search = (e) => {
@@ -160,23 +148,28 @@ const Results = () => {
     <div className="results-body">
       <div className="result-header navbar fixed-top">
         <span className="logo" onClick={goToHome}>
-          <img src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png" width="150px" height="35px"></img>
+          <img src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png" width="150px" height="50px"></img>
           {/* LOOK ME UP */}
         </span>
         <div className="search-section-res search-bar">
           <div className="d-flex align-items-center justify-content-left">
-            <button id="voice2" className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")} onClick={isRecording ? stopSpeechToText : startSpeechToText}></button>
-            <input
-              id="input"
-              type="text"
-              className="form-control"
-              placeholder="Watcha lookin' for?"
-              onKeyDown={searchEnter}
-              onChange={handleInputChange}
-              autoComplete="off"
-              defaultValue={queryString || interimResult}
-            ></input>
-            <button className="fas fa-search search-button-2" onClick={search}></button>
+            <div ref={insideSuggestions} style={{ position: "relative" }} className="d-flex align-items-center justify-content-left">
+              <button id="voice2" className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")} onClick={isRecording ? stopSpeechToText : startSpeechToText}></button>
+              <input
+                id="input"
+                type="text"
+                className="form-control"
+                placeholder="Watcha lookin' for?"
+                onKeyDown={searchEnter}
+                onChange={handleInputChange}
+                autoComplete="off"
+                defaultValue={queryString || interimResult}
+                onFocus={() => setSearchFocused(true)}
+                value={queryString}
+              ></input>
+              <button className="fas fa-search search-button-2" onClick={search}></button>
+              {/* {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && <Suggestions suggestions={suggestions} inResults={true} />} */}
+            </div>
           </div>
         </div>
         {/*<span className="fas fa-bars menu-icon"></span>*/}
@@ -184,9 +177,11 @@ const Results = () => {
       {!loadingResults ? (
         <div>
           {noResults ? (
-            <h1 id="no-results" className="container ">
-              No results found. Try searching for something else.
-            </h1>
+            <div className="center-me" style={{ textAlign: "center" }}>
+              <h1 id="no-results" className="container ">
+                No results found. Try searching for something else.
+              </h1>
+            </div>
           ) : (
             <div className="result-block">
               {results.map((result, index) => (

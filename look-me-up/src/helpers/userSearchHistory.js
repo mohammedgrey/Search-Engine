@@ -1,5 +1,7 @@
 export const addToSearchHistory = (_id) => {
-  const searchHistory = [...JSON.parse(localStorage.getItem("search-history") || "[]"), { _id: _id.trim() }];
+  let searchHistory = JSON.parse(localStorage.getItem("search-history") || "[]");
+  if (searchHistory.findIndex((sent) => sent._id === _id) !== -1) return;
+  searchHistory = [...searchHistory, { _id: _id.trim() }];
   localStorage.setItem("search-history", JSON.stringify(searchHistory));
 };
 

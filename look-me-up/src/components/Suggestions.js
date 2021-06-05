@@ -2,8 +2,11 @@ import React from "react";
 import { useHistory } from "react-router";
 import "./Suggestions.scss";
 
-const Suggestions = ({ suggestions }) => {
+const Suggestions = ({ suggestions, inResults }) => {
   const history = useHistory();
+  //   const inResultsStyle = {
+  //     left: "-100px",
+  //   };
   return (
     <div className="suggestions-list">
       {suggestions.map((suggestion) => {
@@ -11,8 +14,8 @@ const Suggestions = ({ suggestions }) => {
           <div
             key={suggestion._id}
             className="suggestion-item"
+            // style={{ backgroundColor: "black" }}
             onClick={() => {
-              console.log("clisked");
               history.push(`/Results?q=${encodeURIComponent(suggestion._id)}&page=1&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
             }}
           >

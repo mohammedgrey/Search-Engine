@@ -49,16 +49,9 @@ public class VocabularyController {
             qString = URLDecoder.decode(q, "UTF-8");
         } catch (UnsupportedEncodingException e) {
         }
-        try {
-            System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + "Saved to history maybe" + "\n\n\n\n");
-            this.mongoTemplate.insert(new History("" + qString.trim()), "history");
-            System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + "Saved to history akeed" + "\n\n\n\n");
-        } catch (Exception e) {
-        }
 
         String[] toSearchWords = Preprocessor.preprocessing(qString);
 
-        System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + toSearchWords.length + "\n\n\n\n");
         if (toSearchWords.length == 0)
             return new QueryResults(0, Collections.emptyList());
 
@@ -71,6 +64,12 @@ public class VocabularyController {
 
         if (docs == null || docs.size() == 0)
             return new QueryResults(0, Collections.emptyList());
+
+        // save to the history of all users
+        try {
+            this.mongoTemplate.insert(new History("" + qString.trim()), "history");
+        } catch (Exception e) {
+        }
         // Hashtable<String, List<String>> UrlkeyWords = new Hashtable<String,
         // List<String>>();
         // get the unique urls
