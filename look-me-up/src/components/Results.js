@@ -101,11 +101,14 @@ const Results = () => {
     console.log(+getParameterByName("page"));
   }, [history.location]);
 
+  //pagination
   useEffect(() => {
+    console.log(results);
     getTheRightPagesToShow();
     const lastResult = currentPage * +process.env.REACT_APP_RESULTS_PER_PAGE;
     const firstResult = lastResult - +process.env.REACT_APP_RESULTS_PER_PAGE;
-    setDispResults(results.slice(firstResult, lastResult));
+    if (results)
+      setDispResults(results?.results?.slice(firstResult, lastResult));
   }, [currentPage, results]);
 
   //To get the history of all users as suggestions
@@ -165,6 +168,7 @@ const Results = () => {
     history.push(`/`);
   };
 
+  var noResults = results?.results?.length === 0;
   return (
     <div className="results-body">
       <div className="result-header navbar fixed-top">
@@ -203,18 +207,24 @@ const Results = () => {
       </div>
       {!loadingResults ? (
         <div>
-          <div className="result-block">
-            {dispResults.map((result, index) => (
-              <SearchResult
-                className="search-result"
-                siteName={result.website}
-                pageTitle={result.title}
-                URL={result.url}
-                preview={result.snippet}
-                key={index}
-              ></SearchResult>
-            ))}
-          </div>
+          {noResults ? (
+            <h1 id="no-results" className="container ">
+              No results found. Try searching for something else.
+            </h1>
+          ) : (
+            <div className="result-block">
+              {dispResults.map((result, index) => (
+                <SearchResult
+                  className="search-result"
+                  siteName={result.website}
+                  pageTitle={result.title}
+                  URL={result.url}
+                  preview={result.snippet}
+                  key={index}
+                ></SearchResult>
+              ))}
+            </div>
+          )}
 
           <div className="result-footer justify-content-center fixed-bottom">
             <div id="pages">

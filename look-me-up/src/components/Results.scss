@@ -11,6 +11,7 @@ $header: #141b2db9;
   /*background-color: #03082c !important; /*header*/
   color: aliceblue;
   min-height: 100vh;
+  max-width: 100vw;
 }
 
 .result-header {
@@ -79,11 +80,6 @@ $header: #141b2db9;
 .menu-icon {
   float: right;
 }
-.result-block {
-  /*background: rgba(255, 255, 255, 0.1) !important;*/
-  padding-top: 66px;
-  padding-bottom: 85px;
-}
 
 #input {
   margin-left: -45px;
@@ -144,7 +140,28 @@ $header: #141b2db9;
 }
 
 .search-button-2:hover {
-  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
+    0 0 50px $button;
+}
+
+.result-block {
+  /*background: rgba(255, 255, 255, 0.1) !important;*/
+  padding-top: 66px;
+  padding-bottom: 85px;
+}
+
+#no-results {
+  padding-top: 100px;
+  padding-bottom: 85px;
+  margin-left: 13%;
+  margin-right: 13%;
+  width: 74%;
+}
+
+.hide {
+  padding: 0 !important;
+  height: 0 !important;
+  visibility: hidden;
 }
 
 .result-footer {
@@ -171,7 +188,8 @@ $header: #141b2db9;
 .last:hover {
   color: white;
   border-top: 2px white solid !important;
-  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
+    0 0 50px $button;
 }
 
 .page {
@@ -218,7 +236,8 @@ $header: #141b2db9;
   transition: all 0.3s linear;
 }
 #voice2:hover {
-  text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+  text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+    0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
 }
 .glow {
   transition: all 0.3s linear !important;
