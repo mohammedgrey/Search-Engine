@@ -1,10 +1,12 @@
+package com.MFMM.server.helpers;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.HashSet;
 import java.util.Hashtable;
 
-public class snippetGetter {
+public class Snippet {
 
     final Integer STRING_MIN_LENGTH = 100;
 
