@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 
 public class Snippet {
-    final Integer STRING_MIN_WORDS = 30;
+    final Integer STRING_MIN_WORDS = 37;
     final Integer STRING_MIN_LENGTH = STRING_MIN_WORDS * 5;
 
     private String getStringOfQueue(Queue<String> queue, Integer end) {
