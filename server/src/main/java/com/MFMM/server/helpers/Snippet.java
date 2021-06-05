@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 
 public class snippetGetter {
-    final Integer STRING_MIN_WORDS = 30;
+    final Integer STRING_MIN_WORDS = 40;
     final Integer STRING_MIN_LENGTH = STRING_MIN_WORDS * 5;
 
     private String getStringOfQueue(Queue<String> queue, Integer end) {
@@ -113,20 +113,31 @@ public class snippetGetter {
         }
 
         // Check if the length is equal zero
-        if (result.length() == 0) {
+        if (result.length() == 0 && matchQueue.size() != 0) {
             Integer counter = Integer.valueOf(0);
             StringBuilder snippetBuilder = new StringBuilder();
             for (String word : matchQueue) {
                 snippetBuilder.append(word + " ");
                 counter++;
-                if (counter == STRING_MIN_WORDS)
+                if (counter == STRING_MIN_WORDS) {
+                    result = snippetBuilder.toString();
                     break;
+                }
             }
 
             result = snippetBuilder.toString();
-        }
-        // Check if the string is long enough
-        if (result.length() < STRING_MIN_LENGTH)
+        } else if (result.length() == 0 && matchQueue.size() == 0) {
+            Integer counter = Integer.valueOf(0);
+            StringBuilder snippetBuilder = new StringBuilder();
+            for (String word : wholeText) {
+                snippetBuilder.append(word + " ");
+                counter++;
+                if (counter == STRING_MIN_WORDS) {
+                    result = snippetBuilder.toString();
+                    break;
+                }
+            }
+        } else if (result.length() < STRING_MIN_LENGTH) // Check if the string is long enough
             return extendSnippet(result, wholeText, startIndex, minSize);
 
         return result;
