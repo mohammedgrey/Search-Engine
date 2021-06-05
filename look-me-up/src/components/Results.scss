@@ -86,7 +86,7 @@ $header: #141b2db9;
   margin-right: -50px;
   display: inline-block;
   background-color: #1f2940 !important;
-  width: 25%;
+  width: 50%;
   height: 50px;
   border-radius: 25px;
   padding-left: 50px;
@@ -101,13 +101,13 @@ $header: #141b2db9;
   text-overflow: clip;
 }
 
-#input:hover {
-  box-shadow: none;
-  width: 50%;
-  transition: all 0.5s linear;
-  /*border-color: aliceblue !important;*/
-  /*color: #03082c !important;*/
-}
+// #input:hover {
+//   box-shadow: none;
+//   width: 50%;
+//   transition: all 0.5s linear;
+//   /*border-color: aliceblue !important;*/
+//   /*color: #03082c !important;*/
+// }
 #input:focus {
   color: aliceblue !important;
 }
