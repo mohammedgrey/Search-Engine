@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.Hashtable;
 
 public class Snippet {
-
-    final Integer STRING_MIN_LENGTH = 100;
+    final Integer STRING_MIN_WORDS = 30;
+    final Integer STRING_MIN_LENGTH = STRING_MIN_WORDS * 5;
 
     private String getStringOfQueue(Queue<String> queue, Integer end) {
         Integer limitCounter = Integer.valueOf(0);
@@ -29,14 +29,15 @@ public class Snippet {
             for (int i = startIndex - 1; i >= 0; i--) {
                 resultText = wholeText[i] + " " + resultText;
                 counter++;
-                if (counter == STRING_MIN_LENGTH)
+                if (counter == STRING_MIN_WORDS)
                     return resultText;
             }
-        } else if (startIndex + numberOfElements < wholeText.length) {
+        }
+        if (startIndex + numberOfElements < wholeText.length && counter != STRING_MIN_WORDS) {
             for (int i = startIndex + numberOfElements; i < wholeText.length; i++) {
                 resultText = resultText + " " + wholeText[i];
                 counter++;
-                if (counter == STRING_MIN_LENGTH)
+                if (counter == STRING_MIN_WORDS)
                     return resultText;
             }
         }
@@ -120,7 +121,7 @@ public class Snippet {
             for (String word : matchQueue) {
                 snippetBuilder.append(word + " ");
                 counter++;
-                if (counter == STRING_MIN_LENGTH)
+                if (counter == STRING_MIN_WORDS)
                     break;
             }
 
