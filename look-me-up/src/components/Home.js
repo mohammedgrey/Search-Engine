@@ -4,7 +4,10 @@ import useSpeechToText from "react-hook-speech-to-text";
 import { useHistory } from "react-router-dom";
 import "./Home.scss";
 import { getSuggestions } from "../API/suggestions";
-import { addToSearchHistory, getSearchHistory } from "../helpers/userSearchHistory";
+import {
+  addToSearchHistory,
+  getSearchHistory,
+} from "../helpers/userSearchHistory";
 import Suggestions from "./Suggestions";
 import useOuterClick from "../helpers/useOuterClick";
 
@@ -16,28 +19,50 @@ const Home = () => {
   const [searchFocused, setSearchFocused] = useState(false);
 
   //speech recognition
-  const { error, isRecording, results, startSpeechToText, stopSpeechToText, interimResult } = useSpeechToText({
+  const {
+    error,
+    isRecording,
+    results,
+    startSpeechToText,
+    stopSpeechToText,
+    interimResult,
+  } = useSpeechToText({
     continuous: false,
     crossBrowser: true,
     timeout: 10000,
     speechRecognitionProperties: { interimResults: true },
   });
 
+  //update the search input value when voice recording is used
+  useEffect(() => {
+    if (isRecording && interimResult) {
+      document.getElementById("home-input").value = interimResult;
+      setSearchInput(interimResult);
+    }
+  }, [interimResult]);
+
   //when clicking on the search button
   const search = (e) => {
     e.preventDefault();
     if (searchInput !== "") {
       addToSearchHistory(searchInput);
-      history.push(`/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
+      history.push(
+        `/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=${+process
+          .env.REACT_APP_RESULTS_PER_PAGE}`
+      );
     }
   };
 
   //when pressing enter in the search field
   const searchEnter = (e) => {
+    setSearchInput(document.getElementById("home-input").value);
     if (e.keyCode === 13) {
       if (searchInput !== "") {
         addToSearchHistory(searchInput);
-        history.push(`/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
+        history.push(
+          `/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=${+process
+            .env.REACT_APP_RESULTS_PER_PAGE}`
+        );
       }
     }
   };
@@ -45,11 +70,13 @@ const Home = () => {
   //To get the history of all users as suggestions
   const handleInputChange = async (e) => {
     e.preventDefault();
-    setSearchInput(e.target.value);
-    if (e.target.value.trim() !== "") {
+    var query = document.getElementById("home-input").value;
+    console.log(query);
+    setSearchInput(query);
+    if (query.trim() !== "") {
       setLoadingSuggestions(true);
       try {
-        setSuggestions(await getSuggestions(e.target.value));
+        setSuggestions(await getSuggestions(query));
       } catch (e) {
         console.log(e);
       } finally {
@@ -59,6 +86,7 @@ const Home = () => {
       setSuggestions(getSearchHistory());
     }
   };
+
   const insideSuggestions = useOuterClick((ev) => {
     setSearchFocused(false);
   });
@@ -67,12 +95,24 @@ const Home = () => {
   return (
     <div className="home-body">
       <div className="search-section">
-        <img src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png" width="662px" height="280px"></img>
+        <img
+          src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png"
+          width="662px"
+          height="280px"
+        ></img>
         {/* <h1> LOOK ME UP </h1> */}
         {/* <h6> I got everything you need </h6> */}
 
-        <div ref={insideSuggestions} className="d-flex align-items-center justify-content-center" style={{ position: "relative" }}>
-          <button id="voice" className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")} onClick={isRecording ? stopSpeechToText : startSpeechToText}></button>
+        <div
+          ref={insideSuggestions}
+          className="d-flex align-items-center justify-content-center"
+          style={{ position: "relative" }}
+        >
+          <button
+            id="voice"
+            className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")}
+            onClick={isRecording ? stopSpeechToText : startSpeechToText}
+          ></button>
           <input
             id="home-input"
             type="text"
@@ -80,12 +120,19 @@ const Home = () => {
             placeholder="Watcha lookin' for?"
             onKeyDown={searchEnter}
             onChange={handleInputChange}
-            value={interimResult}
+            //value={interimResult}
             autoComplete="off"
             onFocus={() => setSearchFocused(true)}
           ></input>
-          <button className="fas fa-search search-button" onClick={search}></button>
-          {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && <Suggestions suggestions={suggestions} />}
+          <button
+            className="fas fa-search search-button"
+            onClick={search}
+          ></button>
+          {searchFocused &&
+            !loadingSuggestions &&
+            suggestions?.length !== 0 && (
+              <Suggestions suggestions={suggestions} />
+            )}
         </div>
       </div>
     </div>
