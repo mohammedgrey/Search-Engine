@@ -222,7 +222,7 @@ const Results = () => {
           <div className="d-flex align-items-center justify-content-left">
             <div
               ref={insideSuggestions}
-              style={{ position: "absolute", top: "18px" }}
+              style={{ position: "relative", width: "50%", marginTop: "3px" }}
               className="d-flex align-items-center justify-content-left"
             >
               <button
@@ -257,6 +257,7 @@ const Results = () => {
                     color="#1f2940"
                     styles="suggestion-item-res"
                     marg="-10px"
+                    width="92%"
                   />
                 )}
             </div>

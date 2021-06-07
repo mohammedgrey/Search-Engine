@@ -1,9 +1,10 @@
 .suggestions-list {
   position: absolute;
-  width: 100%;
-  max-width: 88%;
+  min-width: 220px;
+  //width: 50%;
+  //max-width: 80%;
   //margin-top: -10px !important;
-  left: 1%;
+  //left: 50%;
   top: 60px;
   //transform: translateX(-50%);
   //background-color: #141b2d;

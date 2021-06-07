@@ -114,7 +114,7 @@ const Home = () => {
         <div
           ref={insideSuggestions}
           className="d-flex align-items-center justify-content-center"
-          style={{ position: "absolute", width: "540px", left: "195px" }}
+          style={{ position: "relative" }}
         >
           <button
             id="voice"
@@ -130,12 +130,13 @@ const Home = () => {
             onChange={handleInputChange}
             //value={interimResult}
             autoComplete="off"
-            style={{ width: "100%" }}
+            //style={{ width: "100%" }}
             onFocus={() => setSearchFocused(true)}
           ></input>
           <button
             className="fas fa-search search-button"
             onClick={search}
+            style={{ zIndex: 200 }}
           ></button>
           {searchFocused &&
             !loadingSuggestions &&
@@ -144,6 +145,7 @@ const Home = () => {
                 suggestions={suggestions}
                 styles="suggestion-item"
                 marg="-1px"
+                width="50%"
               />
             )}
         </div>

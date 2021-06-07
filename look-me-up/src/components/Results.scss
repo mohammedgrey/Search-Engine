@@ -8,8 +8,6 @@ $header: #141b2db9;
   background-image: url("./../galaxy1.jpg");
   background-size: cover;
   background-color: $back !important;
-  /*background: rgba(255, 255, 255, 0.1) !important;*/
-  /*background-color: #03082c !important; /*header*/
   color: aliceblue;
   min-height: 100vh;
   max-width: 100vw;
@@ -22,15 +20,10 @@ $header: #141b2db9;
   padding-bottom: 20px;
   background-color: $header !important;
   display: inline-block !important;
-  // flex-wrap: wrap;
-  // justify-content: center;
-  // align-items: center;
-  // flex-direction: row;
 }
+
 .search-section-res {
   text-align: center;
-  /*background: rgba(141, 139, 219, 0.1);*/
-  /*background: #141b2db9;*/
   width: 70%;
   height: 60%;
   color: aliceblue !important;
@@ -40,9 +33,6 @@ $header: #141b2db9;
   font-size: 20px;
   font-weight: 700;
   float: left;
-  /*margin-right: 30px;*/
-  //line-height: 1.4;
-  padding-top: 10px;
   width: 200px;
 }
 
@@ -87,7 +77,7 @@ $header: #141b2db9;
   margin-right: -50px;
   display: inline-block;
   background-color: #1f2940 !important;
-  width: 50%;
+  //width: 50%;
   height: 50px;
   border-radius: 25px;
   padding-left: 50px;
@@ -102,13 +92,6 @@ $header: #141b2db9;
   text-overflow: clip;
 }
 
-// #input:hover {
-//   box-shadow: none;
-//   width: 50%;
-//   transition: all 0.5s linear;
-//   /*border-color: aliceblue !important;*/
-//   /*color: #03082c !important;*/
-// }
 #input:focus {
   color: aliceblue !important;
 }
@@ -147,7 +130,7 @@ $header: #141b2db9;
 
 .result-block {
   /*background: rgba(255, 255, 255, 0.1) !important;*/
-  padding-top: 66px;
+  padding-top: 72px;
   padding-bottom: 85px;
 }
 
@@ -208,7 +191,6 @@ $header: #141b2db9;
 }
 
 .page:hover {
-  //box-shadow: 0 0 20px white  !important;
   color: #9295f3;
   border-top: 2px #9295f3 solid !important;
   transition: all 0.2s linear;
@@ -244,9 +226,3 @@ $header: #141b2db9;
   transition: all 0.3s linear !important;
   animation: pulsate 1.2s infinite alternate;
 }
-
-// #voice2:hover,
-// .glow {
-//   text-shadow: 0 0 5px #fff, 0 0 30px $button, 0 0 40px $button;
-//   transition: all 0.3s linear;
-// }
