@@ -101,11 +101,12 @@ const Home = () => {
 
   return (
     <div className="home-body">
-      <div className="search-section">
+      <div className="search-section center-me">
         <img
           src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png"
           width="662px"
           height="280px"
+          id="home-logo"
         ></img>
         {/* <h1> LOOK ME UP </h1> */}
         {/* <h6> I got everything you need </h6> */}

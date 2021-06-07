@@ -18,10 +18,17 @@ $button: #9295f3;
   min-width: 50vw;
 }
 
-@media (max-width: 40
-0px) {
+@media (max-width: 720px) {
   #home-logo {
-    height: 70px;
+    height: 170px !important;
+    width: 400px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  #home-logo {
+    height: 85px !important;
+    width: 200px !important;
   }
 
   .search-button {
@@ -33,6 +40,8 @@ $button: #9295f3;
   #home-input {
     height: 30px !important;
     font-size: 10px;
+    margin-left: -30px !important;
+    padding-left: 30px !important;
   }
   #voice {
     font-size: 15px !important;
