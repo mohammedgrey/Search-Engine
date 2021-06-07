@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router";
 import "./Suggestions.scss";
 
-const Suggestions = ({ suggestions, inResults }) => {
+const Suggestions = ({ suggestions, color }) => {
   const history = useHistory();
   //   const inResultsStyle = {
   //     left: "-100px",
@@ -14,7 +14,7 @@ const Suggestions = ({ suggestions, inResults }) => {
           <div
             key={suggestion._id}
             className="suggestion-item"
-            // style={{ backgroundColor: "black" }}
+             style={{ backgroundColor: color }}
             onClick={() => {
               history.push(`/Results?q=${encodeURIComponent(suggestion._id)}&page=1&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
             }}

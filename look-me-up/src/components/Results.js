@@ -222,7 +222,7 @@ const Results = () => {
           <div className="d-flex align-items-center justify-content-left">
             <div
               ref={insideSuggestions}
-              style={{ position: "relative" }}
+              style={{ position: "absolute", top:"18px" }}
               className="d-flex align-items-center justify-content-left"
             >
               <button
@@ -241,6 +241,7 @@ const Results = () => {
                 onChange={handleInputChange}
                 autoComplete="off"
                 defaultValue={queryString || interimResult}
+                style={{width:"100%"}}
                 onFocus={() => setSearchFocused(true)}
                 value={queryString}
               ></input>
@@ -248,7 +249,7 @@ const Results = () => {
                 className="fas fa-search search-button-2"
                 onClick={search}
               ></button>
-              {/* {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && <Suggestions suggestions={suggestions} inResults={true} />} */}
+               {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && <Suggestions suggestions={suggestions} color="black" />}
             </div>
           </div>
         </div>
