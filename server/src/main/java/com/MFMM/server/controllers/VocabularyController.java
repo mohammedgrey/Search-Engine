@@ -10,7 +10,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 
 import com.MFMM.server.models.QueryResult;
 import com.MFMM.server.models.QueryResults;
@@ -50,16 +49,9 @@ public class VocabularyController {
             qString = URLDecoder.decode(q, "UTF-8");
         } catch (UnsupportedEncodingException e) {
         }
-        try {
-            System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + "Saved to history maybe" + "\n\n\n\n");
-            this.mongoTemplate.insert(new History(qString), "history");
-            System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + "Saved to history akeed" + "\n\n\n\n");
-        } catch (Exception e) {
-        }
 
         String[] toSearchWords = Preprocessor.preprocessing(qString);
 
-        System.out.println("\n\n\n\n MEOWWWWWWWWWWWWWWWW " + toSearchWords.length + "\n\n\n\n");
         if (toSearchWords.length == 0)
             return new QueryResults(0, Collections.emptyList());
 
@@ -72,6 +64,12 @@ public class VocabularyController {
 
         if (docs == null || docs.size() == 0)
             return new QueryResults(0, Collections.emptyList());
+
+        // save to the history of all users
+        try {
+            this.mongoTemplate.insert(new History("" + qString.trim()), "history");
+        } catch (Exception e) {
+        }
         // Hashtable<String, List<String>> UrlkeyWords = new Hashtable<String,
         // List<String>>();
         // get the unique urls
@@ -122,11 +120,10 @@ public class VocabularyController {
             // missingKeyWords.add(wordSearched);
             // }
 
-            results.add(new QueryResult(Documentpage._id, Documentpage.title,
-                    new Snippet().getSnippet(
-                            ArrayStringMethods.concatArrays(Documentpage.title.split("\\s+"),
-                                    Documentpage.text.split("\\s+")),
-                            Arrays.asList(ArrayStringMethods.concatArrays(toSearchWords, qString.split("\\s+")))),
+            results.add(new QueryResult(Documentpage._id, Documentpage.title, new Snippet().getSnippet(
+                    ArrayStringMethods.concatArrays(Documentpage.title.replaceAll("\\<.*?\\>", "").split("\\s+"),
+                            Documentpage.text.replaceAll("\\<.*?\\>", "").split("\\s+")),
+                    Arrays.asList(ArrayStringMethods.concatArrays(toSearchWords, qString.split("\\s+")))),
                     Documentpage.website));
 
             // }

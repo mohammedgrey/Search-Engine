@@ -9,10 +9,44 @@ $button: #9295f3;
   min-height: 100vh;
   width: 100%;
   justify-content: center;
-  background-image: url("./../galaxy1.jpg");
+  // background-image: url("./../galaxy1.jpg");
+  // background-size: cover;
   /*color: transparent;*/
 }
 
+#home-logo {
+  min-width: 50vw;
+}
+
+@media (max-width: 720px) {
+  #home-logo {
+    height: 170px !important;
+    width: 400px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  #home-logo {
+    height: 85px !important;
+    width: 200px !important;
+  }
+
+  .search-button {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 8px !important;
+  }
+
+  #home-input {
+    height: 30px !important;
+    font-size: 10px;
+    margin-left: -30px !important;
+    padding-left: 30px !important;
+  }
+  #voice {
+    font-size: 15px !important;
+  }
+}
 .search-section {
   text-align: center;
   /*background: rgba(141, 139, 219, 0.1);*/
@@ -76,11 +110,13 @@ $button: #9295f3;
       border-color: $button;
       transition: all 0.3s linear;
       box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #fff;
+      z-index: 1;
     }
 
     .search-button:hover {
       transition: all 250ms linear;
-      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
+        0 0 50px $button;
     }
 
     #voice {
@@ -93,7 +129,8 @@ $button: #9295f3;
     }
 
     #voice:hover {
-      text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+      text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+        0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
     }
 
     .glow {
@@ -106,9 +143,11 @@ $button: #9295f3;
 //idea from https://css-tricks.com/how-to-create-neon-text-with-css/
 @keyframes pulsate {
   0% {
-    text-shadow: 0 0 4px black, 0 0 11px #fff, 0 0 40px magenta, 0 0 50px $button, 0 0 60px $button, 0 0 70px cyan;
+    text-shadow: 0 0 4px black, 0 0 11px #fff, 0 0 40px magenta,
+      0 0 50px $button, 0 0 60px $button, 0 0 70px cyan;
   }
   100% {
-    text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+    text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
+      0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
   }
 }
