@@ -99,7 +99,6 @@ const Home = () => {
     setSearchFocused(false);
   });
 
-  var inputNotEmpty = searchInput !== "";
   return (
     <div className="home-body">
       <div className="search-section">
