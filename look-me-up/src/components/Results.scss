@@ -45,11 +45,6 @@ $header: #141b2db9;
   }
 }
 
-@media (max-width: 520px) {
-  .search-button-2 {
-    min-width: 50px !important;
-  }
-}
 @media (max-width: 380px) {
   #logo {
     display: none;
@@ -113,6 +108,7 @@ $header: #141b2db9;
   background-color: $button;
   height: 50px !important;
   width: 50px !important;
+  min-width: 50px;
   padding: 10px;
   border-radius: 25px;
   font-size: 20px;
