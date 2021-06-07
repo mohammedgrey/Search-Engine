@@ -14,6 +14,7 @@
 /server/.sts4-cache
 /server/bin
 server/src/main/java/com/MFMM/server/documents
+server/src/main/java/com/MFMM/server/indexedDocuments
 
 ### IntelliJ IDEA ###
 /server/.idea
