@@ -35,15 +35,24 @@ const Home = () => {
 
   //update the search input value when voice recording is used
   useEffect(() => {
+    console.log(interimResult);
     if (isRecording && interimResult) {
       document.getElementById("home-input").value = interimResult;
       setSearchInput(interimResult);
     }
   }, [interimResult]);
 
+  //if the search input changed due to voice, automatically search
+  useEffect(() => {
+    console.log(interimResult);
+    if (!isRecording && searchInput != "") {
+      search();
+    }
+  }, [isRecording]);
+
   //when clicking on the search button
-  const search = (e) => {
-    e.preventDefault();
+  const search = () => {
+    //e.preventDefault();
     if (searchInput !== "") {
       addToSearchHistory(searchInput);
       history.push(
@@ -55,7 +64,6 @@ const Home = () => {
 
   //when pressing enter in the search field
   const searchEnter = (e) => {
-    setSearchInput(document.getElementById("home-input").value);
     if (e.keyCode === 13) {
       if (searchInput !== "") {
         addToSearchHistory(searchInput);
