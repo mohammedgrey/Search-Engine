@@ -1,12 +1,14 @@
 .suggestions-list {
   position: absolute;
-  width: 100%;
-  max-width: 88%;
-  left: 1%;
+  min-width: 220px;
+  //width: 50%;
+  //max-width: 80%;
+  //margin-top: -10px !important;
+  //left: 50%;
   top: 60px;
   // z-index: 1;
   //transform: translateX(-50%);
-  //background-color: #9295f323;
+  //background-color: #141b2d;
   color: aliceblue;
   //display: flex;
   align-items: center;
@@ -20,20 +22,36 @@
 .suggestion-item {
   width: 100%;
   height: 40px;
-  margin-top: -1px;
+  //margin-top: -1px;
   padding: 2px 0px;
   font-size: 1rem;
   border-top: 1px solid #9295f3a4;
-  // background-color: transparent !important;
+  background-color: transparent;
   text-align: center !important;
   z-index: 100 !important;
   cursor: pointer;
 }
 
-.suggestion-item:hover {
+.suggestion-item-res {
+  width: 100%;
+  height: 40px;
+  //margin-top: -5px;
+  padding: 2px 0px;
+  font-size: 1rem;
+  border-top: 1px solid #9295f3a4;
+  background-color: transparent;
+  text-align: center !important;
+  z-index: 100 !important;
+  cursor: pointer;
+}
+
+.suggestion-item:hover,
+.suggestion-item-res:hover {
   box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 15px #fff;
   transition: all 0.15s linear;
   cursor: pointer !important;
+  z-index: 105 !important;
+  position: relative;
 }
 
 #suggestion-p {

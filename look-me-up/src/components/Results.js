@@ -179,7 +179,7 @@ const Results = () => {
         </span>
         <div className="search-section-res search-bar">
           <div className="d-flex align-items-center justify-content-left">
-            <div ref={insideSuggestions} style={{ position: "absolute", top: "18px" }} className="d-flex align-items-center justify-content-left">
+            <div ref={insideSuggestions} style={{ position: "relative", width: "50%", marginTop: "3px" }} className="d-flex align-items-center justify-content-left">
               <button id="voice2" className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")} onClick={isRecording ? stopSpeechToText : startSpeechToText}></button>
               <input
                 id="input"
@@ -195,7 +195,7 @@ const Results = () => {
                 value={queryString}
               ></input>
               <button className="fas fa-search search-button-2" onClick={search}></button>
-              {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && <Suggestions suggestions={suggestions} color="rgba(146,149,243,0.9)" />}
+              {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && <Suggestions suggestions={suggestions} color="#1f2940" styles="suggestion-item-res" marg="-10px" width="92%" />}
             </div>
           </div>
         </div>
