@@ -1,3 +1,4 @@
+
 http://pictures-of-cats.org/maine-coon-cat-history.html/
 http://super.abril.com.br/como-desativar-adblock/
 http://bbcgoodfoodme.com/videos/bbc-good-food-middle-east-awards-2019/
@@ -88,6 +89,7 @@ http://bbcgoodfoodme.com/collections/eid-cooking/page/6/
 http://sci.esa.int/rosetta/
 http://apiv3.iucnredlist.org/api/v3/website/philoria%20frosti/
 http://pictures-of-cats.org/cat-breeds.html/
+http://skincancer.org/blog/ask-the-expert-why-are-more-men-dying-of-skin-cancer/
 http://bbcgoodfoodme.com/collections/snacks-kids/
 http://es-la.facebook.com/delish/
 http://apiv3.iucnredlist.org/api/v3/website/myrmecobius%20fasciatus/
@@ -428,6 +430,7 @@ http://worldcat.org/account/1190698714?page=mytags&/
 http://apiv3.iucnredlist.org/api/v3/website/hypogeomys%20antimena/
 http://bbcgoodfoodme.com/recipes/chicken-avocado-salad-blueberry-balsamic-dressing/
 http://nationalgeographic.com/history/magazine/
+http://merkelcell.org/
 http://animals.howstuffworks.com/pets/cats.htm/
 http://actionbioscience.org/evolution/johanson.html/
 http://aspca.org/pet-care/cat-care/spay-neuter.html/
@@ -454,6 +457,7 @@ http://carocat.eu/eu-parliaments-petitions/
 http://bbcgoodfoodme.com/awards/2016/
 http://skincancer.org/skin-cancer-information/basal-cell-carcinoma/bcc-treatment-options/
 http://apiv3.iucnredlist.org/api/v3/website/cyclura%20cornuta/
+http://skincancer.org/blog/skin-cancer-quiz/
 http://fr-fr.facebook.com/
 http://bbcgoodfoodme.com/recipes/strawberry-and-polenta-cupcakes/
 http://worldcat.org/account/855969933?page=mywatchlists&/
@@ -498,6 +502,7 @@ http://pewforum.org/2017/04/05/the-changing-global-religious-landscape/pf-04-05-
 http://bbcgoodfoodme.com/collections/cake-sale/
 http://scientificamerican.com/page/privacy-policy/
 http://facebook.com/gbifnews/
+http://skincancer.org/blog/when-a-common-skin-cancer-advances/
 http://apiv3.iucnredlist.org/api/v3/website/coccyzus%20ferrugineus/
 http://es-la.facebook.com/resumegenius/
 http://bbcgoodfoodme.com/recipes/plums-and-blackberries-in-rosemary-syrup/
@@ -1877,6 +1882,7 @@ http://wikimediafoundation.org/accessibility-statement/
 http://apiv3.iucnredlist.org/api/v3/website/antechinomys%20laniger/
 http://academia.edu/directory/papers/
 http://bbcgoodfoodme.com/collections/easy-entertaining/
+http://skincancer.org/skin-cancer-information/merkel-cell-carcinoma/mcc-stages/slnb/
 http://time.com/section/business/
 http://breitbart.com/tech/2019/08/22/yale-computer-scientist-david-gelernter-abandons-darwinism/
 http://bbcgoodfoodme.com/recipes/mac-n-cheese-bites/
@@ -1956,6 +1962,7 @@ http://users.clas.ufl.edu/sassaman/pages/research/povertypoint/jamtfulltext.pdf/
 http://bbcgoodfoodme.com/social-media/
 http://itunes.apple.com/us/app/adw-pocket-guide/id916179421?mt=8&/
 http://northernartprize.org.uk/2011-prize/
+http://cancerdepiel.org/cancer-de-piel/carcinoma-de-celulas-basales/
 http://bbcgoodfoodme.com/recipes/lamb-chops-with-thyme-chilli-greek-htipiti/
 http://catsbe.com/
 http://ru-ru.facebook.com/zety.your.resume.builder/
@@ -2117,6 +2124,7 @@ http://api.semanticscholar.org/corpusid:10972076/
 http://yaleglobal.yale.edu/content/world-population-2020-overview/
 http://apiv3.iucnredlist.org/api/v3/website/coracina%20newtoni/
 http://gettyimages.com/detail/photo/catnip-pillow-royalty-free-image/93846461/
+http://skincancer.org/treatment-resources/mohs-surgery/mohs-the-gold-standard/
 http://bbcgoodfoodme.com/collections/dairy-free-snack/
 http://apiv3.iucnredlist.org/api/v3/website/philesturnus%20carunculatus/
 http://skincancer.org/blog/sun-protection-habits-golf-course/
@@ -2470,6 +2478,7 @@ http://de-de.facebook.com/delish/
 http://apiv3.iucnredlist.org/api/v3/website/crocidura%20trichura/
 http://bbcgoodfoodme.com/recipes/easy-ratatouille-with-poached-eggs/
 http://worldcat.org/account/889953315?page=mysavedsearches&/
+http://skincancer.org/blog/a-hole-in-my-head/
 http://data.eppo.int/
 http://apiv3.iucnredlist.org/api/v3/website/caloprymnus%20campestris/
 http://apiv3.iucnredlist.org/api/v3/website/crotalus%20catalinensis/
@@ -4855,7 +4864,6 @@ http://skincancer.org/treatment-resources/find-a-dermatologist/
 http://animalplanetgo.com/
 http://pbs.org/wgbh/nova/article/history-money/
 http://bbcgoodfoodme.com/recipes/florentines/
-http://api.semanticscholar.org/corpusid:2112935/
 http://bbcgoodfoodme.com/health/kcal-international-weight-loss-plan/
 http://archaeology.org/travel/
 http://imom.org/spay-neuter/pdf/kustritz.pdf/
@@ -4890,7 +4898,6 @@ http://ncbi.nlm.nih.gov/books/nbk430886/
 http://skincancer.org/skin-cancer-information/squamous-cell-carcinoma/scc-treatment-options/
 http://bbcgoodfoodme.com/collections/british/page/2/
 http://merriam-webster.com/dictionary/race/
-http://api.semanticscholar.org/corpusid:205505278/
 http://inaturalist.org/taxa/43584/
 http://facebook.com/utoledo/
 http://cabi.org/horizonscanningtool/
@@ -4943,7 +4950,6 @@ http://psychology.yale.edu/people/laurie-santos/
 http://bbcgoodfoodme.com/collections/healthy-kids/page/5/
 http://bbcgoodfoodme.com/collections/big-match/page/2/
 http://bbcgoodfoodme.com/categories/seasonal/
-http://apiv3.iucnredlist.org/api/v3/website/corvus%20kubaryi/
 http://worldcat.org/account/855969933?page=allmyreviews&/
 http://apiv3.iucnredlist.org/api/v3/website/apalopteron%20familiare/
 http://apiv3.iucnredlist.org/api/v3/website/lagorchestes%20hirsutus/
@@ -4991,16 +4997,3 @@ http://archaeologyinfo.com/homo-neanderthalensis/
 http://bbcgoodfoodme.com/recipes/saffron-flatbread-filled-with-lentils-jaggery-puran-poli/
 http://bbcgoodfoodme.com/recipes/vegan-custard/
 http://infospace.com/
-http://apiv3.iucnredlist.org/api/v3/website/peromyscus%20dickeyi/
-http://bbcgoodfoodme.com/recipes/moon-cycle-cupcakes/
-http://web.archive.org/web/20190225103150/iii.org/fact-statistic/pet-statistics/
-http://web.archive.org/web/20170922050822/merriam-webster.com/dictionary/man/
-http://bbcgoodfoodme.com/recipes/perfect-sushi-rice/
-http://bbcgoodfoodme.com/collections/clean-eating-recipes/page/5/
-http://web.archive.org/web/20121020035106/evolutionpages.com/chromosome_2.htm/
-http://apiv3.iucnredlist.org/api/v3/website/onychogalea%20fraenata/
-http://www2.palomar.edu/pages/ecelabschool/
-http://ui.adsabs.harvard.edu/abs/1994sci...264.1907c/
-http://skincancer.org/blog/ask-the-expert-can-a-tanning-bed-safely-provide-me-with-the-vitamin-d-i-need/
-http://psychcentral.com/
-http://bbcgoodfoodme.com/collections/healthy-kids/page/4/
