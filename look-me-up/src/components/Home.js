@@ -1,5 +1,5 @@
 //Speech recognition code from https://github.com/Riley-Brown/react-speech-to-text
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import useSpeechToText from "react-hook-speech-to-text";
 import { useHistory } from "react-router-dom";
 import "./Home.scss";

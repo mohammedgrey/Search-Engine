@@ -6,8 +6,6 @@ import useSpeechToText from "react-hook-speech-to-text";
 import { useHistory } from "react-router-dom";
 import { getSuggestions } from "../API/suggestions";
 import { addToSearchHistory, getSearchHistory } from "../helpers/userSearchHistory";
-import tempInitialStateResults from "../helpers/tempInitialStateResults";
-import { retrieveLastSearchedQuery, retrieveSearchResults, saveSearchState } from "../helpers/resultsStateManagement";
 import { getSearchResults } from "../API/search";
 import LoadingGIF from "./LoadingGIF";
 import Suggestions from "./Suggestions";
