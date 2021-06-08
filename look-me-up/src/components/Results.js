@@ -24,6 +24,7 @@ const Results = () => {
   const [pages, setPages] = useState([]);
   const [totalResultsFound, setTotalResultsFound] = useState(0);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [showSuggestionsAfterDeletion, setShowSuggestionsAfterDeletion] = useState(false);
 
   const goToHome = () => {
     history.push(`/`);
@@ -168,6 +169,13 @@ const Results = () => {
       if (queryString !== "") history.push(`/Results?q=${encodeURIComponent(queryString)}&page=${1}&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
     }
   };
+  const updateDeletedSearchHistory = (newSearchHistory) => {
+    setSuggestions(newSearchHistory);
+    setShowSuggestionsAfterDeletion(true);
+  };
+  useEffect(() => {
+    setSearchFocused(showSuggestionsAfterDeletion && true);
+  }, [showSuggestionsAfterDeletion]);
 
   var noResults = totalResultsFound === 0;
   return (
@@ -195,7 +203,17 @@ const Results = () => {
                 value={queryString}
               ></input>
               <button className="fas fa-search search-button-2" onClick={search}></button>
-              {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && <Suggestions suggestions={suggestions} color="#1f2940" styles="suggestion-item-res" marg="-10px" width="92%" />}
+              {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && (
+                <Suggestions
+                  suggestions={suggestions}
+                  searchInput={queryString}
+                  color="#1f2940"
+                  styles="suggestion-item-res"
+                  marg="-10px"
+                  width="92%"
+                  onDeleteFromHistory={updateDeletedSearchHistory}
+                />
+              )}
             </div>
           </div>
         </div>

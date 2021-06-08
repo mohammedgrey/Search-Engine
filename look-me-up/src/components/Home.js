@@ -14,6 +14,7 @@ const Home = () => {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
+  const [showSuggestionsAfterDeletion, setShowSuggestionsAfterDeletion] = useState(false);
 
   //speech recognition
   const { error, isRecording, results, startSpeechToText, stopSpeechToText, interimResult } = useSpeechToText({
@@ -83,6 +84,14 @@ const Home = () => {
     setSearchFocused(false);
   });
 
+  const updateDeletedSearchHistory = (newSearchHistory) => {
+    setSuggestions(newSearchHistory);
+    setShowSuggestionsAfterDeletion(true);
+  };
+  useEffect(() => {
+    setSearchFocused(showSuggestionsAfterDeletion && true);
+  }, [showSuggestionsAfterDeletion]);
+
   return (
     <div className="home-body">
       <div className="search-section center-me">
@@ -105,7 +114,9 @@ const Home = () => {
             onFocus={() => setSearchFocused(true)}
           ></input>
           <button className="fas fa-search search-button" onClick={search} style={{ zIndex: 200 }}></button>
-          {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && <Suggestions suggestions={suggestions} styles="suggestion-item" marg="-1px" width="50%" />}
+          {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && (
+            <Suggestions suggestions={suggestions} searchInput={searchInput} styles="suggestion-item" marg="-1px" width="50%" onDeleteFromHistory={updateDeletedSearchHistory} />
+          )}
         </div>
       </div>
     </div>

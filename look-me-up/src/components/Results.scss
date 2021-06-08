@@ -34,6 +34,7 @@ $header: #141b2db9;
   font-weight: 700;
   float: left;
   width: 200px;
+  cursor: pointer;
 }
 
 @media (max-width: 700px) {
@@ -45,7 +46,7 @@ $header: #141b2db9;
   }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 400px) {
   #logo {
     display: none;
     width: 0;
@@ -55,11 +56,11 @@ $header: #141b2db9;
     width: 0;
   }
   #input {
-    max-width: 90%;
+    max-width: 100%;
   }
   .search-section-res {
-    padding-left: 20% !important;
-    padding-right: 20% !important;
+    padding-left: 10% !important;
+    padding-right: 10% !important;
   }
 }
 
@@ -120,8 +121,7 @@ $header: #141b2db9;
 }
 
 .search-button-2:hover {
-  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
-    0 0 50px $button;
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
 }
 
 .result-block {
@@ -168,8 +168,7 @@ $header: #141b2db9;
 .last:hover {
   color: white;
   border-top: 2px white solid !important;
-  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
-    0 0 50px $button;
+  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
 }
 
 .page {
@@ -215,8 +214,7 @@ $header: #141b2db9;
   transition: all 0.3s linear;
 }
 #voice2:hover {
-  text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
-    0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+  text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
 }
 .glow {
   transition: all 0.3s linear !important;
