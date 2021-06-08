@@ -16,12 +16,42 @@ $button: #9295f3;
 
 #home-logo {
   min-width: 50vw;
+  padding: 0;
+}
+@media (max-width: 900px) {
+  #home-logo {
+    height: 200px !important;
+    width: 500px !important;
+  }
 }
 
 @media (max-width: 720px) {
   #home-logo {
     height: 170px !important;
     width: 400px !important;
+  }
+}
+@media (max-width: 500px) {
+  #home-logo {
+    height: 120px !important;
+    width: 300px !important;
+  }
+}
+@media (max-width: 600px) {
+  .search-button {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 30px !important;
+  }
+  #home-input {
+    height: 57px !important;
+  }
+}
+@media (max-width: 300px) {
+  .search-button {
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 20px !important;
   }
 }
 
@@ -31,26 +61,24 @@ $button: #9295f3;
     width: 200px !important;
   }
 
-  .search-button {
-    width: 30px !important;
-    height: 30px !important;
-    font-size: 8px !important;
-  }
+  // .search-button {
+  //   width: 60px !important;
+  //   height: 60px !important;
+  //   font-size: 30px !important;
+  // }
 
-  #home-input {
-    height: 30px !important;
-    font-size: 10px;
-    margin-left: -30px !important;
-    padding-left: 30px !important;
-  }
-  #voice {
-    font-size: 15px !important;
-  }
+  // #home-input {
+  //   height: 30px !important;
+  //   font-size: 10px;
+  //   margin-left: -30px !important;
+  //   padding-left: 30px !important;
+  // }
+  // #voice {
+  //   font-size: 15px !important;
+  // }
 }
 .search-section {
   text-align: center;
-  /*background: rgba(141, 139, 219, 0.1);*/
-  /*background: #141b2db9;*/
   width: 70%;
   height: 60%;
   color: aliceblue !important;
@@ -60,7 +88,6 @@ $button: #9295f3;
     margin-top: 100px;
     margin-bottom: 10px;
     font-weight: 900;
-    /*font-family: Sirukota;*/
   }
 
   h6 {
@@ -75,6 +102,7 @@ $button: #9295f3;
       display: block;
       background-color: transparent !important;
       width: 50%;
+      min-width: 250px;
       height: 50px;
       border-top-left-radius: 25px;
       border-bottom-left-radius: 25px;
@@ -88,8 +116,6 @@ $button: #9295f3;
       text-overflow: clip;
     }
     #home-input:focus {
-      /*background-color: rgba(255,255,255,0.9) !important;
-      color: #03082c !important;*/
       box-shadow: 0 0 1px #fff, 0 0 10px #fff;
       transition: box-shadow 0.3s;
     }
@@ -115,8 +141,7 @@ $button: #9295f3;
 
     .search-button:hover {
       transition: all 250ms linear;
-      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button,
-        0 0 50px $button;
+      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
     }
 
     #voice {
@@ -129,8 +154,7 @@ $button: #9295f3;
     }
 
     #voice:hover {
-      text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
-        0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+      text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
     }
 
     .glow {
@@ -143,11 +167,9 @@ $button: #9295f3;
 //idea from https://css-tricks.com/how-to-create-neon-text-with-css/
 @keyframes pulsate {
   0% {
-    text-shadow: 0 0 4px black, 0 0 11px #fff, 0 0 40px magenta,
-      0 0 50px $button, 0 0 60px $button, 0 0 70px cyan;
+    text-shadow: 0 0 4px black, 0 0 11px #fff, 0 0 40px magenta, 0 0 50px $button, 0 0 60px $button, 0 0 70px cyan;
   }
   100% {
-    text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button,
-      0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+    text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
   }
 }

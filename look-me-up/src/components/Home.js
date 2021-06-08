@@ -1,13 +1,10 @@
 //Speech recognition code from https://github.com/Riley-Brown/react-speech-to-text
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import useSpeechToText from "react-hook-speech-to-text";
 import { useHistory } from "react-router-dom";
 import "./Home.scss";
 import { getSuggestions } from "../API/suggestions";
-import {
-  addToSearchHistory,
-  getSearchHistory,
-} from "../helpers/userSearchHistory";
+import { addToSearchHistory, getSearchHistory } from "../helpers/userSearchHistory";
 import Suggestions from "./Suggestions";
 import useOuterClick from "../helpers/useOuterClick";
 
@@ -17,16 +14,10 @@ const Home = () => {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
+  const [showSuggestionsAfterDeletion, setShowSuggestionsAfterDeletion] = useState(false);
 
   //speech recognition
-  const {
-    error,
-    isRecording,
-    results,
-    startSpeechToText,
-    stopSpeechToText,
-    interimResult,
-  } = useSpeechToText({
+  const { error, isRecording, results, startSpeechToText, stopSpeechToText, interimResult } = useSpeechToText({
     continuous: false,
     crossBrowser: true,
     timeout: 10000,
@@ -55,10 +46,7 @@ const Home = () => {
     //e.preventDefault();
     if (searchInput !== "") {
       addToSearchHistory(searchInput);
-      history.push(
-        `/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=${+process
-          .env.REACT_APP_RESULTS_PER_PAGE}`
-      );
+      history.push(`/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
     }
   };
 
@@ -67,10 +55,7 @@ const Home = () => {
     if (e.keyCode === 13) {
       if (searchInput !== "") {
         addToSearchHistory(searchInput);
-        history.push(
-          `/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=${+process
-            .env.REACT_APP_RESULTS_PER_PAGE}`
-        );
+        history.push(`/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
       }
     }
   };
@@ -99,28 +84,23 @@ const Home = () => {
     setSearchFocused(false);
   });
 
+  const updateDeletedSearchHistory = (newSearchHistory) => {
+    setSuggestions(newSearchHistory);
+    setShowSuggestionsAfterDeletion(true);
+  };
+  useEffect(() => {
+    setSearchFocused(showSuggestionsAfterDeletion && true);
+  }, [showSuggestionsAfterDeletion]);
+
   return (
     <div className="home-body">
       <div className="search-section center-me">
-        <img
-          src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png"
-          width="662px"
-          height="280px"
-          id="home-logo"
-        ></img>
+        <img src="https://cdn.discordapp.com/attachments/690679446952345701/850318347543379988/Logo.png" width="662px" height="280px" id="home-logo"></img>
         {/* <h1> LOOK ME UP </h1> */}
         {/* <h6> I got everything you need </h6> */}
 
-        <div
-          ref={insideSuggestions}
-          className="d-flex align-items-center justify-content-center"
-          style={{ position: "absolute", width:"540px", left:"195px" }}
-        >
-          <button
-            id="voice"
-            className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")}
-            onClick={isRecording ? stopSpeechToText : startSpeechToText}
-          ></button>
+        <div ref={insideSuggestions} className="d-flex align-items-center justify-content-center" style={{ position: "relative" }}>
+          <button id="voice" className={"fas fa-microphone-alt " + (isRecording ? "glow" : "")} onClick={isRecording ? stopSpeechToText : startSpeechToText}></button>
           <input
             id="home-input"
             type="text"
@@ -130,18 +110,13 @@ const Home = () => {
             onChange={handleInputChange}
             //value={interimResult}
             autoComplete="off"
-            style={{width:"100%"}}
+            //style={{ width: "100%" }}
             onFocus={() => setSearchFocused(true)}
           ></input>
-          <button
-            className="fas fa-search search-button"
-            onClick={search}
-          ></button>
-          {searchFocused &&
-            !loadingSuggestions &&
-            suggestions?.length !== 0 && (
-              <Suggestions suggestions={suggestions} color="#9295f323"/>
-            )}
+          <button className="fas fa-search search-button" onClick={search} style={{ zIndex: 200 }}></button>
+          {searchFocused && !loadingSuggestions && suggestions?.length !== 0 && (
+            <Suggestions suggestions={suggestions} searchInput={searchInput} styles="suggestion-item" marg="-1px" width="50%" onDeleteFromHistory={updateDeletedSearchHistory} />
+          )}
         </div>
       </div>
     </div>

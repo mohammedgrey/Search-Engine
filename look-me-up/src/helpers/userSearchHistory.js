@@ -10,6 +10,12 @@ export const getSearchHistory = () => {
   return shistory.length > 10 ? shistory.slice(0, 10) : shistory;
 };
 
-export const clearSearchHistory = () => {
+export const clearAllSearchHistory = () => {
   localStorage.removeItem("search-history");
+};
+export const clearOneSearchHistory = (_id) => {
+  let searchHistory = JSON.parse(localStorage.getItem("search-history") || "[]");
+  searchHistory = searchHistory.filter((item) => item._id !== _id);
+  localStorage.setItem("search-history", JSON.stringify(searchHistory));
+  return searchHistory;
 };
