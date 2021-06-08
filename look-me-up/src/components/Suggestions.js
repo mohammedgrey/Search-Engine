@@ -14,7 +14,7 @@ const Suggestions = ({ suggestions, color }) => {
           <div
             key={suggestion._id}
             className="suggestion-item"
-             style={{ backgroundColor: color }}
+            style={{ backgroundColor: color }}
             onClick={() => {
               history.push(`/Results?q=${encodeURIComponent(suggestion._id)}&page=1&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
             }}
