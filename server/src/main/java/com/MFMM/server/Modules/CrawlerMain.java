@@ -7,10 +7,10 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.HashSet;
@@ -24,8 +24,11 @@ import org.jsoup.nodes.Element;
 
 public class CrawlerMain {
     public static void main(String[] args) throws IOException, InterruptedException {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number of robots: ");
+        int NUM_OF_ROBOTS = sc.nextInt();
+        sc.close();
 
-        int NUM_OF_ROBOTS = 100;
         Thread[] robots = new Thread[NUM_OF_ROBOTS];
         Crawler crawler = new Crawler();
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -278,28 +281,24 @@ public class CrawlerMain {
                 synchronized (this.toCrawlPages) {
                     currentURL = toCrawlPages.remove();
                 }
-                List<String> addedURLS = new ArrayList<>();
-                // TODO: check for Robot.txt to see if I am allowed to visit this URL
+
                 if (!isVisitedURL(currentURL))
-                    if (isHTML(currentURL)) {
-                        // download the page and add the links inside it to the "to crawl" queue
-                        System.out.println("CURRENT URL: " + currentURL);
-                        System.out.println("Being DOWNLOADED BY ROBOT: " + Thread.currentThread().getName());
-                        try {
-                            Document doc = downloadPage(currentURL);
-                            if (doc != null) {
-                                synchronized (this.crawledPages) {
-                                    this.crawledPages.add(currentURL);
+                    if (isHTML(currentURL))
+                        if (IamAllowedToCrawl(currentURL)) {
+                            // download the page and add the links inside it to the "to crawl" queue
+                            System.out.println("CURRENT URL: " + currentURL);
+                            System.out.println("Being DOWNLOADED BY ROBOT: " + Thread.currentThread().getName());
+                            try {
+                                Document doc = downloadPage(currentURL);
+                                if (doc != null) {
+                                    synchronized (this.crawledPages) {
+                                        this.crawledPages.add(currentURL);
+                                    }
+                                    AddMoreURLSToCrawl(doc);
                                 }
-                                AddMoreURLSToCrawl(doc);
+                            } catch (IOException e) {
                             }
-                        } catch (IOException e) {
-                            System.out.println("DONLOADING INTERRUPTED");
-                            // e.printStackTrace();
                         }
-
-                    }
-
             }
         }
 

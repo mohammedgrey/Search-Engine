@@ -4,14 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Hashtable;
 
 import com.MFMM.server.database.Database;
 import com.MFMM.server.helpers.FileHandler;
 import com.MFMM.server.helpers.URIHandler;
 import com.MFMM.server.helpers.DfRestore;
 import com.MFMM.server.models.Doc;
-import com.MFMM.server.models.Word;
 
 import org.jsoup.*;
 import org.jsoup.nodes.*;
@@ -26,7 +24,7 @@ public class IndexerMain {
         String pathToDocuments = System.getProperty("user.dir").endsWith("Search-Engine")
                 ? "server/src/main/java/com/MFMM/server/documents"
                 : "src/main/java/com/MFMM/server/documents";
-        int NUM_OF_ROBOTS = 150;
+        int NUM_OF_ROBOTS = 7;
         Thread[] robots = new Thread[NUM_OF_ROBOTS];
         Indexer vocab = new Indexer(pathToDocuments, NUM_OF_ROBOTS);
 
@@ -41,20 +39,20 @@ public class IndexerMain {
             robots[i].join();
 
         vocab.calculateDFs();
-        //vocab.indexDocuments();
+        // vocab.indexDocuments();
     }
 
     static final class Indexer implements Runnable {
         // Members
         File[] listOfFiles;
-        //Hashtable<String, Integer> dfTable;
+        // Hashtable<String, Integer> dfTable;
         int numberOfRobots;
         MongoTemplate mongoTemplate;
 
         public Indexer(String pathToResources, int numberOfRobots) {
             File resourceFolder = new File(pathToResources);
             listOfFiles = resourceFolder.listFiles();
-            //dfTable = new Hashtable<String, Integer>();
+            // dfTable = new Hashtable<String, Integer>();
             this.numberOfRobots = numberOfRobots;
             mongoTemplate = Database.template();
         }
@@ -104,21 +102,22 @@ public class IndexerMain {
         }
 
         public void calculateDFs() {
-//            this.dfTable.forEach((word, df) -> {
-//                Word prev;
-//                try {
-//                    prev = mongoTemplate.findById(new Query(Criteria.where("_id").is(word)), Word.class);
-//                } catch (Exception e) {
-//                    prev = new Word(word, 0, 0);
-//                }
-//                
-////                mongoTemplate.upsert(new Query(Criteria.where("_id").is(word)),
-////                        new Update().set("df", df + prev.df).set("idf",
-////                                Math.log(Math.exp(prev.idf) * prev.df + listOfFiles.length)
-////                                        / Double.valueOf(df + prev.df)),
-////                        "word");
-//            });
-        	new DfRestore().OneShotDFidf();
+            // this.dfTable.forEach((word, df) -> {
+            // Word prev;
+            // try {
+            // prev = mongoTemplate.findById(new Query(Criteria.where("_id").is(word)),
+            // Word.class);
+            // } catch (Exception e) {
+            // prev = new Word(word, 0, 0);
+            // }
+            //
+            //// mongoTemplate.upsert(new Query(Criteria.where("_id").is(word)),
+            //// new Update().set("df", df + prev.df).set("idf",
+            //// Math.log(Math.exp(prev.idf) * prev.df + listOfFiles.length)
+            //// / Double.valueOf(df + prev.df)),
+            //// "word");
+            // });
+            new DfRestore().OneShotDFidf();
         }
 
         private void indexWord(String word, String url, String type, List<Doc> vocab) {
@@ -150,9 +149,9 @@ public class IndexerMain {
                 findWordsForType(doc, url, type, vocab);
             for (Doc insertme : vocab) {
                 insertme.TF = insertme.getTotal() / Double.valueOf(docSize);
-//                synchronized (this.dfTable) {
-//                    this.dfTable.put(insertme.word, dfTable.getOrDefault(insertme.word, 0) + 1);
-//                }
+                // synchronized (this.dfTable) {
+                // this.dfTable.put(insertme.word, dfTable.getOrDefault(insertme.word, 0) + 1);
+                // }
                 mongoTemplate.upsert(new Query(Criteria.where("url").is(url).and("word").is(insertme.word)),
                         new Update().set("p", insertme.p).set("h1", insertme.h1).set("h2", insertme.h2)
                                 .set("h3", insertme.h3).set("h4", insertme.h4).set("h5", insertme.h5)

@@ -3,8 +3,6 @@ package com.MFMM.server.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.mongodb.core.aggregation.StringOperators.Concat;
-
 public class ArrayStringMethods {
     // from https://www.javatpoint.com/how-to-merge-two-arrays-in-java
     public static String[] concatArrays(String[] firstArray, String[] secondArray) {

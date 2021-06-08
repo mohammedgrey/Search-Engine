@@ -2,14 +2,11 @@ package com.MFMM.server.helpers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ public class FileHandler {
             writer.write(line + "\n");
         writer.close();
     }
-    
+
     public static void writeToFile(HashSet<String> data, String filePath) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
         for (String line : data)
